@@ -1,0 +1,816 @@
+# source: https://eu1.prisma.sh/danni/danni-backend/dev
+# timestamp: Tue May 21 2019 19:39:39 GMT+0200 (Central European Summer Time)
+
+type AggregateAudio {
+  count: Int!
+}
+
+type AggregateVideo {
+  count: Int!
+}
+
+type Audio implements Node {
+  id: ID!
+  source: String!
+  language: Language
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A connection to a list of items."""
+type AudioConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [AudioEdge]!
+  aggregate: AggregateAudio!
+}
+
+input AudioCreateInput {
+  id: ID
+  source: String!
+  language: Language
+}
+
+input AudioCreateManyInput {
+  create: [AudioCreateInput!]
+  connect: [AudioWhereUniqueInput!]
+}
+
+"""An edge in a connection."""
+type AudioEdge {
+  """The item at the end of the edge."""
+  node: Audio!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum AudioOrderByInput {
+  id_ASC
+  id_DESC
+  source_ASC
+  source_DESC
+  language_ASC
+  language_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type AudioPreviousValues {
+  id: ID!
+  source: String!
+  language: Language
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input AudioScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [AudioScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [AudioScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [AudioScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  source: String
+
+  """All values that are not equal to given value."""
+  source_not: String
+
+  """All values that are contained in given list."""
+  source_in: [String!]
+
+  """All values that are not contained in given list."""
+  source_not_in: [String!]
+
+  """All values less than the given value."""
+  source_lt: String
+
+  """All values less than or equal the given value."""
+  source_lte: String
+
+  """All values greater than the given value."""
+  source_gt: String
+
+  """All values greater than or equal the given value."""
+  source_gte: String
+
+  """All values containing the given string."""
+  source_contains: String
+
+  """All values not containing the given string."""
+  source_not_contains: String
+
+  """All values starting with the given string."""
+  source_starts_with: String
+
+  """All values not starting with the given string."""
+  source_not_starts_with: String
+
+  """All values ending with the given string."""
+  source_ends_with: String
+
+  """All values not ending with the given string."""
+  source_not_ends_with: String
+  language: Language
+
+  """All values that are not equal to given value."""
+  language_not: Language
+
+  """All values that are contained in given list."""
+  language_in: [Language!]
+
+  """All values that are not contained in given list."""
+  language_not_in: [Language!]
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+}
+
+type AudioSubscriptionPayload {
+  mutation: MutationType!
+  node: Audio
+  updatedFields: [String!]
+  previousValues: AudioPreviousValues
+}
+
+input AudioSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [AudioSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [AudioSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [AudioSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: AudioWhereInput
+}
+
+input AudioUpdateDataInput {
+  source: String
+  language: Language
+}
+
+input AudioUpdateInput {
+  source: String
+  language: Language
+}
+
+input AudioUpdateManyDataInput {
+  source: String
+  language: Language
+}
+
+input AudioUpdateManyInput {
+  create: [AudioCreateInput!]
+  connect: [AudioWhereUniqueInput!]
+  set: [AudioWhereUniqueInput!]
+  disconnect: [AudioWhereUniqueInput!]
+  delete: [AudioWhereUniqueInput!]
+  update: [AudioUpdateWithWhereUniqueNestedInput!]
+  updateMany: [AudioUpdateManyWithWhereNestedInput!]
+  deleteMany: [AudioScalarWhereInput!]
+  upsert: [AudioUpsertWithWhereUniqueNestedInput!]
+}
+
+input AudioUpdateManyMutationInput {
+  source: String
+  language: Language
+}
+
+input AudioUpdateManyWithWhereNestedInput {
+  where: AudioScalarWhereInput!
+  data: AudioUpdateManyDataInput!
+}
+
+input AudioUpdateWithWhereUniqueNestedInput {
+  where: AudioWhereUniqueInput!
+  data: AudioUpdateDataInput!
+}
+
+input AudioUpsertWithWhereUniqueNestedInput {
+  where: AudioWhereUniqueInput!
+  update: AudioUpdateDataInput!
+  create: AudioCreateInput!
+}
+
+input AudioWhereInput {
+  """Logical AND on all given filters."""
+  AND: [AudioWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [AudioWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [AudioWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  source: String
+
+  """All values that are not equal to given value."""
+  source_not: String
+
+  """All values that are contained in given list."""
+  source_in: [String!]
+
+  """All values that are not contained in given list."""
+  source_not_in: [String!]
+
+  """All values less than the given value."""
+  source_lt: String
+
+  """All values less than or equal the given value."""
+  source_lte: String
+
+  """All values greater than the given value."""
+  source_gt: String
+
+  """All values greater than or equal the given value."""
+  source_gte: String
+
+  """All values containing the given string."""
+  source_contains: String
+
+  """All values not containing the given string."""
+  source_not_contains: String
+
+  """All values starting with the given string."""
+  source_starts_with: String
+
+  """All values not starting with the given string."""
+  source_not_starts_with: String
+
+  """All values ending with the given string."""
+  source_ends_with: String
+
+  """All values not ending with the given string."""
+  source_not_ends_with: String
+  language: Language
+
+  """All values that are not equal to given value."""
+  language_not: Language
+
+  """All values that are contained in given list."""
+  language_in: [Language!]
+
+  """All values that are not contained in given list."""
+  language_not_in: [Language!]
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+}
+
+input AudioWhereUniqueInput {
+  id: ID
+}
+
+type BatchPayload {
+  """The number of nodes that have been affected by the Batch operation."""
+  count: Long!
+}
+
+scalar DateTime
+
+enum Language {
+  ENGLISH
+  CZECH
+  VIETNAMESE
+  GERMAN
+}
+
+"""
+The `Long` scalar type represents non-fractional signed whole numeric values.
+Long can represent values between -(2^63) and 2^63 - 1.
+"""
+scalar Long
+
+type Mutation {
+  createVideo(data: VideoCreateInput!): Video!
+  createAudio(data: AudioCreateInput!): Audio!
+  updateVideo(data: VideoUpdateInput!, where: VideoWhereUniqueInput!): Video
+  updateAudio(data: AudioUpdateInput!, where: AudioWhereUniqueInput!): Audio
+  deleteVideo(where: VideoWhereUniqueInput!): Video
+  deleteAudio(where: AudioWhereUniqueInput!): Audio
+  upsertVideo(where: VideoWhereUniqueInput!, create: VideoCreateInput!, update: VideoUpdateInput!): Video!
+  upsertAudio(where: AudioWhereUniqueInput!, create: AudioCreateInput!, update: AudioUpdateInput!): Audio!
+  updateManyVideos(data: VideoUpdateManyMutationInput!, where: VideoWhereInput): BatchPayload!
+  updateManyAudios(data: AudioUpdateManyMutationInput!, where: AudioWhereInput): BatchPayload!
+  deleteManyVideos(where: VideoWhereInput): BatchPayload!
+  deleteManyAudios(where: AudioWhereInput): BatchPayload!
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+type Query {
+  videos(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Video]!
+  audios(where: AudioWhereInput, orderBy: AudioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Audio]!
+  video(where: VideoWhereUniqueInput!): Video
+  audio(where: AudioWhereUniqueInput!): Audio
+  videosConnection(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): VideoConnection!
+  audiosConnection(where: AudioWhereInput, orderBy: AudioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AudioConnection!
+
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+}
+
+type Subscription {
+  video(where: VideoSubscriptionWhereInput): VideoSubscriptionPayload
+  audio(where: AudioSubscriptionWhereInput): AudioSubscriptionPayload
+}
+
+type Video implements Node {
+  id: ID!
+  source: String!
+  title: String!
+  audio(where: AudioWhereInput, orderBy: AudioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Audio!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A connection to a list of items."""
+type VideoConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [VideoEdge]!
+  aggregate: AggregateVideo!
+}
+
+input VideoCreateInput {
+  id: ID
+  source: String!
+  title: String!
+  audio: AudioCreateManyInput
+}
+
+"""An edge in a connection."""
+type VideoEdge {
+  """The item at the end of the edge."""
+  node: Video!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum VideoOrderByInput {
+  id_ASC
+  id_DESC
+  source_ASC
+  source_DESC
+  title_ASC
+  title_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type VideoPreviousValues {
+  id: ID!
+  source: String!
+  title: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type VideoSubscriptionPayload {
+  mutation: MutationType!
+  node: Video
+  updatedFields: [String!]
+  previousValues: VideoPreviousValues
+}
+
+input VideoSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [VideoSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [VideoSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [VideoSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: VideoWhereInput
+}
+
+input VideoUpdateInput {
+  source: String
+  title: String
+  audio: AudioUpdateManyInput
+}
+
+input VideoUpdateManyMutationInput {
+  source: String
+  title: String
+}
+
+input VideoWhereInput {
+  """Logical AND on all given filters."""
+  AND: [VideoWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [VideoWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [VideoWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  source: String
+
+  """All values that are not equal to given value."""
+  source_not: String
+
+  """All values that are contained in given list."""
+  source_in: [String!]
+
+  """All values that are not contained in given list."""
+  source_not_in: [String!]
+
+  """All values less than the given value."""
+  source_lt: String
+
+  """All values less than or equal the given value."""
+  source_lte: String
+
+  """All values greater than the given value."""
+  source_gt: String
+
+  """All values greater than or equal the given value."""
+  source_gte: String
+
+  """All values containing the given string."""
+  source_contains: String
+
+  """All values not containing the given string."""
+  source_not_contains: String
+
+  """All values starting with the given string."""
+  source_starts_with: String
+
+  """All values not starting with the given string."""
+  source_not_starts_with: String
+
+  """All values ending with the given string."""
+  source_ends_with: String
+
+  """All values not ending with the given string."""
+  source_not_ends_with: String
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  audio_every: AudioWhereInput
+  audio_some: AudioWhereInput
+  audio_none: AudioWhereInput
+}
+
+input VideoWhereUniqueInput {
+  id: ID
+}

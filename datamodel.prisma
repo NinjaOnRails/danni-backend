@@ -1,0 +1,23 @@
+type Video {
+  id: ID! @id
+  source: String!
+  title: String!
+  audio: [Audio]!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Audio {
+  id: ID! @id
+  source: String!
+  language: Language
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+enum Language {
+  ENGLISH
+  CZECH
+  VIETNAMESE
+  GERMAN
+}

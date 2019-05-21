@@ -1,0 +1,18 @@
+type Query {
+  videos(
+    where: VideoWhereInput
+    orderBy: VideoOrderByInput
+    skip: Int
+    first: Int
+  ): [Video]!
+  audios(
+    where: AudioWhereInput
+    orderBy: AudioOrderByInput
+    skip: Int
+    first: Int
+  ): [Audio]!
+  video(where: VideoWhereUniqueInput!): Video
+  audio(where: AudioWhereUniqueInput!): Audio
+  videosConnection(where: VideoWhereInput): VideoConnection!
+  audiosConnection(where: AudioWhereInput): AudioConnection!
+}
