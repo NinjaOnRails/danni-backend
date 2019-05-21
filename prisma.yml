@@ -1,5 +1,4 @@
 endpoint: ${env:PRISMA_ENDPOINT}
-# endpoint: https://eu1.prisma.sh/danni/danni-backend/dev
 # secret: ${env:PRISMA_SECRET}
 datamodel: datamodel.prisma
 hooks:
