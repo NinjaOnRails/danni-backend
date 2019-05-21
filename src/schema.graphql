@@ -21,5 +21,11 @@ type Query {
 
 type Mutation {
   createVideo(source: String!, title: String!): Video!
-  createAudio(source: String!): Audio!
+  createAudio(data: CreateAudioInput!): Audio!
+}
+
+input CreateAudioInput {
+  source: String!
+  language: Language
+  video: ID
 }

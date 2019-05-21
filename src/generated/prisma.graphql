@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/danni/danni-backend/dev
-# timestamp: Tue May 21 2019 19:39:39 GMT+0200 (Central European Summer Time)
+# timestamp: Tue May 21 2019 22:13:16 GMT+0200 (Central European Summer Time)
 
 type AggregateAudio {
   count: Int!
@@ -13,6 +13,7 @@ type Audio implements Node {
   id: ID!
   source: String!
   language: Language
+  video: Video
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -31,11 +32,18 @@ input AudioCreateInput {
   id: ID
   source: String!
   language: Language
+  video: VideoCreateOneWithoutAudioInput
 }
 
-input AudioCreateManyInput {
-  create: [AudioCreateInput!]
+input AudioCreateManyWithoutVideoInput {
+  create: [AudioCreateWithoutVideoInput!]
   connect: [AudioWhereUniqueInput!]
+}
+
+input AudioCreateWithoutVideoInput {
+  id: ID
+  source: String!
+  language: Language
 }
 
 """An edge in a connection."""
@@ -250,14 +258,10 @@ input AudioSubscriptionWhereInput {
   node: AudioWhereInput
 }
 
-input AudioUpdateDataInput {
-  source: String
-  language: Language
-}
-
 input AudioUpdateInput {
   source: String
   language: Language
+  video: VideoUpdateOneWithoutAudioInput
 }
 
 input AudioUpdateManyDataInput {
@@ -265,21 +269,21 @@ input AudioUpdateManyDataInput {
   language: Language
 }
 
-input AudioUpdateManyInput {
-  create: [AudioCreateInput!]
+input AudioUpdateManyMutationInput {
+  source: String
+  language: Language
+}
+
+input AudioUpdateManyWithoutVideoInput {
+  create: [AudioCreateWithoutVideoInput!]
   connect: [AudioWhereUniqueInput!]
   set: [AudioWhereUniqueInput!]
   disconnect: [AudioWhereUniqueInput!]
   delete: [AudioWhereUniqueInput!]
-  update: [AudioUpdateWithWhereUniqueNestedInput!]
+  update: [AudioUpdateWithWhereUniqueWithoutVideoInput!]
   updateMany: [AudioUpdateManyWithWhereNestedInput!]
   deleteMany: [AudioScalarWhereInput!]
-  upsert: [AudioUpsertWithWhereUniqueNestedInput!]
-}
-
-input AudioUpdateManyMutationInput {
-  source: String
-  language: Language
+  upsert: [AudioUpsertWithWhereUniqueWithoutVideoInput!]
 }
 
 input AudioUpdateManyWithWhereNestedInput {
@@ -287,15 +291,20 @@ input AudioUpdateManyWithWhereNestedInput {
   data: AudioUpdateManyDataInput!
 }
 
-input AudioUpdateWithWhereUniqueNestedInput {
-  where: AudioWhereUniqueInput!
-  data: AudioUpdateDataInput!
+input AudioUpdateWithoutVideoDataInput {
+  source: String
+  language: Language
 }
 
-input AudioUpsertWithWhereUniqueNestedInput {
+input AudioUpdateWithWhereUniqueWithoutVideoInput {
   where: AudioWhereUniqueInput!
-  update: AudioUpdateDataInput!
-  create: AudioCreateInput!
+  data: AudioUpdateWithoutVideoDataInput!
+}
+
+input AudioUpsertWithWhereUniqueWithoutVideoInput {
+  where: AudioWhereUniqueInput!
+  update: AudioUpdateWithoutVideoDataInput!
+  create: AudioCreateWithoutVideoInput!
 }
 
 input AudioWhereInput {
@@ -441,6 +450,7 @@ input AudioWhereInput {
 
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
+  video: VideoWhereInput
 }
 
 input AudioWhereUniqueInput {
@@ -552,7 +562,18 @@ input VideoCreateInput {
   id: ID
   source: String!
   title: String!
-  audio: AudioCreateManyInput
+  audio: AudioCreateManyWithoutVideoInput
+}
+
+input VideoCreateOneWithoutAudioInput {
+  create: VideoCreateWithoutAudioInput
+  connect: VideoWhereUniqueInput
+}
+
+input VideoCreateWithoutAudioInput {
+  id: ID
+  source: String!
+  title: String!
 }
 
 """An edge in a connection."""
@@ -625,12 +646,31 @@ input VideoSubscriptionWhereInput {
 input VideoUpdateInput {
   source: String
   title: String
-  audio: AudioUpdateManyInput
+  audio: AudioUpdateManyWithoutVideoInput
 }
 
 input VideoUpdateManyMutationInput {
   source: String
   title: String
+}
+
+input VideoUpdateOneWithoutAudioInput {
+  create: VideoCreateWithoutAudioInput
+  connect: VideoWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: VideoUpdateWithoutAudioDataInput
+  upsert: VideoUpsertWithoutAudioInput
+}
+
+input VideoUpdateWithoutAudioDataInput {
+  source: String
+  title: String
+}
+
+input VideoUpsertWithoutAudioInput {
+  update: VideoUpdateWithoutAudioDataInput!
+  create: VideoCreateWithoutAudioInput!
 }
 
 input VideoWhereInput {

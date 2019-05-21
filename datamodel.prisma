@@ -2,7 +2,7 @@ type Video {
   id: ID! @id
   source: String!
   title: String!
-  audio: [Audio]!
+  audio: [Audio]! @relation(name: "AudioToVideo")
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
@@ -11,6 +11,7 @@ type Audio {
   id: ID! @id
   source: String!
   language: Language
+  video: Video @relation(name: "AudioToVideo")
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
