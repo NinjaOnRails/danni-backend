@@ -20,7 +20,7 @@ type Query {
 }
 
 type Mutation {
-  createVideo(source: String!, title: String!): Video!
+  createVideo(youtubeId: String!): Video!
   createAudio(data: CreateAudioInput!): Audio!
 }
 

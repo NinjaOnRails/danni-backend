@@ -1,9 +1,30 @@
+const youtube = require('../utils/youtube');
+
 const mutations = {
-  async createVideo(parent, args, ctx, info) {
+  async createVideo(parent, { youtubeId }, ctx, info) {
+    const res = await youtube.get('/videos', {
+      params: {
+        id: youtubeId,
+      },
+    });
+
+    const {
+      thumbnails: {
+        medium: { url },
+      },
+      channelTitle,
+      localized: { title },
+      defaultAudioLanguage,
+    } = res.data.items[0].snippet;
+
     const video = await ctx.db.mutation.createVideo(
       {
         data: {
-          ...args,
+          youtubeId,
+          title,
+          channelTitle,
+          defaultLanguage: defaultAudioLanguage,
+          thumbnailUrl: url,
         },
       },
       info

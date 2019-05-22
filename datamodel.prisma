@@ -1,7 +1,10 @@
 type Video {
   id: ID! @id
-  source: String! @unique
+  youtubeId: String! @unique
   title: String!
+  channelTitle: String!
+  defaultLanguage: String!
+  thumbnailUrl: String!
   audio: [Audio]! @relation(name: "AudioToVideo")
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt

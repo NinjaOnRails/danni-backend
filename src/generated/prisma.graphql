@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/danni/danni-backend/dev
-# timestamp: Wed May 22 2019 11:14:50 GMT+0200 (Central European Summer Time)
+# timestamp: Wed May 22 2019 17:01:23 GMT+0200 (Central European Summer Time)
 
 type AggregateAudio {
   count: Int!
@@ -542,8 +542,11 @@ type Subscription {
 
 type Video implements Node {
   id: ID!
-  source: String!
+  youtubeId: String!
   title: String!
+  channelTitle: String!
+  defaultLanguage: String!
+  thumbnailUrl: String!
   audio(where: AudioWhereInput, orderBy: AudioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Audio!]
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -561,8 +564,11 @@ type VideoConnection {
 
 input VideoCreateInput {
   id: ID
-  source: String!
+  youtubeId: String!
   title: String!
+  channelTitle: String!
+  defaultLanguage: String!
+  thumbnailUrl: String!
   audio: AudioCreateManyWithoutVideoInput
 }
 
@@ -573,8 +579,11 @@ input VideoCreateOneWithoutAudioInput {
 
 input VideoCreateWithoutAudioInput {
   id: ID
-  source: String!
+  youtubeId: String!
   title: String!
+  channelTitle: String!
+  defaultLanguage: String!
+  thumbnailUrl: String!
 }
 
 """An edge in a connection."""
@@ -589,10 +598,16 @@ type VideoEdge {
 enum VideoOrderByInput {
   id_ASC
   id_DESC
-  source_ASC
-  source_DESC
+  youtubeId_ASC
+  youtubeId_DESC
   title_ASC
   title_DESC
+  channelTitle_ASC
+  channelTitle_DESC
+  defaultLanguage_ASC
+  defaultLanguage_DESC
+  thumbnailUrl_ASC
+  thumbnailUrl_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -601,8 +616,11 @@ enum VideoOrderByInput {
 
 type VideoPreviousValues {
   id: ID!
-  source: String!
+  youtubeId: String!
   title: String!
+  channelTitle: String!
+  defaultLanguage: String!
+  thumbnailUrl: String!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -645,14 +663,20 @@ input VideoSubscriptionWhereInput {
 }
 
 input VideoUpdateInput {
-  source: String
+  youtubeId: String
   title: String
+  channelTitle: String
+  defaultLanguage: String
+  thumbnailUrl: String
   audio: AudioUpdateManyWithoutVideoInput
 }
 
 input VideoUpdateManyMutationInput {
-  source: String
+  youtubeId: String
   title: String
+  channelTitle: String
+  defaultLanguage: String
+  thumbnailUrl: String
 }
 
 input VideoUpdateOneWithoutAudioInput {
@@ -665,8 +689,11 @@ input VideoUpdateOneWithoutAudioInput {
 }
 
 input VideoUpdateWithoutAudioDataInput {
-  source: String
+  youtubeId: String
   title: String
+  channelTitle: String
+  defaultLanguage: String
+  thumbnailUrl: String
 }
 
 input VideoUpsertWithoutAudioInput {
@@ -723,46 +750,46 @@ input VideoWhereInput {
 
   """All values not ending with the given string."""
   id_not_ends_with: ID
-  source: String
+  youtubeId: String
 
   """All values that are not equal to given value."""
-  source_not: String
+  youtubeId_not: String
 
   """All values that are contained in given list."""
-  source_in: [String!]
+  youtubeId_in: [String!]
 
   """All values that are not contained in given list."""
-  source_not_in: [String!]
+  youtubeId_not_in: [String!]
 
   """All values less than the given value."""
-  source_lt: String
+  youtubeId_lt: String
 
   """All values less than or equal the given value."""
-  source_lte: String
+  youtubeId_lte: String
 
   """All values greater than the given value."""
-  source_gt: String
+  youtubeId_gt: String
 
   """All values greater than or equal the given value."""
-  source_gte: String
+  youtubeId_gte: String
 
   """All values containing the given string."""
-  source_contains: String
+  youtubeId_contains: String
 
   """All values not containing the given string."""
-  source_not_contains: String
+  youtubeId_not_contains: String
 
   """All values starting with the given string."""
-  source_starts_with: String
+  youtubeId_starts_with: String
 
   """All values not starting with the given string."""
-  source_not_starts_with: String
+  youtubeId_not_starts_with: String
 
   """All values ending with the given string."""
-  source_ends_with: String
+  youtubeId_ends_with: String
 
   """All values not ending with the given string."""
-  source_not_ends_with: String
+  youtubeId_not_ends_with: String
   title: String
 
   """All values that are not equal to given value."""
@@ -803,6 +830,126 @@ input VideoWhereInput {
 
   """All values not ending with the given string."""
   title_not_ends_with: String
+  channelTitle: String
+
+  """All values that are not equal to given value."""
+  channelTitle_not: String
+
+  """All values that are contained in given list."""
+  channelTitle_in: [String!]
+
+  """All values that are not contained in given list."""
+  channelTitle_not_in: [String!]
+
+  """All values less than the given value."""
+  channelTitle_lt: String
+
+  """All values less than or equal the given value."""
+  channelTitle_lte: String
+
+  """All values greater than the given value."""
+  channelTitle_gt: String
+
+  """All values greater than or equal the given value."""
+  channelTitle_gte: String
+
+  """All values containing the given string."""
+  channelTitle_contains: String
+
+  """All values not containing the given string."""
+  channelTitle_not_contains: String
+
+  """All values starting with the given string."""
+  channelTitle_starts_with: String
+
+  """All values not starting with the given string."""
+  channelTitle_not_starts_with: String
+
+  """All values ending with the given string."""
+  channelTitle_ends_with: String
+
+  """All values not ending with the given string."""
+  channelTitle_not_ends_with: String
+  defaultLanguage: String
+
+  """All values that are not equal to given value."""
+  defaultLanguage_not: String
+
+  """All values that are contained in given list."""
+  defaultLanguage_in: [String!]
+
+  """All values that are not contained in given list."""
+  defaultLanguage_not_in: [String!]
+
+  """All values less than the given value."""
+  defaultLanguage_lt: String
+
+  """All values less than or equal the given value."""
+  defaultLanguage_lte: String
+
+  """All values greater than the given value."""
+  defaultLanguage_gt: String
+
+  """All values greater than or equal the given value."""
+  defaultLanguage_gte: String
+
+  """All values containing the given string."""
+  defaultLanguage_contains: String
+
+  """All values not containing the given string."""
+  defaultLanguage_not_contains: String
+
+  """All values starting with the given string."""
+  defaultLanguage_starts_with: String
+
+  """All values not starting with the given string."""
+  defaultLanguage_not_starts_with: String
+
+  """All values ending with the given string."""
+  defaultLanguage_ends_with: String
+
+  """All values not ending with the given string."""
+  defaultLanguage_not_ends_with: String
+  thumbnailUrl: String
+
+  """All values that are not equal to given value."""
+  thumbnailUrl_not: String
+
+  """All values that are contained in given list."""
+  thumbnailUrl_in: [String!]
+
+  """All values that are not contained in given list."""
+  thumbnailUrl_not_in: [String!]
+
+  """All values less than the given value."""
+  thumbnailUrl_lt: String
+
+  """All values less than or equal the given value."""
+  thumbnailUrl_lte: String
+
+  """All values greater than the given value."""
+  thumbnailUrl_gt: String
+
+  """All values greater than or equal the given value."""
+  thumbnailUrl_gte: String
+
+  """All values containing the given string."""
+  thumbnailUrl_contains: String
+
+  """All values not containing the given string."""
+  thumbnailUrl_not_contains: String
+
+  """All values starting with the given string."""
+  thumbnailUrl_starts_with: String
+
+  """All values not starting with the given string."""
+  thumbnailUrl_not_starts_with: String
+
+  """All values ending with the given string."""
+  thumbnailUrl_ends_with: String
+
+  """All values not ending with the given string."""
+  thumbnailUrl_not_ends_with: String
   createdAt: DateTime
 
   """All values that are not equal to given value."""
@@ -854,5 +1001,5 @@ input VideoWhereInput {
 
 input VideoWhereUniqueInput {
   id: ID
-  source: String
+  youtubeId: String
 }
