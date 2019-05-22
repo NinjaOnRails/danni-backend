@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/danni/danni-backend/dev
-# timestamp: Tue May 21 2019 22:13:16 GMT+0200 (Central European Summer Time)
+# timestamp: Wed May 22 2019 11:14:50 GMT+0200 (Central European Summer Time)
 
 type AggregateAudio {
   count: Int!
@@ -455,6 +455,7 @@ input AudioWhereInput {
 
 input AudioWhereUniqueInput {
   id: ID
+  source: String
 }
 
 type BatchPayload {
@@ -853,4 +854,5 @@ input VideoWhereInput {
 
 input VideoWhereUniqueInput {
   id: ID
+  source: String
 }
