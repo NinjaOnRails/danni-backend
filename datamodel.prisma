@@ -6,6 +6,7 @@ type Video {
   defaultLanguage: String
   thumbnailUrl: String!
   audio: [Audio]! @relation(name: "AudioToVideo")
+  caption: [Caption]! @relation(name: "CaptionToVideo")
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
@@ -15,6 +16,19 @@ type Audio {
   source: String! @unique
   language: Language
   video: Video @relation(name: "AudioToVideo")
+  caption: Caption @relation(name: "AudioToCaption")
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Caption {
+  id: ID! @id
+  languageTag: String!
+  xml: String!
+  json: String!
+  author: [String]! @scalarList(strategy: RELATION)
+  video: Video @relation(name: "CaptionToVideo")
+  audio: [Audio]! @relation(name: "AudioToCaption")
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
@@ -24,4 +38,19 @@ enum Language {
   CZECH
   VIETNAMESE
   GERMAN
+  SPANISH
+  MANDARIN
+  FRENCH
+  ITALIAN
+  PORTUGUESE
+  RUSSIAN
+  JAPANESE
+  KOREAN
+  HINDI
+  ARABIC
+  TELUGU
+  TURKISH
+  POLISH
+  SWEDISH
+  DUTCH
 }

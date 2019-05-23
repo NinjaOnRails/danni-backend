@@ -13,19 +13,37 @@ type Query {
     skip: Int
     first: Int
   ): [Audio]!
+  captions(
+    where: CaptionWhereInput
+    orderBy: CaptionOrderByInput
+    skip: Int
+    first: Int
+  ): [Caption]!
   video(where: VideoWhereUniqueInput!): Video
   audio(where: AudioWhereUniqueInput!): Audio
+  caption(where: CaptionWhereUniqueInput!): Caption
   videosConnection(where: VideoWhereInput): VideoConnection!
   audiosConnection(where: AudioWhereInput): AudioConnection!
+  captionsConnection(where: CaptionWhereInput): CaptionConnection!
 }
 
 type Mutation {
   createVideo(youtubeId: String!): Video!
   createAudio(data: CreateAudioInput!): Audio!
+  createCaption(data: CreateCaptionInput!): Caption!
 }
 
 input CreateAudioInput {
   source: String!
   language: Language
   video: ID
+  caption: ID
+}
+
+input CreateCaptionInput {
+  languageTag: String!
+  xml: String!
+  json: String!
+  author: [String]
+  video: ID!
 }

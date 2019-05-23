@@ -32,7 +32,14 @@ const mutations = {
 
     return video;
   },
-  async createAudio(parent, {data: {source, language, video}}, ctx, info) {
+  async createAudio(
+    parent,
+    {
+      data: { source, language, video },
+    },
+    ctx,
+    info
+  ) {
     const audio = await ctx.db.mutation.createAudio(
       {
         data: {
@@ -49,6 +56,33 @@ const mutations = {
     );
 
     return audio;
+  },
+  async createCaption(
+    parent,
+    {
+      data: { languageTag, xml, json, author, video },
+    },
+    ctx,
+    info
+  ) {
+    const caption = await ctx.db.mutation.createCaption(
+      {
+        data: {
+          languageTag,
+          xml,
+          json,
+          author,
+          video: {
+            connect: {
+              id: video,
+            },
+          },
+        },
+      },
+      info
+    );
+
+    return caption;
   },
 };
 

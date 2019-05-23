@@ -1,7 +1,11 @@
 # source: https://eu1.prisma.sh/danni/danni-backend/dev
-# timestamp: Wed May 22 2019 18:05:11 GMT+0200 (Central European Summer Time)
+# timestamp: Thu May 23 2019 21:28:41 GMT+0200 (Central European Summer Time)
 
 type AggregateAudio {
+  count: Int!
+}
+
+type AggregateCaption {
   count: Int!
 }
 
@@ -14,6 +18,7 @@ type Audio implements Node {
   source: String!
   language: Language
   video: Video
+  caption: Caption
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -33,6 +38,12 @@ input AudioCreateInput {
   source: String!
   language: Language
   video: VideoCreateOneWithoutAudioInput
+  caption: CaptionCreateOneWithoutAudioInput
+}
+
+input AudioCreateManyWithoutCaptionInput {
+  create: [AudioCreateWithoutCaptionInput!]
+  connect: [AudioWhereUniqueInput!]
 }
 
 input AudioCreateManyWithoutVideoInput {
@@ -40,10 +51,18 @@ input AudioCreateManyWithoutVideoInput {
   connect: [AudioWhereUniqueInput!]
 }
 
+input AudioCreateWithoutCaptionInput {
+  id: ID
+  source: String!
+  language: Language
+  video: VideoCreateOneWithoutAudioInput
+}
+
 input AudioCreateWithoutVideoInput {
   id: ID
   source: String!
   language: Language
+  caption: CaptionCreateOneWithoutAudioInput
 }
 
 """An edge in a connection."""
@@ -262,6 +281,7 @@ input AudioUpdateInput {
   source: String
   language: Language
   video: VideoUpdateOneWithoutAudioInput
+  caption: CaptionUpdateOneWithoutAudioInput
 }
 
 input AudioUpdateManyDataInput {
@@ -272,6 +292,18 @@ input AudioUpdateManyDataInput {
 input AudioUpdateManyMutationInput {
   source: String
   language: Language
+}
+
+input AudioUpdateManyWithoutCaptionInput {
+  create: [AudioCreateWithoutCaptionInput!]
+  connect: [AudioWhereUniqueInput!]
+  set: [AudioWhereUniqueInput!]
+  disconnect: [AudioWhereUniqueInput!]
+  delete: [AudioWhereUniqueInput!]
+  update: [AudioUpdateWithWhereUniqueWithoutCaptionInput!]
+  updateMany: [AudioUpdateManyWithWhereNestedInput!]
+  deleteMany: [AudioScalarWhereInput!]
+  upsert: [AudioUpsertWithWhereUniqueWithoutCaptionInput!]
 }
 
 input AudioUpdateManyWithoutVideoInput {
@@ -291,14 +323,32 @@ input AudioUpdateManyWithWhereNestedInput {
   data: AudioUpdateManyDataInput!
 }
 
+input AudioUpdateWithoutCaptionDataInput {
+  source: String
+  language: Language
+  video: VideoUpdateOneWithoutAudioInput
+}
+
 input AudioUpdateWithoutVideoDataInput {
   source: String
   language: Language
+  caption: CaptionUpdateOneWithoutAudioInput
+}
+
+input AudioUpdateWithWhereUniqueWithoutCaptionInput {
+  where: AudioWhereUniqueInput!
+  data: AudioUpdateWithoutCaptionDataInput!
 }
 
 input AudioUpdateWithWhereUniqueWithoutVideoInput {
   where: AudioWhereUniqueInput!
   data: AudioUpdateWithoutVideoDataInput!
+}
+
+input AudioUpsertWithWhereUniqueWithoutCaptionInput {
+  where: AudioWhereUniqueInput!
+  update: AudioUpdateWithoutCaptionDataInput!
+  create: AudioCreateWithoutCaptionInput!
 }
 
 input AudioUpsertWithWhereUniqueWithoutVideoInput {
@@ -451,6 +501,7 @@ input AudioWhereInput {
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
   video: VideoWhereInput
+  caption: CaptionWhereInput
 }
 
 input AudioWhereUniqueInput {
@@ -463,6 +514,664 @@ type BatchPayload {
   count: Long!
 }
 
+type Caption implements Node {
+  id: ID!
+  languageTag: String!
+  xml: String!
+  json: String!
+  author: [String!]!
+  video: Video
+  audio(where: AudioWhereInput, orderBy: AudioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Audio!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A connection to a list of items."""
+type CaptionConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [CaptionEdge]!
+  aggregate: AggregateCaption!
+}
+
+input CaptionCreateauthorInput {
+  set: [String!]
+}
+
+input CaptionCreateInput {
+  id: ID
+  languageTag: String!
+  xml: String!
+  json: String!
+  author: CaptionCreateauthorInput
+  video: VideoCreateOneWithoutCaptionInput
+  audio: AudioCreateManyWithoutCaptionInput
+}
+
+input CaptionCreateManyWithoutVideoInput {
+  create: [CaptionCreateWithoutVideoInput!]
+  connect: [CaptionWhereUniqueInput!]
+}
+
+input CaptionCreateOneWithoutAudioInput {
+  create: CaptionCreateWithoutAudioInput
+  connect: CaptionWhereUniqueInput
+}
+
+input CaptionCreateWithoutAudioInput {
+  id: ID
+  languageTag: String!
+  xml: String!
+  json: String!
+  author: CaptionCreateauthorInput
+  video: VideoCreateOneWithoutCaptionInput
+}
+
+input CaptionCreateWithoutVideoInput {
+  id: ID
+  languageTag: String!
+  xml: String!
+  json: String!
+  author: CaptionCreateauthorInput
+  audio: AudioCreateManyWithoutCaptionInput
+}
+
+"""An edge in a connection."""
+type CaptionEdge {
+  """The item at the end of the edge."""
+  node: Caption!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum CaptionOrderByInput {
+  id_ASC
+  id_DESC
+  languageTag_ASC
+  languageTag_DESC
+  xml_ASC
+  xml_DESC
+  json_ASC
+  json_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type CaptionPreviousValues {
+  id: ID!
+  languageTag: String!
+  xml: String!
+  json: String!
+  author: [String!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input CaptionScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [CaptionScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [CaptionScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [CaptionScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  languageTag: String
+
+  """All values that are not equal to given value."""
+  languageTag_not: String
+
+  """All values that are contained in given list."""
+  languageTag_in: [String!]
+
+  """All values that are not contained in given list."""
+  languageTag_not_in: [String!]
+
+  """All values less than the given value."""
+  languageTag_lt: String
+
+  """All values less than or equal the given value."""
+  languageTag_lte: String
+
+  """All values greater than the given value."""
+  languageTag_gt: String
+
+  """All values greater than or equal the given value."""
+  languageTag_gte: String
+
+  """All values containing the given string."""
+  languageTag_contains: String
+
+  """All values not containing the given string."""
+  languageTag_not_contains: String
+
+  """All values starting with the given string."""
+  languageTag_starts_with: String
+
+  """All values not starting with the given string."""
+  languageTag_not_starts_with: String
+
+  """All values ending with the given string."""
+  languageTag_ends_with: String
+
+  """All values not ending with the given string."""
+  languageTag_not_ends_with: String
+  xml: String
+
+  """All values that are not equal to given value."""
+  xml_not: String
+
+  """All values that are contained in given list."""
+  xml_in: [String!]
+
+  """All values that are not contained in given list."""
+  xml_not_in: [String!]
+
+  """All values less than the given value."""
+  xml_lt: String
+
+  """All values less than or equal the given value."""
+  xml_lte: String
+
+  """All values greater than the given value."""
+  xml_gt: String
+
+  """All values greater than or equal the given value."""
+  xml_gte: String
+
+  """All values containing the given string."""
+  xml_contains: String
+
+  """All values not containing the given string."""
+  xml_not_contains: String
+
+  """All values starting with the given string."""
+  xml_starts_with: String
+
+  """All values not starting with the given string."""
+  xml_not_starts_with: String
+
+  """All values ending with the given string."""
+  xml_ends_with: String
+
+  """All values not ending with the given string."""
+  xml_not_ends_with: String
+  json: String
+
+  """All values that are not equal to given value."""
+  json_not: String
+
+  """All values that are contained in given list."""
+  json_in: [String!]
+
+  """All values that are not contained in given list."""
+  json_not_in: [String!]
+
+  """All values less than the given value."""
+  json_lt: String
+
+  """All values less than or equal the given value."""
+  json_lte: String
+
+  """All values greater than the given value."""
+  json_gt: String
+
+  """All values greater than or equal the given value."""
+  json_gte: String
+
+  """All values containing the given string."""
+  json_contains: String
+
+  """All values not containing the given string."""
+  json_not_contains: String
+
+  """All values starting with the given string."""
+  json_starts_with: String
+
+  """All values not starting with the given string."""
+  json_not_starts_with: String
+
+  """All values ending with the given string."""
+  json_ends_with: String
+
+  """All values not ending with the given string."""
+  json_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+}
+
+type CaptionSubscriptionPayload {
+  mutation: MutationType!
+  node: Caption
+  updatedFields: [String!]
+  previousValues: CaptionPreviousValues
+}
+
+input CaptionSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [CaptionSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [CaptionSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [CaptionSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: CaptionWhereInput
+}
+
+input CaptionUpdateauthorInput {
+  set: [String!]
+}
+
+input CaptionUpdateInput {
+  languageTag: String
+  xml: String
+  json: String
+  author: CaptionUpdateauthorInput
+  video: VideoUpdateOneWithoutCaptionInput
+  audio: AudioUpdateManyWithoutCaptionInput
+}
+
+input CaptionUpdateManyDataInput {
+  languageTag: String
+  xml: String
+  json: String
+  author: CaptionUpdateauthorInput
+}
+
+input CaptionUpdateManyMutationInput {
+  languageTag: String
+  xml: String
+  json: String
+  author: CaptionUpdateauthorInput
+}
+
+input CaptionUpdateManyWithoutVideoInput {
+  create: [CaptionCreateWithoutVideoInput!]
+  connect: [CaptionWhereUniqueInput!]
+  set: [CaptionWhereUniqueInput!]
+  disconnect: [CaptionWhereUniqueInput!]
+  delete: [CaptionWhereUniqueInput!]
+  update: [CaptionUpdateWithWhereUniqueWithoutVideoInput!]
+  updateMany: [CaptionUpdateManyWithWhereNestedInput!]
+  deleteMany: [CaptionScalarWhereInput!]
+  upsert: [CaptionUpsertWithWhereUniqueWithoutVideoInput!]
+}
+
+input CaptionUpdateManyWithWhereNestedInput {
+  where: CaptionScalarWhereInput!
+  data: CaptionUpdateManyDataInput!
+}
+
+input CaptionUpdateOneWithoutAudioInput {
+  create: CaptionCreateWithoutAudioInput
+  connect: CaptionWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: CaptionUpdateWithoutAudioDataInput
+  upsert: CaptionUpsertWithoutAudioInput
+}
+
+input CaptionUpdateWithoutAudioDataInput {
+  languageTag: String
+  xml: String
+  json: String
+  author: CaptionUpdateauthorInput
+  video: VideoUpdateOneWithoutCaptionInput
+}
+
+input CaptionUpdateWithoutVideoDataInput {
+  languageTag: String
+  xml: String
+  json: String
+  author: CaptionUpdateauthorInput
+  audio: AudioUpdateManyWithoutCaptionInput
+}
+
+input CaptionUpdateWithWhereUniqueWithoutVideoInput {
+  where: CaptionWhereUniqueInput!
+  data: CaptionUpdateWithoutVideoDataInput!
+}
+
+input CaptionUpsertWithoutAudioInput {
+  update: CaptionUpdateWithoutAudioDataInput!
+  create: CaptionCreateWithoutAudioInput!
+}
+
+input CaptionUpsertWithWhereUniqueWithoutVideoInput {
+  where: CaptionWhereUniqueInput!
+  update: CaptionUpdateWithoutVideoDataInput!
+  create: CaptionCreateWithoutVideoInput!
+}
+
+input CaptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [CaptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [CaptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [CaptionWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  languageTag: String
+
+  """All values that are not equal to given value."""
+  languageTag_not: String
+
+  """All values that are contained in given list."""
+  languageTag_in: [String!]
+
+  """All values that are not contained in given list."""
+  languageTag_not_in: [String!]
+
+  """All values less than the given value."""
+  languageTag_lt: String
+
+  """All values less than or equal the given value."""
+  languageTag_lte: String
+
+  """All values greater than the given value."""
+  languageTag_gt: String
+
+  """All values greater than or equal the given value."""
+  languageTag_gte: String
+
+  """All values containing the given string."""
+  languageTag_contains: String
+
+  """All values not containing the given string."""
+  languageTag_not_contains: String
+
+  """All values starting with the given string."""
+  languageTag_starts_with: String
+
+  """All values not starting with the given string."""
+  languageTag_not_starts_with: String
+
+  """All values ending with the given string."""
+  languageTag_ends_with: String
+
+  """All values not ending with the given string."""
+  languageTag_not_ends_with: String
+  xml: String
+
+  """All values that are not equal to given value."""
+  xml_not: String
+
+  """All values that are contained in given list."""
+  xml_in: [String!]
+
+  """All values that are not contained in given list."""
+  xml_not_in: [String!]
+
+  """All values less than the given value."""
+  xml_lt: String
+
+  """All values less than or equal the given value."""
+  xml_lte: String
+
+  """All values greater than the given value."""
+  xml_gt: String
+
+  """All values greater than or equal the given value."""
+  xml_gte: String
+
+  """All values containing the given string."""
+  xml_contains: String
+
+  """All values not containing the given string."""
+  xml_not_contains: String
+
+  """All values starting with the given string."""
+  xml_starts_with: String
+
+  """All values not starting with the given string."""
+  xml_not_starts_with: String
+
+  """All values ending with the given string."""
+  xml_ends_with: String
+
+  """All values not ending with the given string."""
+  xml_not_ends_with: String
+  json: String
+
+  """All values that are not equal to given value."""
+  json_not: String
+
+  """All values that are contained in given list."""
+  json_in: [String!]
+
+  """All values that are not contained in given list."""
+  json_not_in: [String!]
+
+  """All values less than the given value."""
+  json_lt: String
+
+  """All values less than or equal the given value."""
+  json_lte: String
+
+  """All values greater than the given value."""
+  json_gt: String
+
+  """All values greater than or equal the given value."""
+  json_gte: String
+
+  """All values containing the given string."""
+  json_contains: String
+
+  """All values not containing the given string."""
+  json_not_contains: String
+
+  """All values starting with the given string."""
+  json_starts_with: String
+
+  """All values not starting with the given string."""
+  json_not_starts_with: String
+
+  """All values ending with the given string."""
+  json_ends_with: String
+
+  """All values not ending with the given string."""
+  json_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  video: VideoWhereInput
+  audio_every: AudioWhereInput
+  audio_some: AudioWhereInput
+  audio_none: AudioWhereInput
+}
+
+input CaptionWhereUniqueInput {
+  id: ID
+}
+
 scalar DateTime
 
 enum Language {
@@ -470,6 +1179,21 @@ enum Language {
   CZECH
   VIETNAMESE
   GERMAN
+  SPANISH
+  MANDARIN
+  FRENCH
+  ITALIAN
+  PORTUGUESE
+  RUSSIAN
+  JAPANESE
+  KOREAN
+  HINDI
+  ARABIC
+  TELUGU
+  TURKISH
+  POLISH
+  SWEDISH
+  DUTCH
 }
 
 """
@@ -481,16 +1205,22 @@ scalar Long
 type Mutation {
   createVideo(data: VideoCreateInput!): Video!
   createAudio(data: AudioCreateInput!): Audio!
+  createCaption(data: CaptionCreateInput!): Caption!
   updateVideo(data: VideoUpdateInput!, where: VideoWhereUniqueInput!): Video
   updateAudio(data: AudioUpdateInput!, where: AudioWhereUniqueInput!): Audio
+  updateCaption(data: CaptionUpdateInput!, where: CaptionWhereUniqueInput!): Caption
   deleteVideo(where: VideoWhereUniqueInput!): Video
   deleteAudio(where: AudioWhereUniqueInput!): Audio
+  deleteCaption(where: CaptionWhereUniqueInput!): Caption
   upsertVideo(where: VideoWhereUniqueInput!, create: VideoCreateInput!, update: VideoUpdateInput!): Video!
   upsertAudio(where: AudioWhereUniqueInput!, create: AudioCreateInput!, update: AudioUpdateInput!): Audio!
+  upsertCaption(where: CaptionWhereUniqueInput!, create: CaptionCreateInput!, update: CaptionUpdateInput!): Caption!
   updateManyVideos(data: VideoUpdateManyMutationInput!, where: VideoWhereInput): BatchPayload!
   updateManyAudios(data: AudioUpdateManyMutationInput!, where: AudioWhereInput): BatchPayload!
+  updateManyCaptions(data: CaptionUpdateManyMutationInput!, where: CaptionWhereInput): BatchPayload!
   deleteManyVideos(where: VideoWhereInput): BatchPayload!
   deleteManyAudios(where: AudioWhereInput): BatchPayload!
+  deleteManyCaptions(where: CaptionWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -523,10 +1253,13 @@ type PageInfo {
 type Query {
   videos(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Video]!
   audios(where: AudioWhereInput, orderBy: AudioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Audio]!
+  captions(where: CaptionWhereInput, orderBy: CaptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Caption]!
   video(where: VideoWhereUniqueInput!): Video
   audio(where: AudioWhereUniqueInput!): Audio
+  caption(where: CaptionWhereUniqueInput!): Caption
   videosConnection(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): VideoConnection!
   audiosConnection(where: AudioWhereInput, orderBy: AudioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AudioConnection!
+  captionsConnection(where: CaptionWhereInput, orderBy: CaptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CaptionConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -538,6 +1271,7 @@ type Query {
 type Subscription {
   video(where: VideoSubscriptionWhereInput): VideoSubscriptionPayload
   audio(where: AudioSubscriptionWhereInput): AudioSubscriptionPayload
+  caption(where: CaptionSubscriptionWhereInput): CaptionSubscriptionPayload
 }
 
 type Video implements Node {
@@ -548,6 +1282,7 @@ type Video implements Node {
   defaultLanguage: String
   thumbnailUrl: String!
   audio(where: AudioWhereInput, orderBy: AudioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Audio!]
+  caption(where: CaptionWhereInput, orderBy: CaptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Caption!]
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -570,10 +1305,16 @@ input VideoCreateInput {
   defaultLanguage: String
   thumbnailUrl: String!
   audio: AudioCreateManyWithoutVideoInput
+  caption: CaptionCreateManyWithoutVideoInput
 }
 
 input VideoCreateOneWithoutAudioInput {
   create: VideoCreateWithoutAudioInput
+  connect: VideoWhereUniqueInput
+}
+
+input VideoCreateOneWithoutCaptionInput {
+  create: VideoCreateWithoutCaptionInput
   connect: VideoWhereUniqueInput
 }
 
@@ -584,6 +1325,17 @@ input VideoCreateWithoutAudioInput {
   channelTitle: String!
   defaultLanguage: String
   thumbnailUrl: String!
+  caption: CaptionCreateManyWithoutVideoInput
+}
+
+input VideoCreateWithoutCaptionInput {
+  id: ID
+  youtubeId: String!
+  title: String!
+  channelTitle: String!
+  defaultLanguage: String
+  thumbnailUrl: String!
+  audio: AudioCreateManyWithoutVideoInput
 }
 
 """An edge in a connection."""
@@ -669,6 +1421,7 @@ input VideoUpdateInput {
   defaultLanguage: String
   thumbnailUrl: String
   audio: AudioUpdateManyWithoutVideoInput
+  caption: CaptionUpdateManyWithoutVideoInput
 }
 
 input VideoUpdateManyMutationInput {
@@ -688,17 +1441,41 @@ input VideoUpdateOneWithoutAudioInput {
   upsert: VideoUpsertWithoutAudioInput
 }
 
+input VideoUpdateOneWithoutCaptionInput {
+  create: VideoCreateWithoutCaptionInput
+  connect: VideoWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: VideoUpdateWithoutCaptionDataInput
+  upsert: VideoUpsertWithoutCaptionInput
+}
+
 input VideoUpdateWithoutAudioDataInput {
   youtubeId: String
   title: String
   channelTitle: String
   defaultLanguage: String
   thumbnailUrl: String
+  caption: CaptionUpdateManyWithoutVideoInput
+}
+
+input VideoUpdateWithoutCaptionDataInput {
+  youtubeId: String
+  title: String
+  channelTitle: String
+  defaultLanguage: String
+  thumbnailUrl: String
+  audio: AudioUpdateManyWithoutVideoInput
 }
 
 input VideoUpsertWithoutAudioInput {
   update: VideoUpdateWithoutAudioDataInput!
   create: VideoCreateWithoutAudioInput!
+}
+
+input VideoUpsertWithoutCaptionInput {
+  update: VideoUpdateWithoutCaptionDataInput!
+  create: VideoCreateWithoutCaptionInput!
 }
 
 input VideoWhereInput {
@@ -997,6 +1774,9 @@ input VideoWhereInput {
   audio_every: AudioWhereInput
   audio_some: AudioWhereInput
   audio_none: AudioWhereInput
+  caption_every: CaptionWhereInput
+  caption_some: CaptionWhereInput
+  caption_none: CaptionWhereInput
 }
 
 input VideoWhereUniqueInput {

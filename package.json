@@ -21,7 +21,8 @@
     "graphql-cli": "^3.0.11",
     "graphql-yoga": "^1.17.4",
     "nodemon": "^1.19.0",
-    "prisma-binding": "^2.3.10"
+    "prisma-binding": "^2.3.10",
+    "xml2js": "^0.4.19"
   },
   "babel": {
     "presets": [
