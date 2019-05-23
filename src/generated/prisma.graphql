@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/danni/danni-backend/dev
-# timestamp: Wed May 22 2019 17:01:23 GMT+0200 (Central European Summer Time)
+# timestamp: Wed May 22 2019 18:05:11 GMT+0200 (Central European Summer Time)
 
 type AggregateAudio {
   count: Int!
@@ -545,7 +545,7 @@ type Video implements Node {
   youtubeId: String!
   title: String!
   channelTitle: String!
-  defaultLanguage: String!
+  defaultLanguage: String
   thumbnailUrl: String!
   audio(where: AudioWhereInput, orderBy: AudioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Audio!]
   createdAt: DateTime!
@@ -567,7 +567,7 @@ input VideoCreateInput {
   youtubeId: String!
   title: String!
   channelTitle: String!
-  defaultLanguage: String!
+  defaultLanguage: String
   thumbnailUrl: String!
   audio: AudioCreateManyWithoutVideoInput
 }
@@ -582,7 +582,7 @@ input VideoCreateWithoutAudioInput {
   youtubeId: String!
   title: String!
   channelTitle: String!
-  defaultLanguage: String!
+  defaultLanguage: String
   thumbnailUrl: String!
 }
 
@@ -619,7 +619,7 @@ type VideoPreviousValues {
   youtubeId: String!
   title: String!
   channelTitle: String!
-  defaultLanguage: String!
+  defaultLanguage: String
   thumbnailUrl: String!
   createdAt: DateTime!
   updatedAt: DateTime!
