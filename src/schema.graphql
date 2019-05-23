@@ -43,7 +43,6 @@ input CreateAudioInput {
 input CreateCaptionInput {
   languageTag: String!
   xml: String!
-  json: String!
   author: [String]
   video: ID!
 }

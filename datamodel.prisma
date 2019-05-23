@@ -25,7 +25,6 @@ type Caption {
   id: ID! @id
   languageTag: String!
   xml: String!
-  json: String!
   author: [String]! @scalarList(strategy: RELATION)
   video: Video @relation(name: "CaptionToVideo")
   audio: [Audio]! @relation(name: "AudioToCaption")

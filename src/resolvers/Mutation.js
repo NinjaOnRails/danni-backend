@@ -1,4 +1,6 @@
 const youtube = require('../utils/youtube');
+const captionDownload = require('../utils/captionsDownload');
+const languageTags = require('../config/languageTags');
 
 const mutations = {
   async createVideo(parent, { youtubeId }, ctx, info) {
@@ -29,6 +31,23 @@ const mutations = {
       },
       info
     );
+
+    await languageTags.forEach(async languageTag => {
+      const captions = await captionDownload(video.youtubeId, languageTag);
+      if (captions) {
+        const caption = await ctx.db.mutation.createCaption({
+          data: {
+            languageTag,
+            xml: captions.xml,
+            video: {
+              connect: {
+                id: video.id,
+              },
+            },
+          },
+        });
+      }
+    });
 
     return video;
   },
