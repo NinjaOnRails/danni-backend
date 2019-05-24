@@ -1,1 +1,1 @@
-module.exports = ['vi']
+module.exports = ['vi', 'en', 'de', 'cs']

@@ -32,22 +32,29 @@ const mutations = {
       info
     );
 
-    await languageTags.forEach(async languageTag => {
-      const captions = await captionDownload(video.youtubeId, languageTag);
-      if (captions) {
-        const caption = await ctx.db.mutation.createCaption({
-          data: {
-            languageTag,
-            xml: captions.xml,
-            video: {
-              connect: {
-                id: video.id,
+    // Attempt to download captions given the list of languageTags and then save them to the db
+    if (video) {
+      languageTags.forEach(languageTag => {
+        captionDownload(video.youtubeId, languageTag)
+          .then(caption => {
+            ctx.db.mutation.createCaption(
+              {
+                data: {
+                  languageTag,
+                  xml: caption,
+                  video: {
+                    connect: {
+                      id: video.id,
+                    },
+                  },
+                },
               },
-            },
-          },
-        });
-      }
-    });
+              info
+            );
+          })
+          .catch(err => {});
+      });
+    }
 
     return video;
   },

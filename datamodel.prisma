@@ -5,6 +5,7 @@ type Video {
   channelTitle: String!
   defaultLanguage: String
   thumbnailUrl: String!
+  tags: [String]! @scalarList(strategy: RELATION)
   audio: [Audio]! @relation(name: "AudioToVideo")
   caption: [Caption]! @relation(name: "CaptionToVideo")
   createdAt: DateTime! @createdAt
