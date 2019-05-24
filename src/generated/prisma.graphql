@@ -1,11 +1,15 @@
 # source: https://eu1.prisma.sh/danni/danni-backend/dev
-# timestamp: Fri May 24 2019 09:16:26 GMT+0200 (Central European Summer Time)
+# timestamp: Fri May 24 2019 10:09:48 GMT+0200 (Central European Summer Time)
 
 type AggregateAudio {
   count: Int!
 }
 
 type AggregateCaption {
+  count: Int!
+}
+
+type AggregateTag {
   count: Int!
 }
 
@@ -518,7 +522,6 @@ type Caption implements Node {
   id: ID!
   languageTag: String!
   xml: String!
-  author: [String!]!
   video: Video
   audio(where: AudioWhereInput, orderBy: AudioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Audio!]
   createdAt: DateTime!
@@ -535,15 +538,10 @@ type CaptionConnection {
   aggregate: AggregateCaption!
 }
 
-input CaptionCreateauthorInput {
-  set: [String!]
-}
-
 input CaptionCreateInput {
   id: ID
   languageTag: String!
   xml: String!
-  author: CaptionCreateauthorInput
   video: VideoCreateOneWithoutCaptionInput
   audio: AudioCreateManyWithoutCaptionInput
 }
@@ -562,7 +560,6 @@ input CaptionCreateWithoutAudioInput {
   id: ID
   languageTag: String!
   xml: String!
-  author: CaptionCreateauthorInput
   video: VideoCreateOneWithoutCaptionInput
 }
 
@@ -570,7 +567,6 @@ input CaptionCreateWithoutVideoInput {
   id: ID
   languageTag: String!
   xml: String!
-  author: CaptionCreateauthorInput
   audio: AudioCreateManyWithoutCaptionInput
 }
 
@@ -600,7 +596,6 @@ type CaptionPreviousValues {
   id: ID!
   languageTag: String!
   xml: String!
-  author: [String!]!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -817,14 +812,9 @@ input CaptionSubscriptionWhereInput {
   node: CaptionWhereInput
 }
 
-input CaptionUpdateauthorInput {
-  set: [String!]
-}
-
 input CaptionUpdateInput {
   languageTag: String
   xml: String
-  author: CaptionUpdateauthorInput
   video: VideoUpdateOneWithoutCaptionInput
   audio: AudioUpdateManyWithoutCaptionInput
 }
@@ -832,13 +822,11 @@ input CaptionUpdateInput {
 input CaptionUpdateManyDataInput {
   languageTag: String
   xml: String
-  author: CaptionUpdateauthorInput
 }
 
 input CaptionUpdateManyMutationInput {
   languageTag: String
   xml: String
-  author: CaptionUpdateauthorInput
 }
 
 input CaptionUpdateManyWithoutVideoInput {
@@ -870,14 +858,12 @@ input CaptionUpdateOneWithoutAudioInput {
 input CaptionUpdateWithoutAudioDataInput {
   languageTag: String
   xml: String
-  author: CaptionUpdateauthorInput
   video: VideoUpdateOneWithoutCaptionInput
 }
 
 input CaptionUpdateWithoutVideoDataInput {
   languageTag: String
   xml: String
-  author: CaptionUpdateauthorInput
   audio: AudioUpdateManyWithoutCaptionInput
 }
 
@@ -1114,21 +1100,27 @@ type Mutation {
   createVideo(data: VideoCreateInput!): Video!
   createAudio(data: AudioCreateInput!): Audio!
   createCaption(data: CaptionCreateInput!): Caption!
+  createTag(data: TagCreateInput!): Tag!
   updateVideo(data: VideoUpdateInput!, where: VideoWhereUniqueInput!): Video
   updateAudio(data: AudioUpdateInput!, where: AudioWhereUniqueInput!): Audio
   updateCaption(data: CaptionUpdateInput!, where: CaptionWhereUniqueInput!): Caption
+  updateTag(data: TagUpdateInput!, where: TagWhereUniqueInput!): Tag
   deleteVideo(where: VideoWhereUniqueInput!): Video
   deleteAudio(where: AudioWhereUniqueInput!): Audio
   deleteCaption(where: CaptionWhereUniqueInput!): Caption
+  deleteTag(where: TagWhereUniqueInput!): Tag
   upsertVideo(where: VideoWhereUniqueInput!, create: VideoCreateInput!, update: VideoUpdateInput!): Video!
   upsertAudio(where: AudioWhereUniqueInput!, create: AudioCreateInput!, update: AudioUpdateInput!): Audio!
   upsertCaption(where: CaptionWhereUniqueInput!, create: CaptionCreateInput!, update: CaptionUpdateInput!): Caption!
+  upsertTag(where: TagWhereUniqueInput!, create: TagCreateInput!, update: TagUpdateInput!): Tag!
   updateManyVideos(data: VideoUpdateManyMutationInput!, where: VideoWhereInput): BatchPayload!
   updateManyAudios(data: AudioUpdateManyMutationInput!, where: AudioWhereInput): BatchPayload!
   updateManyCaptions(data: CaptionUpdateManyMutationInput!, where: CaptionWhereInput): BatchPayload!
+  updateManyTags(data: TagUpdateManyMutationInput!, where: TagWhereInput): BatchPayload!
   deleteManyVideos(where: VideoWhereInput): BatchPayload!
   deleteManyAudios(where: AudioWhereInput): BatchPayload!
   deleteManyCaptions(where: CaptionWhereInput): BatchPayload!
+  deleteManyTags(where: TagWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -1162,12 +1154,15 @@ type Query {
   videos(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Video]!
   audios(where: AudioWhereInput, orderBy: AudioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Audio]!
   captions(where: CaptionWhereInput, orderBy: CaptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Caption]!
+  tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag]!
   video(where: VideoWhereUniqueInput!): Video
   audio(where: AudioWhereUniqueInput!): Audio
   caption(where: CaptionWhereUniqueInput!): Caption
+  tag(where: TagWhereUniqueInput!): Tag
   videosConnection(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): VideoConnection!
   audiosConnection(where: AudioWhereInput, orderBy: AudioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AudioConnection!
   captionsConnection(where: CaptionWhereInput, orderBy: CaptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CaptionConnection!
+  tagsConnection(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TagConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -1180,6 +1175,332 @@ type Subscription {
   video(where: VideoSubscriptionWhereInput): VideoSubscriptionPayload
   audio(where: AudioSubscriptionWhereInput): AudioSubscriptionPayload
   caption(where: CaptionSubscriptionWhereInput): CaptionSubscriptionPayload
+  tag(where: TagSubscriptionWhereInput): TagSubscriptionPayload
+}
+
+type Tag implements Node {
+  id: ID!
+  text: String!
+  video(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Video!]
+}
+
+"""A connection to a list of items."""
+type TagConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [TagEdge]!
+  aggregate: AggregateTag!
+}
+
+input TagCreateInput {
+  id: ID
+  text: String!
+  video: VideoCreateManyWithoutTagsInput
+}
+
+input TagCreateManyWithoutVideoInput {
+  create: [TagCreateWithoutVideoInput!]
+  connect: [TagWhereUniqueInput!]
+}
+
+input TagCreateWithoutVideoInput {
+  id: ID
+  text: String!
+}
+
+"""An edge in a connection."""
+type TagEdge {
+  """The item at the end of the edge."""
+  node: Tag!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum TagOrderByInput {
+  id_ASC
+  id_DESC
+  text_ASC
+  text_DESC
+}
+
+type TagPreviousValues {
+  id: ID!
+  text: String!
+}
+
+input TagScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [TagScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [TagScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [TagScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  text: String
+
+  """All values that are not equal to given value."""
+  text_not: String
+
+  """All values that are contained in given list."""
+  text_in: [String!]
+
+  """All values that are not contained in given list."""
+  text_not_in: [String!]
+
+  """All values less than the given value."""
+  text_lt: String
+
+  """All values less than or equal the given value."""
+  text_lte: String
+
+  """All values greater than the given value."""
+  text_gt: String
+
+  """All values greater than or equal the given value."""
+  text_gte: String
+
+  """All values containing the given string."""
+  text_contains: String
+
+  """All values not containing the given string."""
+  text_not_contains: String
+
+  """All values starting with the given string."""
+  text_starts_with: String
+
+  """All values not starting with the given string."""
+  text_not_starts_with: String
+
+  """All values ending with the given string."""
+  text_ends_with: String
+
+  """All values not ending with the given string."""
+  text_not_ends_with: String
+}
+
+type TagSubscriptionPayload {
+  mutation: MutationType!
+  node: Tag
+  updatedFields: [String!]
+  previousValues: TagPreviousValues
+}
+
+input TagSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [TagSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [TagSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [TagSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: TagWhereInput
+}
+
+input TagUpdateInput {
+  text: String
+  video: VideoUpdateManyWithoutTagsInput
+}
+
+input TagUpdateManyDataInput {
+  text: String
+}
+
+input TagUpdateManyMutationInput {
+  text: String
+}
+
+input TagUpdateManyWithoutVideoInput {
+  create: [TagCreateWithoutVideoInput!]
+  connect: [TagWhereUniqueInput!]
+  set: [TagWhereUniqueInput!]
+  disconnect: [TagWhereUniqueInput!]
+  delete: [TagWhereUniqueInput!]
+  update: [TagUpdateWithWhereUniqueWithoutVideoInput!]
+  updateMany: [TagUpdateManyWithWhereNestedInput!]
+  deleteMany: [TagScalarWhereInput!]
+  upsert: [TagUpsertWithWhereUniqueWithoutVideoInput!]
+}
+
+input TagUpdateManyWithWhereNestedInput {
+  where: TagScalarWhereInput!
+  data: TagUpdateManyDataInput!
+}
+
+input TagUpdateWithoutVideoDataInput {
+  text: String
+}
+
+input TagUpdateWithWhereUniqueWithoutVideoInput {
+  where: TagWhereUniqueInput!
+  data: TagUpdateWithoutVideoDataInput!
+}
+
+input TagUpsertWithWhereUniqueWithoutVideoInput {
+  where: TagWhereUniqueInput!
+  update: TagUpdateWithoutVideoDataInput!
+  create: TagCreateWithoutVideoInput!
+}
+
+input TagWhereInput {
+  """Logical AND on all given filters."""
+  AND: [TagWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [TagWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [TagWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  text: String
+
+  """All values that are not equal to given value."""
+  text_not: String
+
+  """All values that are contained in given list."""
+  text_in: [String!]
+
+  """All values that are not contained in given list."""
+  text_not_in: [String!]
+
+  """All values less than the given value."""
+  text_lt: String
+
+  """All values less than or equal the given value."""
+  text_lte: String
+
+  """All values greater than the given value."""
+  text_gt: String
+
+  """All values greater than or equal the given value."""
+  text_gte: String
+
+  """All values containing the given string."""
+  text_contains: String
+
+  """All values not containing the given string."""
+  text_not_contains: String
+
+  """All values starting with the given string."""
+  text_starts_with: String
+
+  """All values not starting with the given string."""
+  text_not_starts_with: String
+
+  """All values ending with the given string."""
+  text_ends_with: String
+
+  """All values not ending with the given string."""
+  text_not_ends_with: String
+  video_every: VideoWhereInput
+  video_some: VideoWhereInput
+  video_none: VideoWhereInput
+}
+
+input TagWhereUniqueInput {
+  id: ID
+  text: String
 }
 
 type Video implements Node {
@@ -1189,7 +1510,7 @@ type Video implements Node {
   channelTitle: String!
   defaultLanguage: String
   thumbnailUrl: String!
-  tags: [String!]!
+  tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
   audio(where: AudioWhereInput, orderBy: AudioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Audio!]
   caption(where: CaptionWhereInput, orderBy: CaptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Caption!]
   createdAt: DateTime!
@@ -1213,9 +1534,14 @@ input VideoCreateInput {
   channelTitle: String!
   defaultLanguage: String
   thumbnailUrl: String!
-  tags: VideoCreatetagsInput
+  tags: TagCreateManyWithoutVideoInput
   audio: AudioCreateManyWithoutVideoInput
   caption: CaptionCreateManyWithoutVideoInput
+}
+
+input VideoCreateManyWithoutTagsInput {
+  create: [VideoCreateWithoutTagsInput!]
+  connect: [VideoWhereUniqueInput!]
 }
 
 input VideoCreateOneWithoutAudioInput {
@@ -1228,10 +1554,6 @@ input VideoCreateOneWithoutCaptionInput {
   connect: VideoWhereUniqueInput
 }
 
-input VideoCreatetagsInput {
-  set: [String!]
-}
-
 input VideoCreateWithoutAudioInput {
   id: ID
   youtubeId: String!
@@ -1239,7 +1561,7 @@ input VideoCreateWithoutAudioInput {
   channelTitle: String!
   defaultLanguage: String
   thumbnailUrl: String!
-  tags: VideoCreatetagsInput
+  tags: TagCreateManyWithoutVideoInput
   caption: CaptionCreateManyWithoutVideoInput
 }
 
@@ -1250,8 +1572,19 @@ input VideoCreateWithoutCaptionInput {
   channelTitle: String!
   defaultLanguage: String
   thumbnailUrl: String!
-  tags: VideoCreatetagsInput
+  tags: TagCreateManyWithoutVideoInput
   audio: AudioCreateManyWithoutVideoInput
+}
+
+input VideoCreateWithoutTagsInput {
+  id: ID
+  youtubeId: String!
+  title: String!
+  channelTitle: String!
+  defaultLanguage: String
+  thumbnailUrl: String!
+  audio: AudioCreateManyWithoutVideoInput
+  caption: CaptionCreateManyWithoutVideoInput
 }
 
 """An edge in a connection."""
@@ -1289,9 +1622,303 @@ type VideoPreviousValues {
   channelTitle: String!
   defaultLanguage: String
   thumbnailUrl: String!
-  tags: [String!]!
   createdAt: DateTime!
   updatedAt: DateTime!
+}
+
+input VideoScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [VideoScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [VideoScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [VideoScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  youtubeId: String
+
+  """All values that are not equal to given value."""
+  youtubeId_not: String
+
+  """All values that are contained in given list."""
+  youtubeId_in: [String!]
+
+  """All values that are not contained in given list."""
+  youtubeId_not_in: [String!]
+
+  """All values less than the given value."""
+  youtubeId_lt: String
+
+  """All values less than or equal the given value."""
+  youtubeId_lte: String
+
+  """All values greater than the given value."""
+  youtubeId_gt: String
+
+  """All values greater than or equal the given value."""
+  youtubeId_gte: String
+
+  """All values containing the given string."""
+  youtubeId_contains: String
+
+  """All values not containing the given string."""
+  youtubeId_not_contains: String
+
+  """All values starting with the given string."""
+  youtubeId_starts_with: String
+
+  """All values not starting with the given string."""
+  youtubeId_not_starts_with: String
+
+  """All values ending with the given string."""
+  youtubeId_ends_with: String
+
+  """All values not ending with the given string."""
+  youtubeId_not_ends_with: String
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  channelTitle: String
+
+  """All values that are not equal to given value."""
+  channelTitle_not: String
+
+  """All values that are contained in given list."""
+  channelTitle_in: [String!]
+
+  """All values that are not contained in given list."""
+  channelTitle_not_in: [String!]
+
+  """All values less than the given value."""
+  channelTitle_lt: String
+
+  """All values less than or equal the given value."""
+  channelTitle_lte: String
+
+  """All values greater than the given value."""
+  channelTitle_gt: String
+
+  """All values greater than or equal the given value."""
+  channelTitle_gte: String
+
+  """All values containing the given string."""
+  channelTitle_contains: String
+
+  """All values not containing the given string."""
+  channelTitle_not_contains: String
+
+  """All values starting with the given string."""
+  channelTitle_starts_with: String
+
+  """All values not starting with the given string."""
+  channelTitle_not_starts_with: String
+
+  """All values ending with the given string."""
+  channelTitle_ends_with: String
+
+  """All values not ending with the given string."""
+  channelTitle_not_ends_with: String
+  defaultLanguage: String
+
+  """All values that are not equal to given value."""
+  defaultLanguage_not: String
+
+  """All values that are contained in given list."""
+  defaultLanguage_in: [String!]
+
+  """All values that are not contained in given list."""
+  defaultLanguage_not_in: [String!]
+
+  """All values less than the given value."""
+  defaultLanguage_lt: String
+
+  """All values less than or equal the given value."""
+  defaultLanguage_lte: String
+
+  """All values greater than the given value."""
+  defaultLanguage_gt: String
+
+  """All values greater than or equal the given value."""
+  defaultLanguage_gte: String
+
+  """All values containing the given string."""
+  defaultLanguage_contains: String
+
+  """All values not containing the given string."""
+  defaultLanguage_not_contains: String
+
+  """All values starting with the given string."""
+  defaultLanguage_starts_with: String
+
+  """All values not starting with the given string."""
+  defaultLanguage_not_starts_with: String
+
+  """All values ending with the given string."""
+  defaultLanguage_ends_with: String
+
+  """All values not ending with the given string."""
+  defaultLanguage_not_ends_with: String
+  thumbnailUrl: String
+
+  """All values that are not equal to given value."""
+  thumbnailUrl_not: String
+
+  """All values that are contained in given list."""
+  thumbnailUrl_in: [String!]
+
+  """All values that are not contained in given list."""
+  thumbnailUrl_not_in: [String!]
+
+  """All values less than the given value."""
+  thumbnailUrl_lt: String
+
+  """All values less than or equal the given value."""
+  thumbnailUrl_lte: String
+
+  """All values greater than the given value."""
+  thumbnailUrl_gt: String
+
+  """All values greater than or equal the given value."""
+  thumbnailUrl_gte: String
+
+  """All values containing the given string."""
+  thumbnailUrl_contains: String
+
+  """All values not containing the given string."""
+  thumbnailUrl_not_contains: String
+
+  """All values starting with the given string."""
+  thumbnailUrl_starts_with: String
+
+  """All values not starting with the given string."""
+  thumbnailUrl_not_starts_with: String
+
+  """All values ending with the given string."""
+  thumbnailUrl_ends_with: String
+
+  """All values not ending with the given string."""
+  thumbnailUrl_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
 }
 
 type VideoSubscriptionPayload {
@@ -1337,9 +1964,17 @@ input VideoUpdateInput {
   channelTitle: String
   defaultLanguage: String
   thumbnailUrl: String
-  tags: VideoUpdatetagsInput
+  tags: TagUpdateManyWithoutVideoInput
   audio: AudioUpdateManyWithoutVideoInput
   caption: CaptionUpdateManyWithoutVideoInput
+}
+
+input VideoUpdateManyDataInput {
+  youtubeId: String
+  title: String
+  channelTitle: String
+  defaultLanguage: String
+  thumbnailUrl: String
 }
 
 input VideoUpdateManyMutationInput {
@@ -1348,7 +1983,23 @@ input VideoUpdateManyMutationInput {
   channelTitle: String
   defaultLanguage: String
   thumbnailUrl: String
-  tags: VideoUpdatetagsInput
+}
+
+input VideoUpdateManyWithoutTagsInput {
+  create: [VideoCreateWithoutTagsInput!]
+  connect: [VideoWhereUniqueInput!]
+  set: [VideoWhereUniqueInput!]
+  disconnect: [VideoWhereUniqueInput!]
+  delete: [VideoWhereUniqueInput!]
+  update: [VideoUpdateWithWhereUniqueWithoutTagsInput!]
+  updateMany: [VideoUpdateManyWithWhereNestedInput!]
+  deleteMany: [VideoScalarWhereInput!]
+  upsert: [VideoUpsertWithWhereUniqueWithoutTagsInput!]
+}
+
+input VideoUpdateManyWithWhereNestedInput {
+  where: VideoScalarWhereInput!
+  data: VideoUpdateManyDataInput!
 }
 
 input VideoUpdateOneWithoutAudioInput {
@@ -1369,17 +2020,13 @@ input VideoUpdateOneWithoutCaptionInput {
   upsert: VideoUpsertWithoutCaptionInput
 }
 
-input VideoUpdatetagsInput {
-  set: [String!]
-}
-
 input VideoUpdateWithoutAudioDataInput {
   youtubeId: String
   title: String
   channelTitle: String
   defaultLanguage: String
   thumbnailUrl: String
-  tags: VideoUpdatetagsInput
+  tags: TagUpdateManyWithoutVideoInput
   caption: CaptionUpdateManyWithoutVideoInput
 }
 
@@ -1389,8 +2036,23 @@ input VideoUpdateWithoutCaptionDataInput {
   channelTitle: String
   defaultLanguage: String
   thumbnailUrl: String
-  tags: VideoUpdatetagsInput
+  tags: TagUpdateManyWithoutVideoInput
   audio: AudioUpdateManyWithoutVideoInput
+}
+
+input VideoUpdateWithoutTagsDataInput {
+  youtubeId: String
+  title: String
+  channelTitle: String
+  defaultLanguage: String
+  thumbnailUrl: String
+  audio: AudioUpdateManyWithoutVideoInput
+  caption: CaptionUpdateManyWithoutVideoInput
+}
+
+input VideoUpdateWithWhereUniqueWithoutTagsInput {
+  where: VideoWhereUniqueInput!
+  data: VideoUpdateWithoutTagsDataInput!
 }
 
 input VideoUpsertWithoutAudioInput {
@@ -1401,6 +2063,12 @@ input VideoUpsertWithoutAudioInput {
 input VideoUpsertWithoutCaptionInput {
   update: VideoUpdateWithoutCaptionDataInput!
   create: VideoCreateWithoutCaptionInput!
+}
+
+input VideoUpsertWithWhereUniqueWithoutTagsInput {
+  where: VideoWhereUniqueInput!
+  update: VideoUpdateWithoutTagsDataInput!
+  create: VideoCreateWithoutTagsInput!
 }
 
 input VideoWhereInput {
@@ -1696,6 +2364,9 @@ input VideoWhereInput {
 
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
+  tags_every: TagWhereInput
+  tags_some: TagWhereInput
+  tags_none: TagWhereInput
   audio_every: AudioWhereInput
   audio_some: AudioWhereInput
   audio_none: AudioWhereInput

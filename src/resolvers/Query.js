@@ -6,6 +6,8 @@ const Query = {
   audios: forwardTo('db'),
   captions: forwardTo('db'),
   caption: forwardTo('db'),
+  tag: forwardTo('db'),
+  tags: forwardTo('db'),
 };
 
 module.exports = Query;

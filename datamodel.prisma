@@ -5,7 +5,7 @@ type Video {
   channelTitle: String!
   defaultLanguage: String
   thumbnailUrl: String!
-  tags: [String]! @scalarList(strategy: RELATION)
+  tags: [Tag]!
   audio: [Audio]! @relation(name: "AudioToVideo")
   caption: [Caption]! @relation(name: "CaptionToVideo")
   createdAt: DateTime! @createdAt
@@ -26,11 +26,16 @@ type Caption {
   id: ID! @id
   languageTag: String!
   xml: String!
-  author: [String]! @scalarList(strategy: RELATION)
   video: Video @relation(name: "CaptionToVideo")
   audio: [Audio]! @relation(name: "AudioToCaption")
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
+}
+
+type Tag {
+  id: ID! @id
+  text: String! @unique
+  video: [Video]!
 }
 
 enum Language {

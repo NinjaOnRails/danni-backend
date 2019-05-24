@@ -4,12 +4,17 @@ const languageTags = require('../config/languageTags');
 
 const mutations = {
   async createVideo(parent, { youtubeId }, ctx, info) {
+    // Check if video exists
+    const videoExists = await ctx.db.query.video({ where: { youtubeId } });
+    if (videoExists) throw new Error('Video already exists');
+
+    // Fetch info from Youtube
     const res = await youtube.get('/videos', {
       params: {
         id: youtubeId,
       },
     });
-
+    if (!res.data.items.length) throw new Error('Video not found on Youtube');
     const {
       thumbnails: {
         medium: { url },
@@ -19,6 +24,7 @@ const mutations = {
       defaultAudioLanguage,
     } = res.data.items[0].snippet;
 
+    // Save video to db
     const video = await ctx.db.mutation.createVideo(
       {
         data: {
@@ -31,30 +37,7 @@ const mutations = {
       },
       info
     );
-
-    // Attempt to download captions given the list of languageTags and then save them to the db
-    if (video) {
-      languageTags.forEach(languageTag => {
-        captionDownload(video.youtubeId, languageTag)
-          .then(caption => {
-            ctx.db.mutation.createCaption(
-              {
-                data: {
-                  languageTag,
-                  xml: caption,
-                  video: {
-                    connect: {
-                      id: video.id,
-                    },
-                  },
-                },
-              },
-              info
-            );
-          })
-          .catch(err => {});
-      });
-    }
+    if (!video) throw new Error('Saving video to db failed');
 
     return video;
   },
@@ -86,29 +69,75 @@ const mutations = {
   async createCaption(
     parent,
     {
-      data: { languageTag, xml, json, author, video },
+      data: { languageTag, xml, author, video },
     },
     ctx,
     info
   ) {
-    const caption = await ctx.db.mutation.createCaption(
-      {
-        data: {
-          languageTag,
-          xml,
-          json,
-          author,
-          video: {
-            connect: {
-              id: video,
+    // Check if video exists
+    const videoExists = await ctx.db.query.video({ where: { id: video } });
+    if (!videoExists) throw new Error('Video not found');
+
+    // Save captions to db
+    if (xml) {
+      const captions = await ctx.db.mutation.createCaption(
+        {
+          data: {
+            languageTag,
+            xml,
+            video: {
+              connect: {
+                id: video,
+              },
             },
           },
         },
-      },
-      info
-    );
+        info
+      );
+      if (!captions) throw new Error('Saving captions to db failed');
 
-    return caption;
+      return captions;
+    } else {
+      // Download captions and save them to db
+      const xmlYoutube = await captionDownload(
+        videoExists.youtubeId,
+        languageTag
+      );
+      if (!xmlYoutube) throw new Error('Captions not found on Youtube');
+
+      const captions = await ctx.db.mutation.createCaption(
+        {
+          data: {
+            languageTag,
+            xml: xmlYoutube,
+            video: {
+              connect: {
+                id: video,
+              },
+            },
+          },
+        },
+        info
+      );
+      if (!captions) throw new Error('Saving captions to db failed');
+
+      return captions;
+    }
+  },
+  async createTag(parent, { text, video }, ctx, info) {
+    const tag = ctx.db.mutation.createTag({
+      data: {
+        text,
+        video: {
+          connect: {
+            id: video,
+          },
+        },
+      },
+    });
+    if (!tag) throw new Error('Saving tag to db failed');
+
+    return tag;
   },
 };
 

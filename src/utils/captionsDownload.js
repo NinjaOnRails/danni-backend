@@ -4,6 +4,7 @@ const axios = require('axios');
 
 // const capD = async (videoId, language) => {
 module.exports = async (videoId, language) => {
+  // Fetch list of captions for Youtube video
   const {
     data: { items },
   } = await youtube.get('/captions', {
@@ -13,13 +14,15 @@ module.exports = async (videoId, language) => {
   });
   if (!items) return null;
 
+  // Check if there are captions for the given language
   const captionsExist = items.find(item => item.snippet.language === language);
   if (!captionsExist) return null;
 
+  // Fetch the captions for the given language
   const { data } = await axios.get(
     `https://www.youtube.com/api/timedtext?lang=${language}&v=${videoId}`
   );
-  if (!data) return null;
+  // if (!data) return null;
 
   // console.log(data)
   return data;
