@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/danni/danni-backend/dev
-# timestamp: Thu May 23 2019 22:10:07 GMT+0200 (Central European Summer Time)
+# timestamp: Fri May 24 2019 09:16:26 GMT+0200 (Central European Summer Time)
 
 type AggregateAudio {
   count: Int!
@@ -1189,6 +1189,7 @@ type Video implements Node {
   channelTitle: String!
   defaultLanguage: String
   thumbnailUrl: String!
+  tags: [String!]!
   audio(where: AudioWhereInput, orderBy: AudioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Audio!]
   caption(where: CaptionWhereInput, orderBy: CaptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Caption!]
   createdAt: DateTime!
@@ -1212,6 +1213,7 @@ input VideoCreateInput {
   channelTitle: String!
   defaultLanguage: String
   thumbnailUrl: String!
+  tags: VideoCreatetagsInput
   audio: AudioCreateManyWithoutVideoInput
   caption: CaptionCreateManyWithoutVideoInput
 }
@@ -1226,6 +1228,10 @@ input VideoCreateOneWithoutCaptionInput {
   connect: VideoWhereUniqueInput
 }
 
+input VideoCreatetagsInput {
+  set: [String!]
+}
+
 input VideoCreateWithoutAudioInput {
   id: ID
   youtubeId: String!
@@ -1233,6 +1239,7 @@ input VideoCreateWithoutAudioInput {
   channelTitle: String!
   defaultLanguage: String
   thumbnailUrl: String!
+  tags: VideoCreatetagsInput
   caption: CaptionCreateManyWithoutVideoInput
 }
 
@@ -1243,6 +1250,7 @@ input VideoCreateWithoutCaptionInput {
   channelTitle: String!
   defaultLanguage: String
   thumbnailUrl: String!
+  tags: VideoCreatetagsInput
   audio: AudioCreateManyWithoutVideoInput
 }
 
@@ -1281,6 +1289,7 @@ type VideoPreviousValues {
   channelTitle: String!
   defaultLanguage: String
   thumbnailUrl: String!
+  tags: [String!]!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -1328,6 +1337,7 @@ input VideoUpdateInput {
   channelTitle: String
   defaultLanguage: String
   thumbnailUrl: String
+  tags: VideoUpdatetagsInput
   audio: AudioUpdateManyWithoutVideoInput
   caption: CaptionUpdateManyWithoutVideoInput
 }
@@ -1338,6 +1348,7 @@ input VideoUpdateManyMutationInput {
   channelTitle: String
   defaultLanguage: String
   thumbnailUrl: String
+  tags: VideoUpdatetagsInput
 }
 
 input VideoUpdateOneWithoutAudioInput {
@@ -1358,12 +1369,17 @@ input VideoUpdateOneWithoutCaptionInput {
   upsert: VideoUpsertWithoutCaptionInput
 }
 
+input VideoUpdatetagsInput {
+  set: [String!]
+}
+
 input VideoUpdateWithoutAudioDataInput {
   youtubeId: String
   title: String
   channelTitle: String
   defaultLanguage: String
   thumbnailUrl: String
+  tags: VideoUpdatetagsInput
   caption: CaptionUpdateManyWithoutVideoInput
 }
 
@@ -1373,6 +1389,7 @@ input VideoUpdateWithoutCaptionDataInput {
   channelTitle: String
   defaultLanguage: String
   thumbnailUrl: String
+  tags: VideoUpdatetagsInput
   audio: AudioUpdateManyWithoutVideoInput
 }
 
