@@ -1,11 +1,15 @@
 type Video {
   id: ID! @id
-  youtubeId: String! @unique
-  title: String!
-  channelTitle: String!
-  defaultLanguage: String
-  thumbnailUrl: String!
+  originId: String! @unique
+  originTitle: String!
+  originAuthor: String
+  originPlatform: String! @default(value: "YouTube")
+  originLanguage: Language! @default(value: ENGLISH)
+  originThumbnailUrl: String
+  titleVi: String
   tags: [Tag]!
+  addedBy: String! @default(value: "Anonymous")
+  startAt: DateTime! @default(value: "00:00")
   audio: [Audio]! @relation(name: "AudioToVideo")
   caption: [Caption]! @relation(name: "CaptionToVideo")
   createdAt: DateTime! @createdAt
