@@ -1,20 +1,52 @@
 const youtube = require('../utils/youtube');
 const captionDownload = require('../utils/captionsDownload');
-const languageTags = require('../config/languageTags');
+const youtubeIdLength = require('../utils/youtubeIdLength');
+// const languageTags = require('../config/languageTags');
 
 const mutations = {
-  async createVideo(parent, { youtubeId }, ctx, info) {
+  async createVideo(
+    parent,
+    {
+      data: { source, titleVi },
+    },
+    ctx,
+    info
+  ) {
+    // Check if source is YouTube and extract ID from it
+    const sourceYouTube = [
+      { domain: 'https://youtube.com/watch?v=', length: 28 },
+      { domain: 'http://youtube.com/watch?v=', length: 27 },
+      { domain: 'https://www.youtube.com/watch?v=', length: 32 },
+      { domain: 'http://www.youtube.com/watch?v=', length: 31 },
+      { domain: 'youtube.com/watch?v=', length: 20 },
+      { domain: 'www.youtube.com/watch?v=', length: 24 },
+    ];
+    const isYouTube = sourceYouTube.find(value =>
+      source.startsWith(value.domain)
+    );
+    if (isYouTube) {
+      const { length } = isYouTube;
+      var originId = source.slice(length, length + youtubeIdLength);
+    } else if (source.length === youtubeIdLength) {
+      var originId = source;
+    } else {
+      throw new Error('No valid YouTube source was provided');
+    }
+
     // Check if video exists
-    const videoExists = await ctx.db.query.video({ where: { youtubeId } });
+    const videoExists = await ctx.db.query.video({
+      where: { originId },
+    });
     if (videoExists) throw new Error('Video already exists');
 
     // Fetch info from Youtube
     const res = await youtube.get('/videos', {
       params: {
-        id: youtubeId,
+        id: originId,
       },
     });
     if (!res.data.items.length) throw new Error('Video not found on Youtube');
+
     const {
       thumbnails: {
         medium: { url },
@@ -28,11 +60,12 @@ const mutations = {
     const video = await ctx.db.mutation.createVideo(
       {
         data: {
-          youtubeId,
-          title,
-          channelTitle,
-          defaultLanguage: defaultAudioLanguage,
-          thumbnailUrl: url,
+          originId,
+          titleVi,
+          originTitle: title,
+          originAuthor: channelTitle,
+          originLanguage: defaultAudioLanguage,
+          originThumbnailUrl: url,
         },
       },
       info
@@ -99,10 +132,7 @@ const mutations = {
       return captions;
     } else {
       // Download captions and save them to db
-      const xmlYoutube = await captionDownload(
-        videoExists.youtubeId,
-        languageTag
-      );
+      const xmlYoutube = await captionDownload(videoExists.source, languageTag);
       if (!xmlYoutube) throw new Error('Captions not found on Youtube');
 
       const captions = await ctx.db.mutation.createCaption(

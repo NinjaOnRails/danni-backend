@@ -4,12 +4,12 @@ type Video {
   originTitle: String!
   originAuthor: String
   originPlatform: String! @default(value: "YouTube")
-  originLanguage: Language! @default(value: ENGLISH)
+  originLanguage: String!
   originThumbnailUrl: String
   titleVi: String
   tags: [Tag]!
   addedBy: String! @default(value: "Anonymous")
-  startAt: DateTime! @default(value: "00:00")
+  startAt: String! @default(value: "0000")
   audio: [Audio]! @relation(name: "AudioToVideo")
   caption: [Caption]! @relation(name: "CaptionToVideo")
   createdAt: DateTime! @createdAt

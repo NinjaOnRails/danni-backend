@@ -1,5 +1,5 @@
-# source: https://eu1.prisma.sh/danni/danni-backend/dev
-# timestamp: Fri May 24 2019 10:09:48 GMT+0200 (Central European Summer Time)
+# source: https://eu1.prisma.sh/danni/danni-dev/dev
+# timestamp: Thu May 30 2019 19:17:21 GMT+0200 (Central European Summer Time)
 
 type AggregateAudio {
   count: Int!
@@ -1505,12 +1505,16 @@ input TagWhereUniqueInput {
 
 type Video implements Node {
   id: ID!
-  youtubeId: String!
-  title: String!
-  channelTitle: String!
-  defaultLanguage: String
-  thumbnailUrl: String!
+  originId: String!
+  originTitle: String!
+  originAuthor: String
+  originPlatform: String!
+  originLanguage: String!
+  originThumbnailUrl: String
+  titleVi: String
   tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
+  addedBy: String!
+  startAt: String!
   audio(where: AudioWhereInput, orderBy: AudioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Audio!]
   caption(where: CaptionWhereInput, orderBy: CaptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Caption!]
   createdAt: DateTime!
@@ -1529,11 +1533,15 @@ type VideoConnection {
 
 input VideoCreateInput {
   id: ID
-  youtubeId: String!
-  title: String!
-  channelTitle: String!
-  defaultLanguage: String
-  thumbnailUrl: String!
+  originId: String!
+  originTitle: String!
+  originAuthor: String
+  originPlatform: String
+  originLanguage: String!
+  originThumbnailUrl: String
+  titleVi: String
+  addedBy: String
+  startAt: String
   tags: TagCreateManyWithoutVideoInput
   audio: AudioCreateManyWithoutVideoInput
   caption: CaptionCreateManyWithoutVideoInput
@@ -1556,33 +1564,45 @@ input VideoCreateOneWithoutCaptionInput {
 
 input VideoCreateWithoutAudioInput {
   id: ID
-  youtubeId: String!
-  title: String!
-  channelTitle: String!
-  defaultLanguage: String
-  thumbnailUrl: String!
+  originId: String!
+  originTitle: String!
+  originAuthor: String
+  originPlatform: String
+  originLanguage: String!
+  originThumbnailUrl: String
+  titleVi: String
+  addedBy: String
+  startAt: String
   tags: TagCreateManyWithoutVideoInput
   caption: CaptionCreateManyWithoutVideoInput
 }
 
 input VideoCreateWithoutCaptionInput {
   id: ID
-  youtubeId: String!
-  title: String!
-  channelTitle: String!
-  defaultLanguage: String
-  thumbnailUrl: String!
+  originId: String!
+  originTitle: String!
+  originAuthor: String
+  originPlatform: String
+  originLanguage: String!
+  originThumbnailUrl: String
+  titleVi: String
+  addedBy: String
+  startAt: String
   tags: TagCreateManyWithoutVideoInput
   audio: AudioCreateManyWithoutVideoInput
 }
 
 input VideoCreateWithoutTagsInput {
   id: ID
-  youtubeId: String!
-  title: String!
-  channelTitle: String!
-  defaultLanguage: String
-  thumbnailUrl: String!
+  originId: String!
+  originTitle: String!
+  originAuthor: String
+  originPlatform: String
+  originLanguage: String!
+  originThumbnailUrl: String
+  titleVi: String
+  addedBy: String
+  startAt: String
   audio: AudioCreateManyWithoutVideoInput
   caption: CaptionCreateManyWithoutVideoInput
 }
@@ -1599,16 +1619,24 @@ type VideoEdge {
 enum VideoOrderByInput {
   id_ASC
   id_DESC
-  youtubeId_ASC
-  youtubeId_DESC
-  title_ASC
-  title_DESC
-  channelTitle_ASC
-  channelTitle_DESC
-  defaultLanguage_ASC
-  defaultLanguage_DESC
-  thumbnailUrl_ASC
-  thumbnailUrl_DESC
+  originId_ASC
+  originId_DESC
+  originTitle_ASC
+  originTitle_DESC
+  originAuthor_ASC
+  originAuthor_DESC
+  originPlatform_ASC
+  originPlatform_DESC
+  originLanguage_ASC
+  originLanguage_DESC
+  originThumbnailUrl_ASC
+  originThumbnailUrl_DESC
+  titleVi_ASC
+  titleVi_DESC
+  addedBy_ASC
+  addedBy_DESC
+  startAt_ASC
+  startAt_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -1617,11 +1645,15 @@ enum VideoOrderByInput {
 
 type VideoPreviousValues {
   id: ID!
-  youtubeId: String!
-  title: String!
-  channelTitle: String!
-  defaultLanguage: String
-  thumbnailUrl: String!
+  originId: String!
+  originTitle: String!
+  originAuthor: String
+  originPlatform: String!
+  originLanguage: String!
+  originThumbnailUrl: String
+  titleVi: String
+  addedBy: String!
+  startAt: String!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -1675,206 +1707,366 @@ input VideoScalarWhereInput {
 
   """All values not ending with the given string."""
   id_not_ends_with: ID
-  youtubeId: String
+  originId: String
 
   """All values that are not equal to given value."""
-  youtubeId_not: String
+  originId_not: String
 
   """All values that are contained in given list."""
-  youtubeId_in: [String!]
+  originId_in: [String!]
 
   """All values that are not contained in given list."""
-  youtubeId_not_in: [String!]
+  originId_not_in: [String!]
 
   """All values less than the given value."""
-  youtubeId_lt: String
+  originId_lt: String
 
   """All values less than or equal the given value."""
-  youtubeId_lte: String
+  originId_lte: String
 
   """All values greater than the given value."""
-  youtubeId_gt: String
+  originId_gt: String
 
   """All values greater than or equal the given value."""
-  youtubeId_gte: String
+  originId_gte: String
 
   """All values containing the given string."""
-  youtubeId_contains: String
+  originId_contains: String
 
   """All values not containing the given string."""
-  youtubeId_not_contains: String
+  originId_not_contains: String
 
   """All values starting with the given string."""
-  youtubeId_starts_with: String
+  originId_starts_with: String
 
   """All values not starting with the given string."""
-  youtubeId_not_starts_with: String
+  originId_not_starts_with: String
 
   """All values ending with the given string."""
-  youtubeId_ends_with: String
+  originId_ends_with: String
 
   """All values not ending with the given string."""
-  youtubeId_not_ends_with: String
-  title: String
+  originId_not_ends_with: String
+  originTitle: String
 
   """All values that are not equal to given value."""
-  title_not: String
+  originTitle_not: String
 
   """All values that are contained in given list."""
-  title_in: [String!]
+  originTitle_in: [String!]
 
   """All values that are not contained in given list."""
-  title_not_in: [String!]
+  originTitle_not_in: [String!]
 
   """All values less than the given value."""
-  title_lt: String
+  originTitle_lt: String
 
   """All values less than or equal the given value."""
-  title_lte: String
+  originTitle_lte: String
 
   """All values greater than the given value."""
-  title_gt: String
+  originTitle_gt: String
 
   """All values greater than or equal the given value."""
-  title_gte: String
+  originTitle_gte: String
 
   """All values containing the given string."""
-  title_contains: String
+  originTitle_contains: String
 
   """All values not containing the given string."""
-  title_not_contains: String
+  originTitle_not_contains: String
 
   """All values starting with the given string."""
-  title_starts_with: String
+  originTitle_starts_with: String
 
   """All values not starting with the given string."""
-  title_not_starts_with: String
+  originTitle_not_starts_with: String
 
   """All values ending with the given string."""
-  title_ends_with: String
+  originTitle_ends_with: String
 
   """All values not ending with the given string."""
-  title_not_ends_with: String
-  channelTitle: String
+  originTitle_not_ends_with: String
+  originAuthor: String
 
   """All values that are not equal to given value."""
-  channelTitle_not: String
+  originAuthor_not: String
 
   """All values that are contained in given list."""
-  channelTitle_in: [String!]
+  originAuthor_in: [String!]
 
   """All values that are not contained in given list."""
-  channelTitle_not_in: [String!]
+  originAuthor_not_in: [String!]
 
   """All values less than the given value."""
-  channelTitle_lt: String
+  originAuthor_lt: String
 
   """All values less than or equal the given value."""
-  channelTitle_lte: String
+  originAuthor_lte: String
 
   """All values greater than the given value."""
-  channelTitle_gt: String
+  originAuthor_gt: String
 
   """All values greater than or equal the given value."""
-  channelTitle_gte: String
+  originAuthor_gte: String
 
   """All values containing the given string."""
-  channelTitle_contains: String
+  originAuthor_contains: String
 
   """All values not containing the given string."""
-  channelTitle_not_contains: String
+  originAuthor_not_contains: String
 
   """All values starting with the given string."""
-  channelTitle_starts_with: String
+  originAuthor_starts_with: String
 
   """All values not starting with the given string."""
-  channelTitle_not_starts_with: String
+  originAuthor_not_starts_with: String
 
   """All values ending with the given string."""
-  channelTitle_ends_with: String
+  originAuthor_ends_with: String
 
   """All values not ending with the given string."""
-  channelTitle_not_ends_with: String
-  defaultLanguage: String
+  originAuthor_not_ends_with: String
+  originPlatform: String
 
   """All values that are not equal to given value."""
-  defaultLanguage_not: String
+  originPlatform_not: String
 
   """All values that are contained in given list."""
-  defaultLanguage_in: [String!]
+  originPlatform_in: [String!]
 
   """All values that are not contained in given list."""
-  defaultLanguage_not_in: [String!]
+  originPlatform_not_in: [String!]
 
   """All values less than the given value."""
-  defaultLanguage_lt: String
+  originPlatform_lt: String
 
   """All values less than or equal the given value."""
-  defaultLanguage_lte: String
+  originPlatform_lte: String
 
   """All values greater than the given value."""
-  defaultLanguage_gt: String
+  originPlatform_gt: String
 
   """All values greater than or equal the given value."""
-  defaultLanguage_gte: String
+  originPlatform_gte: String
 
   """All values containing the given string."""
-  defaultLanguage_contains: String
+  originPlatform_contains: String
 
   """All values not containing the given string."""
-  defaultLanguage_not_contains: String
+  originPlatform_not_contains: String
 
   """All values starting with the given string."""
-  defaultLanguage_starts_with: String
+  originPlatform_starts_with: String
 
   """All values not starting with the given string."""
-  defaultLanguage_not_starts_with: String
+  originPlatform_not_starts_with: String
 
   """All values ending with the given string."""
-  defaultLanguage_ends_with: String
+  originPlatform_ends_with: String
 
   """All values not ending with the given string."""
-  defaultLanguage_not_ends_with: String
-  thumbnailUrl: String
+  originPlatform_not_ends_with: String
+  originLanguage: String
 
   """All values that are not equal to given value."""
-  thumbnailUrl_not: String
+  originLanguage_not: String
 
   """All values that are contained in given list."""
-  thumbnailUrl_in: [String!]
+  originLanguage_in: [String!]
 
   """All values that are not contained in given list."""
-  thumbnailUrl_not_in: [String!]
+  originLanguage_not_in: [String!]
 
   """All values less than the given value."""
-  thumbnailUrl_lt: String
+  originLanguage_lt: String
 
   """All values less than or equal the given value."""
-  thumbnailUrl_lte: String
+  originLanguage_lte: String
 
   """All values greater than the given value."""
-  thumbnailUrl_gt: String
+  originLanguage_gt: String
 
   """All values greater than or equal the given value."""
-  thumbnailUrl_gte: String
+  originLanguage_gte: String
 
   """All values containing the given string."""
-  thumbnailUrl_contains: String
+  originLanguage_contains: String
 
   """All values not containing the given string."""
-  thumbnailUrl_not_contains: String
+  originLanguage_not_contains: String
 
   """All values starting with the given string."""
-  thumbnailUrl_starts_with: String
+  originLanguage_starts_with: String
 
   """All values not starting with the given string."""
-  thumbnailUrl_not_starts_with: String
+  originLanguage_not_starts_with: String
 
   """All values ending with the given string."""
-  thumbnailUrl_ends_with: String
+  originLanguage_ends_with: String
 
   """All values not ending with the given string."""
-  thumbnailUrl_not_ends_with: String
+  originLanguage_not_ends_with: String
+  originThumbnailUrl: String
+
+  """All values that are not equal to given value."""
+  originThumbnailUrl_not: String
+
+  """All values that are contained in given list."""
+  originThumbnailUrl_in: [String!]
+
+  """All values that are not contained in given list."""
+  originThumbnailUrl_not_in: [String!]
+
+  """All values less than the given value."""
+  originThumbnailUrl_lt: String
+
+  """All values less than or equal the given value."""
+  originThumbnailUrl_lte: String
+
+  """All values greater than the given value."""
+  originThumbnailUrl_gt: String
+
+  """All values greater than or equal the given value."""
+  originThumbnailUrl_gte: String
+
+  """All values containing the given string."""
+  originThumbnailUrl_contains: String
+
+  """All values not containing the given string."""
+  originThumbnailUrl_not_contains: String
+
+  """All values starting with the given string."""
+  originThumbnailUrl_starts_with: String
+
+  """All values not starting with the given string."""
+  originThumbnailUrl_not_starts_with: String
+
+  """All values ending with the given string."""
+  originThumbnailUrl_ends_with: String
+
+  """All values not ending with the given string."""
+  originThumbnailUrl_not_ends_with: String
+  titleVi: String
+
+  """All values that are not equal to given value."""
+  titleVi_not: String
+
+  """All values that are contained in given list."""
+  titleVi_in: [String!]
+
+  """All values that are not contained in given list."""
+  titleVi_not_in: [String!]
+
+  """All values less than the given value."""
+  titleVi_lt: String
+
+  """All values less than or equal the given value."""
+  titleVi_lte: String
+
+  """All values greater than the given value."""
+  titleVi_gt: String
+
+  """All values greater than or equal the given value."""
+  titleVi_gte: String
+
+  """All values containing the given string."""
+  titleVi_contains: String
+
+  """All values not containing the given string."""
+  titleVi_not_contains: String
+
+  """All values starting with the given string."""
+  titleVi_starts_with: String
+
+  """All values not starting with the given string."""
+  titleVi_not_starts_with: String
+
+  """All values ending with the given string."""
+  titleVi_ends_with: String
+
+  """All values not ending with the given string."""
+  titleVi_not_ends_with: String
+  addedBy: String
+
+  """All values that are not equal to given value."""
+  addedBy_not: String
+
+  """All values that are contained in given list."""
+  addedBy_in: [String!]
+
+  """All values that are not contained in given list."""
+  addedBy_not_in: [String!]
+
+  """All values less than the given value."""
+  addedBy_lt: String
+
+  """All values less than or equal the given value."""
+  addedBy_lte: String
+
+  """All values greater than the given value."""
+  addedBy_gt: String
+
+  """All values greater than or equal the given value."""
+  addedBy_gte: String
+
+  """All values containing the given string."""
+  addedBy_contains: String
+
+  """All values not containing the given string."""
+  addedBy_not_contains: String
+
+  """All values starting with the given string."""
+  addedBy_starts_with: String
+
+  """All values not starting with the given string."""
+  addedBy_not_starts_with: String
+
+  """All values ending with the given string."""
+  addedBy_ends_with: String
+
+  """All values not ending with the given string."""
+  addedBy_not_ends_with: String
+  startAt: String
+
+  """All values that are not equal to given value."""
+  startAt_not: String
+
+  """All values that are contained in given list."""
+  startAt_in: [String!]
+
+  """All values that are not contained in given list."""
+  startAt_not_in: [String!]
+
+  """All values less than the given value."""
+  startAt_lt: String
+
+  """All values less than or equal the given value."""
+  startAt_lte: String
+
+  """All values greater than the given value."""
+  startAt_gt: String
+
+  """All values greater than or equal the given value."""
+  startAt_gte: String
+
+  """All values containing the given string."""
+  startAt_contains: String
+
+  """All values not containing the given string."""
+  startAt_not_contains: String
+
+  """All values starting with the given string."""
+  startAt_starts_with: String
+
+  """All values not starting with the given string."""
+  startAt_not_starts_with: String
+
+  """All values ending with the given string."""
+  startAt_ends_with: String
+
+  """All values not ending with the given string."""
+  startAt_not_ends_with: String
   createdAt: DateTime
 
   """All values that are not equal to given value."""
@@ -1959,30 +2151,42 @@ input VideoSubscriptionWhereInput {
 }
 
 input VideoUpdateInput {
-  youtubeId: String
-  title: String
-  channelTitle: String
-  defaultLanguage: String
-  thumbnailUrl: String
+  originId: String
+  originTitle: String
+  originAuthor: String
+  originPlatform: String
+  originLanguage: String
+  originThumbnailUrl: String
+  titleVi: String
+  addedBy: String
+  startAt: String
   tags: TagUpdateManyWithoutVideoInput
   audio: AudioUpdateManyWithoutVideoInput
   caption: CaptionUpdateManyWithoutVideoInput
 }
 
 input VideoUpdateManyDataInput {
-  youtubeId: String
-  title: String
-  channelTitle: String
-  defaultLanguage: String
-  thumbnailUrl: String
+  originId: String
+  originTitle: String
+  originAuthor: String
+  originPlatform: String
+  originLanguage: String
+  originThumbnailUrl: String
+  titleVi: String
+  addedBy: String
+  startAt: String
 }
 
 input VideoUpdateManyMutationInput {
-  youtubeId: String
-  title: String
-  channelTitle: String
-  defaultLanguage: String
-  thumbnailUrl: String
+  originId: String
+  originTitle: String
+  originAuthor: String
+  originPlatform: String
+  originLanguage: String
+  originThumbnailUrl: String
+  titleVi: String
+  addedBy: String
+  startAt: String
 }
 
 input VideoUpdateManyWithoutTagsInput {
@@ -2021,31 +2225,43 @@ input VideoUpdateOneWithoutCaptionInput {
 }
 
 input VideoUpdateWithoutAudioDataInput {
-  youtubeId: String
-  title: String
-  channelTitle: String
-  defaultLanguage: String
-  thumbnailUrl: String
+  originId: String
+  originTitle: String
+  originAuthor: String
+  originPlatform: String
+  originLanguage: String
+  originThumbnailUrl: String
+  titleVi: String
+  addedBy: String
+  startAt: String
   tags: TagUpdateManyWithoutVideoInput
   caption: CaptionUpdateManyWithoutVideoInput
 }
 
 input VideoUpdateWithoutCaptionDataInput {
-  youtubeId: String
-  title: String
-  channelTitle: String
-  defaultLanguage: String
-  thumbnailUrl: String
+  originId: String
+  originTitle: String
+  originAuthor: String
+  originPlatform: String
+  originLanguage: String
+  originThumbnailUrl: String
+  titleVi: String
+  addedBy: String
+  startAt: String
   tags: TagUpdateManyWithoutVideoInput
   audio: AudioUpdateManyWithoutVideoInput
 }
 
 input VideoUpdateWithoutTagsDataInput {
-  youtubeId: String
-  title: String
-  channelTitle: String
-  defaultLanguage: String
-  thumbnailUrl: String
+  originId: String
+  originTitle: String
+  originAuthor: String
+  originPlatform: String
+  originLanguage: String
+  originThumbnailUrl: String
+  titleVi: String
+  addedBy: String
+  startAt: String
   audio: AudioUpdateManyWithoutVideoInput
   caption: CaptionUpdateManyWithoutVideoInput
 }
@@ -2120,206 +2336,366 @@ input VideoWhereInput {
 
   """All values not ending with the given string."""
   id_not_ends_with: ID
-  youtubeId: String
+  originId: String
 
   """All values that are not equal to given value."""
-  youtubeId_not: String
+  originId_not: String
 
   """All values that are contained in given list."""
-  youtubeId_in: [String!]
+  originId_in: [String!]
 
   """All values that are not contained in given list."""
-  youtubeId_not_in: [String!]
+  originId_not_in: [String!]
 
   """All values less than the given value."""
-  youtubeId_lt: String
+  originId_lt: String
 
   """All values less than or equal the given value."""
-  youtubeId_lte: String
+  originId_lte: String
 
   """All values greater than the given value."""
-  youtubeId_gt: String
+  originId_gt: String
 
   """All values greater than or equal the given value."""
-  youtubeId_gte: String
+  originId_gte: String
 
   """All values containing the given string."""
-  youtubeId_contains: String
+  originId_contains: String
 
   """All values not containing the given string."""
-  youtubeId_not_contains: String
+  originId_not_contains: String
 
   """All values starting with the given string."""
-  youtubeId_starts_with: String
+  originId_starts_with: String
 
   """All values not starting with the given string."""
-  youtubeId_not_starts_with: String
+  originId_not_starts_with: String
 
   """All values ending with the given string."""
-  youtubeId_ends_with: String
+  originId_ends_with: String
 
   """All values not ending with the given string."""
-  youtubeId_not_ends_with: String
-  title: String
+  originId_not_ends_with: String
+  originTitle: String
 
   """All values that are not equal to given value."""
-  title_not: String
+  originTitle_not: String
 
   """All values that are contained in given list."""
-  title_in: [String!]
+  originTitle_in: [String!]
 
   """All values that are not contained in given list."""
-  title_not_in: [String!]
+  originTitle_not_in: [String!]
 
   """All values less than the given value."""
-  title_lt: String
+  originTitle_lt: String
 
   """All values less than or equal the given value."""
-  title_lte: String
+  originTitle_lte: String
 
   """All values greater than the given value."""
-  title_gt: String
+  originTitle_gt: String
 
   """All values greater than or equal the given value."""
-  title_gte: String
+  originTitle_gte: String
 
   """All values containing the given string."""
-  title_contains: String
+  originTitle_contains: String
 
   """All values not containing the given string."""
-  title_not_contains: String
+  originTitle_not_contains: String
 
   """All values starting with the given string."""
-  title_starts_with: String
+  originTitle_starts_with: String
 
   """All values not starting with the given string."""
-  title_not_starts_with: String
+  originTitle_not_starts_with: String
 
   """All values ending with the given string."""
-  title_ends_with: String
+  originTitle_ends_with: String
 
   """All values not ending with the given string."""
-  title_not_ends_with: String
-  channelTitle: String
+  originTitle_not_ends_with: String
+  originAuthor: String
 
   """All values that are not equal to given value."""
-  channelTitle_not: String
+  originAuthor_not: String
 
   """All values that are contained in given list."""
-  channelTitle_in: [String!]
+  originAuthor_in: [String!]
 
   """All values that are not contained in given list."""
-  channelTitle_not_in: [String!]
+  originAuthor_not_in: [String!]
 
   """All values less than the given value."""
-  channelTitle_lt: String
+  originAuthor_lt: String
 
   """All values less than or equal the given value."""
-  channelTitle_lte: String
+  originAuthor_lte: String
 
   """All values greater than the given value."""
-  channelTitle_gt: String
+  originAuthor_gt: String
 
   """All values greater than or equal the given value."""
-  channelTitle_gte: String
+  originAuthor_gte: String
 
   """All values containing the given string."""
-  channelTitle_contains: String
+  originAuthor_contains: String
 
   """All values not containing the given string."""
-  channelTitle_not_contains: String
+  originAuthor_not_contains: String
 
   """All values starting with the given string."""
-  channelTitle_starts_with: String
+  originAuthor_starts_with: String
 
   """All values not starting with the given string."""
-  channelTitle_not_starts_with: String
+  originAuthor_not_starts_with: String
 
   """All values ending with the given string."""
-  channelTitle_ends_with: String
+  originAuthor_ends_with: String
 
   """All values not ending with the given string."""
-  channelTitle_not_ends_with: String
-  defaultLanguage: String
+  originAuthor_not_ends_with: String
+  originPlatform: String
 
   """All values that are not equal to given value."""
-  defaultLanguage_not: String
+  originPlatform_not: String
 
   """All values that are contained in given list."""
-  defaultLanguage_in: [String!]
+  originPlatform_in: [String!]
 
   """All values that are not contained in given list."""
-  defaultLanguage_not_in: [String!]
+  originPlatform_not_in: [String!]
 
   """All values less than the given value."""
-  defaultLanguage_lt: String
+  originPlatform_lt: String
 
   """All values less than or equal the given value."""
-  defaultLanguage_lte: String
+  originPlatform_lte: String
 
   """All values greater than the given value."""
-  defaultLanguage_gt: String
+  originPlatform_gt: String
 
   """All values greater than or equal the given value."""
-  defaultLanguage_gte: String
+  originPlatform_gte: String
 
   """All values containing the given string."""
-  defaultLanguage_contains: String
+  originPlatform_contains: String
 
   """All values not containing the given string."""
-  defaultLanguage_not_contains: String
+  originPlatform_not_contains: String
 
   """All values starting with the given string."""
-  defaultLanguage_starts_with: String
+  originPlatform_starts_with: String
 
   """All values not starting with the given string."""
-  defaultLanguage_not_starts_with: String
+  originPlatform_not_starts_with: String
 
   """All values ending with the given string."""
-  defaultLanguage_ends_with: String
+  originPlatform_ends_with: String
 
   """All values not ending with the given string."""
-  defaultLanguage_not_ends_with: String
-  thumbnailUrl: String
+  originPlatform_not_ends_with: String
+  originLanguage: String
 
   """All values that are not equal to given value."""
-  thumbnailUrl_not: String
+  originLanguage_not: String
 
   """All values that are contained in given list."""
-  thumbnailUrl_in: [String!]
+  originLanguage_in: [String!]
 
   """All values that are not contained in given list."""
-  thumbnailUrl_not_in: [String!]
+  originLanguage_not_in: [String!]
 
   """All values less than the given value."""
-  thumbnailUrl_lt: String
+  originLanguage_lt: String
 
   """All values less than or equal the given value."""
-  thumbnailUrl_lte: String
+  originLanguage_lte: String
 
   """All values greater than the given value."""
-  thumbnailUrl_gt: String
+  originLanguage_gt: String
 
   """All values greater than or equal the given value."""
-  thumbnailUrl_gte: String
+  originLanguage_gte: String
 
   """All values containing the given string."""
-  thumbnailUrl_contains: String
+  originLanguage_contains: String
 
   """All values not containing the given string."""
-  thumbnailUrl_not_contains: String
+  originLanguage_not_contains: String
 
   """All values starting with the given string."""
-  thumbnailUrl_starts_with: String
+  originLanguage_starts_with: String
 
   """All values not starting with the given string."""
-  thumbnailUrl_not_starts_with: String
+  originLanguage_not_starts_with: String
 
   """All values ending with the given string."""
-  thumbnailUrl_ends_with: String
+  originLanguage_ends_with: String
 
   """All values not ending with the given string."""
-  thumbnailUrl_not_ends_with: String
+  originLanguage_not_ends_with: String
+  originThumbnailUrl: String
+
+  """All values that are not equal to given value."""
+  originThumbnailUrl_not: String
+
+  """All values that are contained in given list."""
+  originThumbnailUrl_in: [String!]
+
+  """All values that are not contained in given list."""
+  originThumbnailUrl_not_in: [String!]
+
+  """All values less than the given value."""
+  originThumbnailUrl_lt: String
+
+  """All values less than or equal the given value."""
+  originThumbnailUrl_lte: String
+
+  """All values greater than the given value."""
+  originThumbnailUrl_gt: String
+
+  """All values greater than or equal the given value."""
+  originThumbnailUrl_gte: String
+
+  """All values containing the given string."""
+  originThumbnailUrl_contains: String
+
+  """All values not containing the given string."""
+  originThumbnailUrl_not_contains: String
+
+  """All values starting with the given string."""
+  originThumbnailUrl_starts_with: String
+
+  """All values not starting with the given string."""
+  originThumbnailUrl_not_starts_with: String
+
+  """All values ending with the given string."""
+  originThumbnailUrl_ends_with: String
+
+  """All values not ending with the given string."""
+  originThumbnailUrl_not_ends_with: String
+  titleVi: String
+
+  """All values that are not equal to given value."""
+  titleVi_not: String
+
+  """All values that are contained in given list."""
+  titleVi_in: [String!]
+
+  """All values that are not contained in given list."""
+  titleVi_not_in: [String!]
+
+  """All values less than the given value."""
+  titleVi_lt: String
+
+  """All values less than or equal the given value."""
+  titleVi_lte: String
+
+  """All values greater than the given value."""
+  titleVi_gt: String
+
+  """All values greater than or equal the given value."""
+  titleVi_gte: String
+
+  """All values containing the given string."""
+  titleVi_contains: String
+
+  """All values not containing the given string."""
+  titleVi_not_contains: String
+
+  """All values starting with the given string."""
+  titleVi_starts_with: String
+
+  """All values not starting with the given string."""
+  titleVi_not_starts_with: String
+
+  """All values ending with the given string."""
+  titleVi_ends_with: String
+
+  """All values not ending with the given string."""
+  titleVi_not_ends_with: String
+  addedBy: String
+
+  """All values that are not equal to given value."""
+  addedBy_not: String
+
+  """All values that are contained in given list."""
+  addedBy_in: [String!]
+
+  """All values that are not contained in given list."""
+  addedBy_not_in: [String!]
+
+  """All values less than the given value."""
+  addedBy_lt: String
+
+  """All values less than or equal the given value."""
+  addedBy_lte: String
+
+  """All values greater than the given value."""
+  addedBy_gt: String
+
+  """All values greater than or equal the given value."""
+  addedBy_gte: String
+
+  """All values containing the given string."""
+  addedBy_contains: String
+
+  """All values not containing the given string."""
+  addedBy_not_contains: String
+
+  """All values starting with the given string."""
+  addedBy_starts_with: String
+
+  """All values not starting with the given string."""
+  addedBy_not_starts_with: String
+
+  """All values ending with the given string."""
+  addedBy_ends_with: String
+
+  """All values not ending with the given string."""
+  addedBy_not_ends_with: String
+  startAt: String
+
+  """All values that are not equal to given value."""
+  startAt_not: String
+
+  """All values that are contained in given list."""
+  startAt_in: [String!]
+
+  """All values that are not contained in given list."""
+  startAt_not_in: [String!]
+
+  """All values less than the given value."""
+  startAt_lt: String
+
+  """All values less than or equal the given value."""
+  startAt_lte: String
+
+  """All values greater than the given value."""
+  startAt_gt: String
+
+  """All values greater than or equal the given value."""
+  startAt_gte: String
+
+  """All values containing the given string."""
+  startAt_contains: String
+
+  """All values not containing the given string."""
+  startAt_not_contains: String
+
+  """All values starting with the given string."""
+  startAt_starts_with: String
+
+  """All values not starting with the given string."""
+  startAt_not_starts_with: String
+
+  """All values ending with the given string."""
+  startAt_ends_with: String
+
+  """All values not ending with the given string."""
+  startAt_not_ends_with: String
   createdAt: DateTime
 
   """All values that are not equal to given value."""
@@ -2377,5 +2753,5 @@ input VideoWhereInput {
 
 input VideoWhereUniqueInput {
   id: ID
-  youtubeId: String
+  originId: String
 }
