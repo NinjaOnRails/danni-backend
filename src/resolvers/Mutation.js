@@ -7,11 +7,26 @@ const mutations = {
   async createVideo(
     parent,
     {
-      data: { source, titleVi },
+      data: { source, titleVi, addedBy, startAt },
     },
     ctx,
     info
   ) {
+    // Trim arguments
+    source = source.trim();
+    titleVi = titleVi.trim();
+
+    // Check startAt validity
+    if (isNaN(startAt) || startAt < 0) throw new Error('Invalid start at time');
+    // if (
+    //   startAt &&
+    //   (startAt.length !== 4 ||
+    //     isNaN(startAt) ||
+    //     parseInt(startAt[0]) > 6 ||
+    //     parseInt(startAt[2]) > 6)
+    // )
+    //   throw new Error('Invalid start at time');
+
     // Check if source is YouTube and extract ID from it
     const sourceYouTube = [
       { domain: 'https://youtube.com/watch?v=', length: 28 },
@@ -56,6 +71,10 @@ const mutations = {
       defaultAudioLanguage,
     } = res.data.items[0].snippet;
 
+    // Set default addedBy
+    addedBy = addedBy ? addedBy.trim() : 'Anonymous';
+    // if (!startAt) startAt = '0000';
+
     // Save video to db
     const video = await ctx.db.mutation.createVideo(
       {
@@ -66,6 +85,8 @@ const mutations = {
           originAuthor: channelTitle,
           originLanguage: defaultAudioLanguage,
           originThumbnailUrl: url,
+          startAt,
+          addedBy,
         },
       },
       info

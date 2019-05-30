@@ -9,7 +9,7 @@ type Video {
   titleVi: String
   tags: [Tag]!
   addedBy: String! @default(value: "Anonymous")
-  startAt: String! @default(value: "0000")
+  startAt: Int! @default(value: 0)
   audio: [Audio]! @relation(name: "AudioToVideo")
   caption: [Caption]! @relation(name: "CaptionToVideo")
   createdAt: DateTime! @createdAt

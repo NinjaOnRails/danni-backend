@@ -46,7 +46,7 @@ input CreateVideoInput {
   titleVi: String!
   tags: String
   addedBy: String
-  startAt: String
+  startAt: Int
 }
 
 input CreateAudioInput {

@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/danni/danni-dev/dev
-# timestamp: Thu May 30 2019 19:17:21 GMT+0200 (Central European Summer Time)
+# timestamp: Thu May 30 2019 23:27:14 GMT+0200 (Central European Summer Time)
 
 type AggregateAudio {
   count: Int!
@@ -1514,7 +1514,7 @@ type Video implements Node {
   titleVi: String
   tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
   addedBy: String!
-  startAt: String!
+  startAt: Int!
   audio(where: AudioWhereInput, orderBy: AudioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Audio!]
   caption(where: CaptionWhereInput, orderBy: CaptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Caption!]
   createdAt: DateTime!
@@ -1541,7 +1541,7 @@ input VideoCreateInput {
   originThumbnailUrl: String
   titleVi: String
   addedBy: String
-  startAt: String
+  startAt: Int
   tags: TagCreateManyWithoutVideoInput
   audio: AudioCreateManyWithoutVideoInput
   caption: CaptionCreateManyWithoutVideoInput
@@ -1572,7 +1572,7 @@ input VideoCreateWithoutAudioInput {
   originThumbnailUrl: String
   titleVi: String
   addedBy: String
-  startAt: String
+  startAt: Int
   tags: TagCreateManyWithoutVideoInput
   caption: CaptionCreateManyWithoutVideoInput
 }
@@ -1587,7 +1587,7 @@ input VideoCreateWithoutCaptionInput {
   originThumbnailUrl: String
   titleVi: String
   addedBy: String
-  startAt: String
+  startAt: Int
   tags: TagCreateManyWithoutVideoInput
   audio: AudioCreateManyWithoutVideoInput
 }
@@ -1602,7 +1602,7 @@ input VideoCreateWithoutTagsInput {
   originThumbnailUrl: String
   titleVi: String
   addedBy: String
-  startAt: String
+  startAt: Int
   audio: AudioCreateManyWithoutVideoInput
   caption: CaptionCreateManyWithoutVideoInput
 }
@@ -1653,7 +1653,7 @@ type VideoPreviousValues {
   originThumbnailUrl: String
   titleVi: String
   addedBy: String!
-  startAt: String!
+  startAt: Int!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -2027,46 +2027,28 @@ input VideoScalarWhereInput {
 
   """All values not ending with the given string."""
   addedBy_not_ends_with: String
-  startAt: String
+  startAt: Int
 
   """All values that are not equal to given value."""
-  startAt_not: String
+  startAt_not: Int
 
   """All values that are contained in given list."""
-  startAt_in: [String!]
+  startAt_in: [Int!]
 
   """All values that are not contained in given list."""
-  startAt_not_in: [String!]
+  startAt_not_in: [Int!]
 
   """All values less than the given value."""
-  startAt_lt: String
+  startAt_lt: Int
 
   """All values less than or equal the given value."""
-  startAt_lte: String
+  startAt_lte: Int
 
   """All values greater than the given value."""
-  startAt_gt: String
+  startAt_gt: Int
 
   """All values greater than or equal the given value."""
-  startAt_gte: String
-
-  """All values containing the given string."""
-  startAt_contains: String
-
-  """All values not containing the given string."""
-  startAt_not_contains: String
-
-  """All values starting with the given string."""
-  startAt_starts_with: String
-
-  """All values not starting with the given string."""
-  startAt_not_starts_with: String
-
-  """All values ending with the given string."""
-  startAt_ends_with: String
-
-  """All values not ending with the given string."""
-  startAt_not_ends_with: String
+  startAt_gte: Int
   createdAt: DateTime
 
   """All values that are not equal to given value."""
@@ -2159,7 +2141,7 @@ input VideoUpdateInput {
   originThumbnailUrl: String
   titleVi: String
   addedBy: String
-  startAt: String
+  startAt: Int
   tags: TagUpdateManyWithoutVideoInput
   audio: AudioUpdateManyWithoutVideoInput
   caption: CaptionUpdateManyWithoutVideoInput
@@ -2174,7 +2156,7 @@ input VideoUpdateManyDataInput {
   originThumbnailUrl: String
   titleVi: String
   addedBy: String
-  startAt: String
+  startAt: Int
 }
 
 input VideoUpdateManyMutationInput {
@@ -2186,7 +2168,7 @@ input VideoUpdateManyMutationInput {
   originThumbnailUrl: String
   titleVi: String
   addedBy: String
-  startAt: String
+  startAt: Int
 }
 
 input VideoUpdateManyWithoutTagsInput {
@@ -2233,7 +2215,7 @@ input VideoUpdateWithoutAudioDataInput {
   originThumbnailUrl: String
   titleVi: String
   addedBy: String
-  startAt: String
+  startAt: Int
   tags: TagUpdateManyWithoutVideoInput
   caption: CaptionUpdateManyWithoutVideoInput
 }
@@ -2247,7 +2229,7 @@ input VideoUpdateWithoutCaptionDataInput {
   originThumbnailUrl: String
   titleVi: String
   addedBy: String
-  startAt: String
+  startAt: Int
   tags: TagUpdateManyWithoutVideoInput
   audio: AudioUpdateManyWithoutVideoInput
 }
@@ -2261,7 +2243,7 @@ input VideoUpdateWithoutTagsDataInput {
   originThumbnailUrl: String
   titleVi: String
   addedBy: String
-  startAt: String
+  startAt: Int
   audio: AudioUpdateManyWithoutVideoInput
   caption: CaptionUpdateManyWithoutVideoInput
 }
@@ -2656,46 +2638,28 @@ input VideoWhereInput {
 
   """All values not ending with the given string."""
   addedBy_not_ends_with: String
-  startAt: String
+  startAt: Int
 
   """All values that are not equal to given value."""
-  startAt_not: String
+  startAt_not: Int
 
   """All values that are contained in given list."""
-  startAt_in: [String!]
+  startAt_in: [Int!]
 
   """All values that are not contained in given list."""
-  startAt_not_in: [String!]
+  startAt_not_in: [Int!]
 
   """All values less than the given value."""
-  startAt_lt: String
+  startAt_lt: Int
 
   """All values less than or equal the given value."""
-  startAt_lte: String
+  startAt_lte: Int
 
   """All values greater than the given value."""
-  startAt_gt: String
+  startAt_gt: Int
 
   """All values greater than or equal the given value."""
-  startAt_gte: String
-
-  """All values containing the given string."""
-  startAt_contains: String
-
-  """All values not containing the given string."""
-  startAt_not_contains: String
-
-  """All values starting with the given string."""
-  startAt_starts_with: String
-
-  """All values not starting with the given string."""
-  startAt_not_starts_with: String
-
-  """All values ending with the given string."""
-  startAt_ends_with: String
-
-  """All values not ending with the given string."""
-  startAt_not_ends_with: String
+  startAt_gte: Int
   createdAt: DateTime
 
   """All values that are not equal to given value."""
