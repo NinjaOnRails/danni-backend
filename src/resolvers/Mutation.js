@@ -143,6 +143,7 @@ const mutations = {
         info
       );
       if (!captions) throw new Error('Saving captions to db failed');
+      return captions;
     }
 
     // Download captions and save them to db
@@ -164,7 +165,6 @@ const mutations = {
       info
     );
     if (!captions) throw new Error('Saving captions to db failed');
-
     return captions;
   },
   async createTag(parent, { text, video }, ctx, info) {
