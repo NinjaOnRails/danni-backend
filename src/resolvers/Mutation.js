@@ -74,7 +74,7 @@ const mutations = {
     // Set default addedBy
     addedBy = addedBy ? addedBy.trim() : 'Anonymous';
     // if (!startAt) startAt = '0000';
-
+    
     // Save video to db
     const video = await ctx.db.mutation.createVideo(
       {
