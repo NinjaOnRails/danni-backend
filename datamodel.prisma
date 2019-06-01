@@ -4,7 +4,7 @@ type Video {
   originTitle: String!
   originAuthor: String
   originPlatform: String! @default(value: "YouTube")
-  originLanguage: String!
+  originLanguage: String
   originThumbnailUrl: String
   titleVi: String
   tags: [Tag]!

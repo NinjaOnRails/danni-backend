@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/danni/danni-dev/dev
-# timestamp: Thu May 30 2019 23:27:14 GMT+0200 (Central European Summer Time)
+# timestamp: Sat Jun 01 2019 16:59:36 GMT+0200 (Central European Summer Time)
 
 type AggregateAudio {
   count: Int!
@@ -1509,7 +1509,7 @@ type Video implements Node {
   originTitle: String!
   originAuthor: String
   originPlatform: String!
-  originLanguage: String!
+  originLanguage: String
   originThumbnailUrl: String
   titleVi: String
   tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
@@ -1537,7 +1537,7 @@ input VideoCreateInput {
   originTitle: String!
   originAuthor: String
   originPlatform: String
-  originLanguage: String!
+  originLanguage: String
   originThumbnailUrl: String
   titleVi: String
   addedBy: String
@@ -1568,7 +1568,7 @@ input VideoCreateWithoutAudioInput {
   originTitle: String!
   originAuthor: String
   originPlatform: String
-  originLanguage: String!
+  originLanguage: String
   originThumbnailUrl: String
   titleVi: String
   addedBy: String
@@ -1583,7 +1583,7 @@ input VideoCreateWithoutCaptionInput {
   originTitle: String!
   originAuthor: String
   originPlatform: String
-  originLanguage: String!
+  originLanguage: String
   originThumbnailUrl: String
   titleVi: String
   addedBy: String
@@ -1598,7 +1598,7 @@ input VideoCreateWithoutTagsInput {
   originTitle: String!
   originAuthor: String
   originPlatform: String
-  originLanguage: String!
+  originLanguage: String
   originThumbnailUrl: String
   titleVi: String
   addedBy: String
@@ -1649,7 +1649,7 @@ type VideoPreviousValues {
   originTitle: String!
   originAuthor: String
   originPlatform: String!
-  originLanguage: String!
+  originLanguage: String
   originThumbnailUrl: String
   titleVi: String
   addedBy: String!

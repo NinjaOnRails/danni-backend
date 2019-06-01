@@ -12,14 +12,8 @@ const mutations = {
     ctx,
     info
   ) {
-    // Trim arguments
-    source = source.trim();
-    titleVi = titleVi.trim();
-
-    // Check startAt validity
-    if (isNaN(startAt) || startAt < 0) throw new Error('Invalid start at time');
-
     // Check if source is YouTube and extract ID from it
+    source = source.trim();
     const sourceYouTube = [
       { domain: 'https://youtube.com/watch?v=', length: 28 },
       { domain: 'http://youtube.com/watch?v=', length: 27 },
@@ -64,22 +58,57 @@ const mutations = {
       defaultAudioLanguage,
     } = res.data.items[0].snippet;
 
-    // Set default for empty arguments
-    addedBy = addedBy ? addedBy.trim() : 'Anonymous';
-    startAt = startAt ? startAt.trimp() : 0;
+    // Prepare mutation input arguments
+    const videoCreateInput = {
+      originId,
+      titleVi: titleVi.trim(),
+      originTitle: title,
+      originAuthor: channelTitle,
+      originLanguage: defaultAudioLanguage,
+      originThumbnailUrl: url,
+    };
+
+    // startAt validation
+    if (startAt) {
+      if (isNaN(startAt) || startAt < 0)
+        throw new Error('Invalid start at time');
+
+      videoCreateInput.startAt = startAt;
+    }
+
+    // addedBy validation
+    if (addedBy) videoCreateInput.addedBy = addedBy.trim();
+
+    // tags validation
+    if (tags) {
+      // Split string into array of unique items
+      tags = [...new Set(tags.split(' '))];
+
+      // Divide tags into new and old
+      const tagsConnect = [];
+      const tagsCreate = [];
+      for (const tag of tags) {
+        // Check individual tag length
+        if (tag.length > 63)
+          throw new Error('Each tag must be under 63 characters long');
+        // Query db for tag presence
+        await ctx.db.query.tag({ where: { text: tag } }).then(res => {
+          res
+            ? tagsConnect.push({ text: res.text })
+            : tagsCreate.push({ text: tag });
+        });
+      }
+
+      videoCreateInput.tags = {};
+      if (tagsConnect) videoCreateInput.tags.connect = [...tagsConnect];
+      if (tagsCreate) videoCreateInput.tags.create = [...tagsCreate];
+    }
 
     // Save video to db
     const video = await ctx.db.mutation.createVideo(
       {
         data: {
-          originId,
-          titleVi,
-          originTitle: title,
-          originAuthor: channelTitle,
-          originLanguage: defaultAudioLanguage,
-          originThumbnailUrl: url,
-          startAt,
-          addedBy,
+          ...videoCreateInput,
         },
       },
       info
