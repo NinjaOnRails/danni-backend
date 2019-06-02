@@ -124,6 +124,15 @@ const mutations = {
 
     return video;
   },
+  async deleteVideo(parent, { id, password }, ctx, info) {
+    if (!id || !(password === 'delete'))
+      throw new Error('Invalid delete password');
+    return ctx.db.mutation.deleteVideo({
+      where: {
+        id,
+      },
+    });
+  },
   async createAudio(
     parent,
     {

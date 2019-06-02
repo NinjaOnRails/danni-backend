@@ -11,7 +11,7 @@ type Video {
   tags: [Tag]!
   addedBy: String! @default(value: "Anonymous")
   startAt: Int! @default(value: 0)
-  audio: [Audio]! @relation(name: "AudioToVideo")
+  audio: [Audio]! @relation(name: "AudioToVideo", onDelete: CASCADE)
   caption: [Caption]! @relation(name: "CaptionToVideo")
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
@@ -21,7 +21,7 @@ type Audio {
   id: ID! @id
   source: String! @unique
   language: Language
-  video: Video @relation(name: "AudioToVideo")
+  video: Video @relation(name: "AudioToVideo", onDelete: SET_NULL)
   caption: Caption @relation(name: "AudioToCaption")
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
