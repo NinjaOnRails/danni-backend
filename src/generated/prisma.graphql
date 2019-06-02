@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/danni/danni-dev/dev
-# timestamp: Sat Jun 01 2019 16:59:36 GMT+0200 (Central European Summer Time)
+# timestamp: Sun Jun 02 2019 13:52:06 GMT+0200 (Central European Summer Time)
 
 type AggregateAudio {
   count: Int!
@@ -1512,6 +1512,7 @@ type Video implements Node {
   originLanguage: String
   originThumbnailUrl: String
   titleVi: String
+  defaultVolume: Int!
   tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
   addedBy: String!
   startAt: Int!
@@ -1540,6 +1541,7 @@ input VideoCreateInput {
   originLanguage: String
   originThumbnailUrl: String
   titleVi: String
+  defaultVolume: Int
   addedBy: String
   startAt: Int
   tags: TagCreateManyWithoutVideoInput
@@ -1571,6 +1573,7 @@ input VideoCreateWithoutAudioInput {
   originLanguage: String
   originThumbnailUrl: String
   titleVi: String
+  defaultVolume: Int
   addedBy: String
   startAt: Int
   tags: TagCreateManyWithoutVideoInput
@@ -1586,6 +1589,7 @@ input VideoCreateWithoutCaptionInput {
   originLanguage: String
   originThumbnailUrl: String
   titleVi: String
+  defaultVolume: Int
   addedBy: String
   startAt: Int
   tags: TagCreateManyWithoutVideoInput
@@ -1601,6 +1605,7 @@ input VideoCreateWithoutTagsInput {
   originLanguage: String
   originThumbnailUrl: String
   titleVi: String
+  defaultVolume: Int
   addedBy: String
   startAt: Int
   audio: AudioCreateManyWithoutVideoInput
@@ -1633,6 +1638,8 @@ enum VideoOrderByInput {
   originThumbnailUrl_DESC
   titleVi_ASC
   titleVi_DESC
+  defaultVolume_ASC
+  defaultVolume_DESC
   addedBy_ASC
   addedBy_DESC
   startAt_ASC
@@ -1652,6 +1659,7 @@ type VideoPreviousValues {
   originLanguage: String
   originThumbnailUrl: String
   titleVi: String
+  defaultVolume: Int!
   addedBy: String!
   startAt: Int!
   createdAt: DateTime!
@@ -1987,6 +1995,28 @@ input VideoScalarWhereInput {
 
   """All values not ending with the given string."""
   titleVi_not_ends_with: String
+  defaultVolume: Int
+
+  """All values that are not equal to given value."""
+  defaultVolume_not: Int
+
+  """All values that are contained in given list."""
+  defaultVolume_in: [Int!]
+
+  """All values that are not contained in given list."""
+  defaultVolume_not_in: [Int!]
+
+  """All values less than the given value."""
+  defaultVolume_lt: Int
+
+  """All values less than or equal the given value."""
+  defaultVolume_lte: Int
+
+  """All values greater than the given value."""
+  defaultVolume_gt: Int
+
+  """All values greater than or equal the given value."""
+  defaultVolume_gte: Int
   addedBy: String
 
   """All values that are not equal to given value."""
@@ -2140,6 +2170,7 @@ input VideoUpdateInput {
   originLanguage: String
   originThumbnailUrl: String
   titleVi: String
+  defaultVolume: Int
   addedBy: String
   startAt: Int
   tags: TagUpdateManyWithoutVideoInput
@@ -2155,6 +2186,7 @@ input VideoUpdateManyDataInput {
   originLanguage: String
   originThumbnailUrl: String
   titleVi: String
+  defaultVolume: Int
   addedBy: String
   startAt: Int
 }
@@ -2167,6 +2199,7 @@ input VideoUpdateManyMutationInput {
   originLanguage: String
   originThumbnailUrl: String
   titleVi: String
+  defaultVolume: Int
   addedBy: String
   startAt: Int
 }
@@ -2214,6 +2247,7 @@ input VideoUpdateWithoutAudioDataInput {
   originLanguage: String
   originThumbnailUrl: String
   titleVi: String
+  defaultVolume: Int
   addedBy: String
   startAt: Int
   tags: TagUpdateManyWithoutVideoInput
@@ -2228,6 +2262,7 @@ input VideoUpdateWithoutCaptionDataInput {
   originLanguage: String
   originThumbnailUrl: String
   titleVi: String
+  defaultVolume: Int
   addedBy: String
   startAt: Int
   tags: TagUpdateManyWithoutVideoInput
@@ -2242,6 +2277,7 @@ input VideoUpdateWithoutTagsDataInput {
   originLanguage: String
   originThumbnailUrl: String
   titleVi: String
+  defaultVolume: Int
   addedBy: String
   startAt: Int
   audio: AudioUpdateManyWithoutVideoInput
@@ -2598,6 +2634,28 @@ input VideoWhereInput {
 
   """All values not ending with the given string."""
   titleVi_not_ends_with: String
+  defaultVolume: Int
+
+  """All values that are not equal to given value."""
+  defaultVolume_not: Int
+
+  """All values that are contained in given list."""
+  defaultVolume_in: [Int!]
+
+  """All values that are not contained in given list."""
+  defaultVolume_not_in: [Int!]
+
+  """All values less than the given value."""
+  defaultVolume_lt: Int
+
+  """All values less than or equal the given value."""
+  defaultVolume_lte: Int
+
+  """All values greater than the given value."""
+  defaultVolume_gt: Int
+
+  """All values greater than or equal the given value."""
+  defaultVolume_gte: Int
   addedBy: String
 
   """All values that are not equal to given value."""

@@ -7,7 +7,7 @@ const mutations = {
   async createVideo(
     parent,
     {
-      data: { source, titleVi, addedBy, startAt, tags },
+      data: { source, titleVi, addedBy, startAt, tags, defaultVolume },
     },
     ctx,
     info
@@ -74,6 +74,13 @@ const mutations = {
         throw new Error('Invalid start at time');
 
       videoCreateInput.startAt = startAt;
+    }
+
+    // defaultVolume validation
+    if (defaultVolume) {
+      if (isNaN(defaultVolume) || defaultVolume > 100 || defaultVolume < 0)
+        throw new Error('Invalid default volume level');
+      videoCreateInput.defaultVolume = defaultVolume;
     }
 
     // addedBy validation

@@ -47,6 +47,7 @@ input CreateVideoInput {
   tags: String
   addedBy: String
   startAt: Int
+  defaultVolume: Int
 }
 
 input CreateAudioInput {

@@ -7,6 +7,7 @@ type Video {
   originLanguage: String
   originThumbnailUrl: String
   titleVi: String
+  defaultVolume: Int! @default(value: 0)
   tags: [Tag]!
   addedBy: String! @default(value: "Anonymous")
   startAt: Int! @default(value: 0)
