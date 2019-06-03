@@ -21,6 +21,12 @@ const mutations = {
       { domain: 'http://www.youtube.com/watch?v=', length: 31 },
       { domain: 'youtube.com/watch?v=', length: 20 },
       { domain: 'www.youtube.com/watch?v=', length: 24 },
+      { domain: 'https://youtu.be/', length: 17 },
+      { domain: 'https://www.youtu.be/', length: 21 },
+      { domain: 'http://youtu.be/', length: 16 },
+      { domain: 'http://www.youtu.be/', length: 20 },
+      { domain: 'youtu.be/', length: 9 },
+      { domain: 'www.youtu.be/', length: 13 },
     ];
     const isYouTube = sourceYouTube.find(value =>
       source.startsWith(value.domain)
