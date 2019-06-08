@@ -36,10 +36,20 @@ type Query {
 
 type Mutation {
   createVideo(data: CreateVideoInput): Video!
+  updateVideo(id: ID!, data: UpdateVideoInput): Video!
   deleteVideo(id: ID!, password: String!): Video
   createAudio(data: CreateAudioInput!): Audio!
   createCaption(data: CreateCaptionInput!): Caption!
   createTag(text: String!, video: ID!): Tag!
+}
+
+input UpdateVideoInput {
+  oldSource: String!
+  newSource: String
+  titleVi: String
+  tags: String
+  startAt: Int
+  defaultVolume: Int
 }
 
 input CreateVideoInput {
