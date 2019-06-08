@@ -85,9 +85,9 @@ module.exports = async (
     }
 
     videoCreateInput.tags = {};
-    if (tagsConnect) videoCreateInput.tags.connect = [...tagsConnect];
-    if (tagsCreate) videoCreateInput.tags.create = [...tagsCreate];
-    if (tagsDisconnect) videoCreateInput.tags.disconnect = [...tagsDisconnect];
+    if (tagsConnect.length) videoCreateInput.tags.connect = [...tagsConnect];
+    if (tagsCreate.length) videoCreateInput.tags.create = [...tagsCreate];
+    if (tagsDisconnect.length) videoCreateInput.tags.disconnect = [...tagsDisconnect];
   }
 
   return videoCreateInput;
