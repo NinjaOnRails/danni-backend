@@ -46,6 +46,7 @@ const mutations = {
       source = data.newSource;
     }
 
+    console.log(data)
     // Validate other input arguments
     const videoUpdateInput = await validateVideoInput(source, data, ctx, id);
 
