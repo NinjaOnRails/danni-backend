@@ -30,7 +30,8 @@ const mutations = {
 
     return video;
   },
-  async updateVideo(parent, { id, data }, ctx, info) {
+  async updateVideo(parent, { id, password, data }, ctx, info) {
+    if (password !== 'dracarys') throw new Error('Invalid password');
     let source = data.oldSource;
     if (data.newSource) {
       // Check if source is YouTube and extract ID from it
@@ -62,7 +63,7 @@ const mutations = {
     );
   },
   async deleteVideo(parent, { id, password }, ctx, info) {
-    if (!id || !(password === 'delete'))
+    if (!id || !(password === 'dracarys'))
       throw new Error('Invalid delete password');
     return ctx.db.mutation.deleteVideo({
       where: {

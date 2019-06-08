@@ -36,7 +36,7 @@ type Query {
 
 type Mutation {
   createVideo(data: CreateVideoInput): Video!
-  updateVideo(id: ID!, data: UpdateVideoInput): Video!
+  updateVideo(id: ID!, password: String!, data: UpdateVideoInput): Video!
   deleteVideo(id: ID!, password: String!): Video
   createAudio(data: CreateAudioInput!): Audio!
   createCaption(data: CreateCaptionInput!): Caption!
@@ -46,9 +46,8 @@ type Mutation {
 input UpdateVideoInput {
   oldSource: String!
   newSource: String
-  titleVi: String
+  titleVi: String!
   tags: String
-  startAt: Int
   defaultVolume: Int
 }
 
@@ -57,7 +56,6 @@ input CreateVideoInput {
   titleVi: String!
   tags: String
   addedBy: String
-  startAt: Int
   defaultVolume: Int
 }
 
