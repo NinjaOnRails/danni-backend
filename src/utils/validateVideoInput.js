@@ -27,7 +27,8 @@ module.exports = async (
   // Prepare mutation input arguments
   const videoCreateInput = {
     originId,
-    titleVi: titleVi.trim(),
+    titleVi: titleVi ? titleVi.trim() : undefined,
+    addedBy: addedBy ? addedBy.trim() : undefined,
     originTitle: title,
     originAuthor: channelTitle,
     originLanguage: defaultAudioLanguage,
@@ -47,9 +48,6 @@ module.exports = async (
       throw new Error('Invalid default volume level');
     videoCreateInput.defaultVolume = defaultVolume;
   }
-
-  // addedBy validation
-  if (addedBy) videoCreateInput.addedBy = addedBy.trim();
 
   // tags validation
   if (tags) {
@@ -87,7 +85,8 @@ module.exports = async (
     videoCreateInput.tags = {};
     if (tagsConnect.length) videoCreateInput.tags.connect = [...tagsConnect];
     if (tagsCreate.length) videoCreateInput.tags.create = [...tagsCreate];
-    if (tagsDisconnect.length) videoCreateInput.tags.disconnect = [...tagsDisconnect];
+    if (tagsDisconnect.length)
+      videoCreateInput.tags.disconnect = [...tagsDisconnect];
   }
 
   return videoCreateInput;

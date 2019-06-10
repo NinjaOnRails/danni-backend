@@ -31,24 +31,30 @@ const mutations = {
     return video;
   },
   async updateVideo(parent, { id, password, data }, ctx, info) {
+    // Check if edit password matches
     if (password !== 'dracarys') throw new Error('Invalid password');
-    let source = data.oldSource;
-    if (data.newSource) {
+
+    // Get Video originId
+    let { originId } = await ctx.db.query.video({
+      where: { id },
+    });
+
+    // New source
+    if (data.source) {
       // Check if source is YouTube and extract ID from it
-      const originId = extractYoutubeId(data.newSource);
+      const originId = extractYoutubeId(data.source);
 
       // Check if new video exists
       const video = await ctx.db.query.video({
         where: { originId },
       });
-      if (video && data.newSource !== data.oldSource)
+      if (video && data.source !== originId)
         throw new Error('Video already exists');
-      source = data.newSource;
+      originId = data.source;
     }
 
-    console.log(data)
     // Validate other input arguments
-    const videoUpdateInput = await validateVideoInput(source, data, ctx, id);
+    const videoUpdateInput = await validateVideoInput(originId, data, ctx, id);
 
     // Update video in db
     return ctx.db.mutation.updateVideo(
