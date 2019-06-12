@@ -2,7 +2,7 @@ const youtube = require('./youtube');
 
 module.exports = async (
   originId,
-  { titleVi, addedBy, startAt, tags, defaultVolume },
+  { titleVi, descriptionVi, addedBy, startAt, tags, defaultVolume },
   ctx,
   id = undefined
 ) => {
