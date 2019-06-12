@@ -53,6 +53,7 @@ input UpdateVideoInput {
 input CreateVideoInput {
   source: String!
   titleVi: String!
+  descriptionVi: String
   tags: String
   addedBy: String
   defaultVolume: Int

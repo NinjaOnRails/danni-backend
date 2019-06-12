@@ -26,6 +26,7 @@ module.exports = async (
   const videoCreateInput = {
     originId,
     titleVi: titleVi ? titleVi.trim() : undefined,
+    descriptionVi: descriptionVi ? descriptionVi.trim() : undefined,
     addedBy: addedBy ? addedBy.trim() : undefined,
     originTitle: title,
     originAuthor: channelTitle,

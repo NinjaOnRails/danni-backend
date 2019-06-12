@@ -1,5 +1,5 @@
 # source: https://danni-prod-5e73c28066.herokuapp.com/danni-backend/prod
-# timestamp: Wed Jun 12 2019 14:37:52 GMT+0200 (Central European Summer Time)
+# timestamp: Wed Jun 12 2019 15:01:47 GMT+0200 (Central European Summer Time)
 
 type AggregateAudio {
   count: Int!
@@ -1513,6 +1513,7 @@ type Video implements Node {
   originThumbnailUrl: String
   originThumbnailUrlSd: String
   titleVi: String
+  descriptionVi: String
   defaultVolume: Int!
   tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
   addedBy: String!
@@ -1543,6 +1544,7 @@ input VideoCreateInput {
   originThumbnailUrl: String
   originThumbnailUrlSd: String
   titleVi: String
+  descriptionVi: String
   defaultVolume: Int
   addedBy: String
   startAt: Int
@@ -1576,6 +1578,7 @@ input VideoCreateWithoutAudioInput {
   originThumbnailUrl: String
   originThumbnailUrlSd: String
   titleVi: String
+  descriptionVi: String
   defaultVolume: Int
   addedBy: String
   startAt: Int
@@ -1593,6 +1596,7 @@ input VideoCreateWithoutCaptionInput {
   originThumbnailUrl: String
   originThumbnailUrlSd: String
   titleVi: String
+  descriptionVi: String
   defaultVolume: Int
   addedBy: String
   startAt: Int
@@ -1610,6 +1614,7 @@ input VideoCreateWithoutTagsInput {
   originThumbnailUrl: String
   originThumbnailUrlSd: String
   titleVi: String
+  descriptionVi: String
   defaultVolume: Int
   addedBy: String
   startAt: Int
@@ -1645,6 +1650,8 @@ enum VideoOrderByInput {
   originThumbnailUrlSd_DESC
   titleVi_ASC
   titleVi_DESC
+  descriptionVi_ASC
+  descriptionVi_DESC
   defaultVolume_ASC
   defaultVolume_DESC
   addedBy_ASC
@@ -1667,6 +1674,7 @@ type VideoPreviousValues {
   originThumbnailUrl: String
   originThumbnailUrlSd: String
   titleVi: String
+  descriptionVi: String
   defaultVolume: Int!
   addedBy: String!
   startAt: Int!
@@ -2043,6 +2051,46 @@ input VideoScalarWhereInput {
 
   """All values not ending with the given string."""
   titleVi_not_ends_with: String
+  descriptionVi: String
+
+  """All values that are not equal to given value."""
+  descriptionVi_not: String
+
+  """All values that are contained in given list."""
+  descriptionVi_in: [String!]
+
+  """All values that are not contained in given list."""
+  descriptionVi_not_in: [String!]
+
+  """All values less than the given value."""
+  descriptionVi_lt: String
+
+  """All values less than or equal the given value."""
+  descriptionVi_lte: String
+
+  """All values greater than the given value."""
+  descriptionVi_gt: String
+
+  """All values greater than or equal the given value."""
+  descriptionVi_gte: String
+
+  """All values containing the given string."""
+  descriptionVi_contains: String
+
+  """All values not containing the given string."""
+  descriptionVi_not_contains: String
+
+  """All values starting with the given string."""
+  descriptionVi_starts_with: String
+
+  """All values not starting with the given string."""
+  descriptionVi_not_starts_with: String
+
+  """All values ending with the given string."""
+  descriptionVi_ends_with: String
+
+  """All values not ending with the given string."""
+  descriptionVi_not_ends_with: String
   defaultVolume: Int
 
   """All values that are not equal to given value."""
@@ -2219,6 +2267,7 @@ input VideoUpdateInput {
   originThumbnailUrl: String
   originThumbnailUrlSd: String
   titleVi: String
+  descriptionVi: String
   defaultVolume: Int
   addedBy: String
   startAt: Int
@@ -2236,6 +2285,7 @@ input VideoUpdateManyDataInput {
   originThumbnailUrl: String
   originThumbnailUrlSd: String
   titleVi: String
+  descriptionVi: String
   defaultVolume: Int
   addedBy: String
   startAt: Int
@@ -2250,6 +2300,7 @@ input VideoUpdateManyMutationInput {
   originThumbnailUrl: String
   originThumbnailUrlSd: String
   titleVi: String
+  descriptionVi: String
   defaultVolume: Int
   addedBy: String
   startAt: Int
@@ -2299,6 +2350,7 @@ input VideoUpdateWithoutAudioDataInput {
   originThumbnailUrl: String
   originThumbnailUrlSd: String
   titleVi: String
+  descriptionVi: String
   defaultVolume: Int
   addedBy: String
   startAt: Int
@@ -2315,6 +2367,7 @@ input VideoUpdateWithoutCaptionDataInput {
   originThumbnailUrl: String
   originThumbnailUrlSd: String
   titleVi: String
+  descriptionVi: String
   defaultVolume: Int
   addedBy: String
   startAt: Int
@@ -2331,6 +2384,7 @@ input VideoUpdateWithoutTagsDataInput {
   originThumbnailUrl: String
   originThumbnailUrlSd: String
   titleVi: String
+  descriptionVi: String
   defaultVolume: Int
   addedBy: String
   startAt: Int
@@ -2728,6 +2782,46 @@ input VideoWhereInput {
 
   """All values not ending with the given string."""
   titleVi_not_ends_with: String
+  descriptionVi: String
+
+  """All values that are not equal to given value."""
+  descriptionVi_not: String
+
+  """All values that are contained in given list."""
+  descriptionVi_in: [String!]
+
+  """All values that are not contained in given list."""
+  descriptionVi_not_in: [String!]
+
+  """All values less than the given value."""
+  descriptionVi_lt: String
+
+  """All values less than or equal the given value."""
+  descriptionVi_lte: String
+
+  """All values greater than the given value."""
+  descriptionVi_gt: String
+
+  """All values greater than or equal the given value."""
+  descriptionVi_gte: String
+
+  """All values containing the given string."""
+  descriptionVi_contains: String
+
+  """All values not containing the given string."""
+  descriptionVi_not_contains: String
+
+  """All values starting with the given string."""
+  descriptionVi_starts_with: String
+
+  """All values not starting with the given string."""
+  descriptionVi_not_starts_with: String
+
+  """All values ending with the given string."""
+  descriptionVi_ends_with: String
+
+  """All values not ending with the given string."""
+  descriptionVi_not_ends_with: String
   defaultVolume: Int
 
   """All values that are not equal to given value."""
