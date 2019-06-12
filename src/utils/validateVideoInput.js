@@ -16,9 +16,7 @@ module.exports = async (
 
   // Deconstruct response from Youtube
   const {
-    thumbnails: {
-      medium: { url },
-    },
+    thumbnails,
     channelTitle,
     localized: { title },
     defaultAudioLanguage,
@@ -32,7 +30,8 @@ module.exports = async (
     originTitle: title,
     originAuthor: channelTitle,
     originLanguage: defaultAudioLanguage,
-    originThumbnailUrl: url,
+    originThumbnailUrl: thumbnails.medium.url,
+    originThumbnailUrlMax: thumbnails.maxres.url,
   };
 
   // startAt validation

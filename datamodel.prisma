@@ -6,6 +6,7 @@ type Video {
   originPlatform: String! @default(value: "YouTube")
   originLanguage: String
   originThumbnailUrl: String
+  originThumbnailUrlMax: String
   titleVi: String
   defaultVolume: Int! @default(value: 0)
   tags: [Tag]!

@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/danni/danni-dev/dev
-# timestamp: Sun Jun 02 2019 13:52:06 GMT+0200 (Central European Summer Time)
+# timestamp: Wed Jun 12 2019 14:25:21 GMT+0200 (Central European Summer Time)
 
 type AggregateAudio {
   count: Int!
@@ -1511,6 +1511,7 @@ type Video implements Node {
   originPlatform: String!
   originLanguage: String
   originThumbnailUrl: String
+  originThumbnailUrlMax: String
   titleVi: String
   defaultVolume: Int!
   tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
@@ -1540,6 +1541,7 @@ input VideoCreateInput {
   originPlatform: String
   originLanguage: String
   originThumbnailUrl: String
+  originThumbnailUrlMax: String
   titleVi: String
   defaultVolume: Int
   addedBy: String
@@ -1572,6 +1574,7 @@ input VideoCreateWithoutAudioInput {
   originPlatform: String
   originLanguage: String
   originThumbnailUrl: String
+  originThumbnailUrlMax: String
   titleVi: String
   defaultVolume: Int
   addedBy: String
@@ -1588,6 +1591,7 @@ input VideoCreateWithoutCaptionInput {
   originPlatform: String
   originLanguage: String
   originThumbnailUrl: String
+  originThumbnailUrlMax: String
   titleVi: String
   defaultVolume: Int
   addedBy: String
@@ -1604,6 +1608,7 @@ input VideoCreateWithoutTagsInput {
   originPlatform: String
   originLanguage: String
   originThumbnailUrl: String
+  originThumbnailUrlMax: String
   titleVi: String
   defaultVolume: Int
   addedBy: String
@@ -1636,6 +1641,8 @@ enum VideoOrderByInput {
   originLanguage_DESC
   originThumbnailUrl_ASC
   originThumbnailUrl_DESC
+  originThumbnailUrlMax_ASC
+  originThumbnailUrlMax_DESC
   titleVi_ASC
   titleVi_DESC
   defaultVolume_ASC
@@ -1658,6 +1665,7 @@ type VideoPreviousValues {
   originPlatform: String!
   originLanguage: String
   originThumbnailUrl: String
+  originThumbnailUrlMax: String
   titleVi: String
   defaultVolume: Int!
   addedBy: String!
@@ -1955,6 +1963,46 @@ input VideoScalarWhereInput {
 
   """All values not ending with the given string."""
   originThumbnailUrl_not_ends_with: String
+  originThumbnailUrlMax: String
+
+  """All values that are not equal to given value."""
+  originThumbnailUrlMax_not: String
+
+  """All values that are contained in given list."""
+  originThumbnailUrlMax_in: [String!]
+
+  """All values that are not contained in given list."""
+  originThumbnailUrlMax_not_in: [String!]
+
+  """All values less than the given value."""
+  originThumbnailUrlMax_lt: String
+
+  """All values less than or equal the given value."""
+  originThumbnailUrlMax_lte: String
+
+  """All values greater than the given value."""
+  originThumbnailUrlMax_gt: String
+
+  """All values greater than or equal the given value."""
+  originThumbnailUrlMax_gte: String
+
+  """All values containing the given string."""
+  originThumbnailUrlMax_contains: String
+
+  """All values not containing the given string."""
+  originThumbnailUrlMax_not_contains: String
+
+  """All values starting with the given string."""
+  originThumbnailUrlMax_starts_with: String
+
+  """All values not starting with the given string."""
+  originThumbnailUrlMax_not_starts_with: String
+
+  """All values ending with the given string."""
+  originThumbnailUrlMax_ends_with: String
+
+  """All values not ending with the given string."""
+  originThumbnailUrlMax_not_ends_with: String
   titleVi: String
 
   """All values that are not equal to given value."""
@@ -2169,6 +2217,7 @@ input VideoUpdateInput {
   originPlatform: String
   originLanguage: String
   originThumbnailUrl: String
+  originThumbnailUrlMax: String
   titleVi: String
   defaultVolume: Int
   addedBy: String
@@ -2185,6 +2234,7 @@ input VideoUpdateManyDataInput {
   originPlatform: String
   originLanguage: String
   originThumbnailUrl: String
+  originThumbnailUrlMax: String
   titleVi: String
   defaultVolume: Int
   addedBy: String
@@ -2198,6 +2248,7 @@ input VideoUpdateManyMutationInput {
   originPlatform: String
   originLanguage: String
   originThumbnailUrl: String
+  originThumbnailUrlMax: String
   titleVi: String
   defaultVolume: Int
   addedBy: String
@@ -2246,6 +2297,7 @@ input VideoUpdateWithoutAudioDataInput {
   originPlatform: String
   originLanguage: String
   originThumbnailUrl: String
+  originThumbnailUrlMax: String
   titleVi: String
   defaultVolume: Int
   addedBy: String
@@ -2261,6 +2313,7 @@ input VideoUpdateWithoutCaptionDataInput {
   originPlatform: String
   originLanguage: String
   originThumbnailUrl: String
+  originThumbnailUrlMax: String
   titleVi: String
   defaultVolume: Int
   addedBy: String
@@ -2276,6 +2329,7 @@ input VideoUpdateWithoutTagsDataInput {
   originPlatform: String
   originLanguage: String
   originThumbnailUrl: String
+  originThumbnailUrlMax: String
   titleVi: String
   defaultVolume: Int
   addedBy: String
@@ -2594,6 +2648,46 @@ input VideoWhereInput {
 
   """All values not ending with the given string."""
   originThumbnailUrl_not_ends_with: String
+  originThumbnailUrlMax: String
+
+  """All values that are not equal to given value."""
+  originThumbnailUrlMax_not: String
+
+  """All values that are contained in given list."""
+  originThumbnailUrlMax_in: [String!]
+
+  """All values that are not contained in given list."""
+  originThumbnailUrlMax_not_in: [String!]
+
+  """All values less than the given value."""
+  originThumbnailUrlMax_lt: String
+
+  """All values less than or equal the given value."""
+  originThumbnailUrlMax_lte: String
+
+  """All values greater than the given value."""
+  originThumbnailUrlMax_gt: String
+
+  """All values greater than or equal the given value."""
+  originThumbnailUrlMax_gte: String
+
+  """All values containing the given string."""
+  originThumbnailUrlMax_contains: String
+
+  """All values not containing the given string."""
+  originThumbnailUrlMax_not_contains: String
+
+  """All values starting with the given string."""
+  originThumbnailUrlMax_starts_with: String
+
+  """All values not starting with the given string."""
+  originThumbnailUrlMax_not_starts_with: String
+
+  """All values ending with the given string."""
+  originThumbnailUrlMax_ends_with: String
+
+  """All values not ending with the given string."""
+  originThumbnailUrlMax_not_ends_with: String
   titleVi: String
 
   """All values that are not equal to given value."""
