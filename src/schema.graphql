@@ -46,6 +46,7 @@ type Mutation {
 input UpdateVideoInput {
   source: String
   titleVi: String
+  descriptionVi: String
   tags: String
   defaultVolume: Int
 }
