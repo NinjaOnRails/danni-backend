@@ -31,7 +31,7 @@ module.exports = async (
     originAuthor: channelTitle,
     originLanguage: defaultAudioLanguage,
     originThumbnailUrl: thumbnails.medium.url,
-    originThumbnailUrlMax: thumbnails.maxres.url,
+    originThumbnailUrlSd: thumbnails.standard.url,
   };
 
   // startAt validation
