@@ -10,6 +10,8 @@ module.exports = async (
   const res = await youtube.get('/videos', {
     params: {
       id: originId,
+      part: 'snippet',
+      key: process.env.YOUTUBE_API,
     },
   });
   if (!res.data.items.length) throw new Error('Video not found on Youtube');

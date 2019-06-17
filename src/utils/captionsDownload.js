@@ -10,6 +10,8 @@ module.exports = async (videoId, language) => {
   } = await youtube.get('/captions', {
     params: {
       videoId,
+      part: 'snippet',
+      key: process.env.YOUTUBE_API,
     },
   });
   if (!items) return null;
