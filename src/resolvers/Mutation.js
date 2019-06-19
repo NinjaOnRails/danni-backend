@@ -42,7 +42,7 @@ const mutations = {
     // New source
     if (data.source) {
       // Check if source is YouTube and extract ID from it
-      const originId = extractYoutubeId(data.source);
+      originId = extractYoutubeId(data.source);
 
       // Check if new video exists
       const video = await ctx.db.query.video({
