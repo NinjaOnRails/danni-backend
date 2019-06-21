@@ -11,10 +11,7 @@
   },
   "jest": {
     "globalSetup": "./tests/jest/globalSetup.js",
-    "globalTeardown": "./tests/jest/globalTeardown.js",
-    "setupFiles": [
-      "dotenv/config"
-    ]
+    "globalTeardown": "./tests/jest/globalTeardown.js"
   },
   "keywords": [],
   "author": "",
