@@ -81,7 +81,7 @@ const mutations = {
   async createAudio(
     parent,
     {
-      data: { source, language, video },
+      data: { source, language, video, author },
     },
     ctx,
     info
@@ -92,6 +92,7 @@ const mutations = {
         data: {
           source,
           language,
+          author,
           video: {
             connect: {
               id: video,

@@ -1,5 +1,5 @@
-# source: https://danni-prod-5e73c28066.herokuapp.com/danni-backend/prod
-# timestamp: Wed Jun 12 2019 15:01:47 GMT+0200 (Central European Summer Time)
+# source: https://eu1.prisma.sh/danni/dev/dev
+# timestamp: Thu Jul 11 2019 13:42:05 GMT+0200 (Central European Summer Time)
 
 type AggregateAudio {
   count: Int!
@@ -21,6 +21,7 @@ type Audio implements Node {
   id: ID!
   source: String!
   language: Language
+  author: String
   video: Video
   caption: Caption
   createdAt: DateTime!
@@ -41,6 +42,7 @@ input AudioCreateInput {
   id: ID
   source: String!
   language: Language
+  author: String
   video: VideoCreateOneWithoutAudioInput
   caption: CaptionCreateOneWithoutAudioInput
 }
@@ -59,6 +61,7 @@ input AudioCreateWithoutCaptionInput {
   id: ID
   source: String!
   language: Language
+  author: String
   video: VideoCreateOneWithoutAudioInput
 }
 
@@ -66,6 +69,7 @@ input AudioCreateWithoutVideoInput {
   id: ID
   source: String!
   language: Language
+  author: String
   caption: CaptionCreateOneWithoutAudioInput
 }
 
@@ -85,6 +89,8 @@ enum AudioOrderByInput {
   source_DESC
   language_ASC
   language_DESC
+  author_ASC
+  author_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -95,6 +101,7 @@ type AudioPreviousValues {
   id: ID!
   source: String!
   language: Language
+  author: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -198,6 +205,46 @@ input AudioScalarWhereInput {
 
   """All values that are not contained in given list."""
   language_not_in: [Language!]
+  author: String
+
+  """All values that are not equal to given value."""
+  author_not: String
+
+  """All values that are contained in given list."""
+  author_in: [String!]
+
+  """All values that are not contained in given list."""
+  author_not_in: [String!]
+
+  """All values less than the given value."""
+  author_lt: String
+
+  """All values less than or equal the given value."""
+  author_lte: String
+
+  """All values greater than the given value."""
+  author_gt: String
+
+  """All values greater than or equal the given value."""
+  author_gte: String
+
+  """All values containing the given string."""
+  author_contains: String
+
+  """All values not containing the given string."""
+  author_not_contains: String
+
+  """All values starting with the given string."""
+  author_starts_with: String
+
+  """All values not starting with the given string."""
+  author_not_starts_with: String
+
+  """All values ending with the given string."""
+  author_ends_with: String
+
+  """All values not ending with the given string."""
+  author_not_ends_with: String
   createdAt: DateTime
 
   """All values that are not equal to given value."""
@@ -284,6 +331,7 @@ input AudioSubscriptionWhereInput {
 input AudioUpdateInput {
   source: String
   language: Language
+  author: String
   video: VideoUpdateOneWithoutAudioInput
   caption: CaptionUpdateOneWithoutAudioInput
 }
@@ -291,11 +339,13 @@ input AudioUpdateInput {
 input AudioUpdateManyDataInput {
   source: String
   language: Language
+  author: String
 }
 
 input AudioUpdateManyMutationInput {
   source: String
   language: Language
+  author: String
 }
 
 input AudioUpdateManyWithoutCaptionInput {
@@ -330,12 +380,14 @@ input AudioUpdateManyWithWhereNestedInput {
 input AudioUpdateWithoutCaptionDataInput {
   source: String
   language: Language
+  author: String
   video: VideoUpdateOneWithoutAudioInput
 }
 
 input AudioUpdateWithoutVideoDataInput {
   source: String
   language: Language
+  author: String
   caption: CaptionUpdateOneWithoutAudioInput
 }
 
@@ -460,6 +512,46 @@ input AudioWhereInput {
 
   """All values that are not contained in given list."""
   language_not_in: [Language!]
+  author: String
+
+  """All values that are not equal to given value."""
+  author_not: String
+
+  """All values that are contained in given list."""
+  author_in: [String!]
+
+  """All values that are not contained in given list."""
+  author_not_in: [String!]
+
+  """All values less than the given value."""
+  author_lt: String
+
+  """All values less than or equal the given value."""
+  author_lte: String
+
+  """All values greater than the given value."""
+  author_gt: String
+
+  """All values greater than or equal the given value."""
+  author_gte: String
+
+  """All values containing the given string."""
+  author_contains: String
+
+  """All values not containing the given string."""
+  author_not_contains: String
+
+  """All values starting with the given string."""
+  author_starts_with: String
+
+  """All values not starting with the given string."""
+  author_not_starts_with: String
+
+  """All values ending with the given string."""
+  author_ends_with: String
+
+  """All values not ending with the given string."""
+  author_not_ends_with: String
   createdAt: DateTime
 
   """All values that are not equal to given value."""

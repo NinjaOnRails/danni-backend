@@ -23,6 +23,7 @@ type Audio {
   id: ID! @id
   source: String! @unique
   language: Language
+  author: String
   video: Video @relation(name: "AudioToVideo", onDelete: SET_NULL)
   caption: Caption @relation(name: "AudioToCaption")
   createdAt: DateTime! @createdAt

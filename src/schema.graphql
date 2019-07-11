@@ -63,6 +63,7 @@ input CreateVideoInput {
 input CreateAudioInput {
   source: String!
   language: Language
+  author: String
   video: ID
   caption: ID
 }
