@@ -40,6 +40,7 @@ type Mutation {
   updateVideo(id: ID!, password: String!, data: UpdateVideoInput): Video!
   deleteVideo(id: ID!, password: String!): Video
   createAudio(data: CreateAudioInput!): Audio!
+  updateAudio(id: ID!, data: UpdateAudioInput): Audio!
   createCaption(data: CreateCaptionInput!): Caption!
   createTag(text: String!, video: ID!): Tag!
   signup(data: signupInput): User!
@@ -49,6 +50,12 @@ type Mutation {
 
 type SuccessMessage {
   message: String
+}
+
+input UpdateAudioInput {
+  source: String
+  author: String
+  language: Language
 }
 
 input signupInput {

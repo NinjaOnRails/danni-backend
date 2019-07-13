@@ -83,7 +83,7 @@ const mutations = {
     info
   ) {
     // Save audio to db
-    const audio = await ctx.db.mutation.createAudio(
+    return ctx.db.mutation.createAudio(
       {
         data: {
           source,
@@ -98,8 +98,29 @@ const mutations = {
       },
       info
     );
-
-    return audio;
+  },
+  async updateAudio(
+    parent,
+    {
+      id,
+      data: { source, language, author },
+    },
+    ctx,
+    info
+  ) {
+    return ctx.db.mutation.updateAudio(
+      {
+        data: {
+          source,
+          language,
+          author,
+        },
+        where: {
+          id,
+        },
+      },
+      info
+    );
   },
   async createCaption(
     parent,
