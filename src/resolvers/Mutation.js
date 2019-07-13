@@ -1,3 +1,5 @@
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const extractYoutubeId = require('../utils/extractYoutubeId');
 const validateVideoInput = require('../utils/validateVideoInput');
 const captionDownload = require('../utils/captionsDownload');
@@ -7,12 +9,6 @@ const mutations = {
   async createVideo(parent, { data }, ctx, info) {
     // Check if source is YouTube and extract ID from it
     const originId = extractYoutubeId(data.source);
-
-    // Check if video exists
-    const videoExists = await ctx.db.query.video({
-      where: { originId },
-    });
-    if (videoExists) throw new Error('Video already exists');
 
     // Validate other input arguments
     const videoCreateInput = await validateVideoInput(originId, data, ctx);
@@ -172,6 +168,56 @@ const mutations = {
     if (!tag) throw new Error('Saving tag to db failed');
 
     return tag;
+  },
+  async signup(parent, { data }, ctx, info) {
+    // Lowercase email
+    if (data.email) data.email = data.email.toLowerCase();
+    // Hash password
+    const password = await bcrypt.hash(data.password, 10);
+    // Save user to db
+    const user = await ctx.db.mutation.createUser(
+      {
+        data: {
+          ...data,
+          password,
+        },
+      },
+      info
+    );
+    // Create JWT
+    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
+    // Set jwt as cookie on response
+    ctx.response.cookie('token', token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year cookie
+    });
+    // Return the user to the browser
+    return user;
+  },
+  async signin(parent, { username, password }, ctx, info) {
+    // Check if there is user with that username
+    const user = await ctx.db.query.user({ where: { username } });
+    if (!user) {
+      throw new Error(`No such user found for email ${username}`);
+    }
+    // Check if password is correct
+    const valid = await bcrypt.compare(password, user.password);
+    if (!valid) {
+      throw new Error('Invalid Password!');
+    }
+    // Generate JWT Token
+    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
+    // Set the cookie with the token
+    ctx.response.cookie('token', token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 365,
+    });
+    // Return the user
+    return user;
+  },
+  signout(parent, args, ctx, info) {
+    ctx.response.clearCookie('token');
+    return { message: 'Signed Out Successfully.' };
   },
 };
 

@@ -46,6 +46,15 @@ type Tag {
   video: [Video]!
 }
 
+type User {
+  id: ID! @id
+  username: String! @unique
+  password: String!
+  email: String @unique
+  name: String
+  displayName: String @unique
+}
+
 enum Language {
   ENGLISH
   CZECH
