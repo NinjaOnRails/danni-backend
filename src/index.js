@@ -8,7 +8,7 @@ const server = createServer();
 setInterval(function() {
   http.get(process.env.PRISMA_ENDPOINT);
   http.get(process.env.FRONTEND_URL);
-}, 1800000); // every 30 minutes
+}, 900000); // every 15 minutes
 
 server.start(
   {
