@@ -1,14 +1,8 @@
 require('dotenv').config({ path: 'variables.env' });
 const createServer = require('./createServer');
-const http = require('http');
 const db = require('./db');
 
 const server = createServer();
-
-setInterval(function() {
-  http.get(process.env.PRISMA_ENDPOINT);
-  http.get(process.env.FRONTEND_URL);
-}, 900000); // every 15 minutes
 
 server.start(
   {
