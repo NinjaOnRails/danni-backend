@@ -1,7 +1,11 @@
 require('dotenv').config({ path: 'variables.env' });
-require('newrelic');
+const http = require('http')
 const createServer = require('./createServer');
 const db = require('./db');
+
+setInterval(function() {
+  http.get(process.env.PRISMA_ENDPOINT);
+}, 900000); // every 15 minutes (900000)
 
 const server = createServer();
 
