@@ -1,4 +1,5 @@
 require('dotenv').config({ path: 'variables.env' });
+require('newrelic');
 const createServer = require('./createServer');
 const db = require('./db');
 
