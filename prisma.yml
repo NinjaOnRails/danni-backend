@@ -1,5 +1,5 @@
-# endpoint: ${env:PRISMA_ENDPOINT_DEV}
-endpoint: ${env:PRISMA_ENDPOINT_PROD}
+endpoint: ${env:PRISMA_ENDPOINT}
+# endpoint: ${env:PRISMA_ENDPOINT_PROD}
 secret: ${env:PRISMA_SECRET}
 datamodel: datamodel.prisma
 hooks:

@@ -53,6 +53,9 @@ type User {
   email: String @unique
   name: String
   displayName: String @unique
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: [Permission] @scalarList(strategy: RELATION)
 }
 
 enum Language {
@@ -75,4 +78,15 @@ enum Language {
   POLISH
   SWEDISH
   DUTCH
+}
+
+enum Permission {
+  ADMIN
+  USER
+  VIDEOCREATE
+  VIDEOUPDATE
+  VIDEODELETE
+  AUDIOCREATE
+  AUDIOUPDATE
+  AUDIODELETE
 }

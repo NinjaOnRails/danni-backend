@@ -1,5 +1,5 @@
 # source: https://danni-prod-5e73c28066.herokuapp.com/danni-backend/prod
-# timestamp: Sat Jul 13 2019 09:59:56 GMT+0200 (Central European Summer Time)
+# timestamp: Mon Jul 29 2019 15:48:10 GMT+0200 (Central European Summer Time)
 
 type AggregateAudio {
   count: Int!
@@ -1252,6 +1252,17 @@ type PageInfo {
   endCursor: String
 }
 
+enum Permission {
+  ADMIN
+  USER
+  VIDEOCREATE
+  VIDEOUPDATE
+  VIDEODELETE
+  AUDIOCREATE
+  AUDIOUPDATE
+  AUDIODELETE
+}
+
 type Query {
   videos(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Video]!
   audios(where: AudioWhereInput, orderBy: AudioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Audio]!
@@ -1616,6 +1627,9 @@ type User implements Node {
   email: String
   name: String
   displayName: String
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: [Permission!]!
 }
 
 """A connection to a list of items."""
@@ -1635,6 +1649,13 @@ input UserCreateInput {
   email: String
   name: String
   displayName: String
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: UserCreatepermissionsInput
+}
+
+input UserCreatepermissionsInput {
+  set: [Permission!]
 }
 
 """An edge in a connection."""
@@ -1659,6 +1680,10 @@ enum UserOrderByInput {
   name_DESC
   displayName_ASC
   displayName_DESC
+  resetToken_ASC
+  resetToken_DESC
+  resetTokenExpiry_ASC
+  resetTokenExpiry_DESC
 }
 
 type UserPreviousValues {
@@ -1668,6 +1693,9 @@ type UserPreviousValues {
   email: String
   name: String
   displayName: String
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: [Permission!]!
 }
 
 type UserSubscriptionPayload {
@@ -1713,6 +1741,9 @@ input UserUpdateInput {
   email: String
   name: String
   displayName: String
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: UserUpdatepermissionsInput
 }
 
 input UserUpdateManyMutationInput {
@@ -1721,6 +1752,13 @@ input UserUpdateManyMutationInput {
   email: String
   name: String
   displayName: String
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: UserUpdatepermissionsInput
+}
+
+input UserUpdatepermissionsInput {
+  set: [Permission!]
 }
 
 input UserWhereInput {
@@ -1972,6 +2010,68 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   displayName_not_ends_with: String
+  resetToken: String
+
+  """All values that are not equal to given value."""
+  resetToken_not: String
+
+  """All values that are contained in given list."""
+  resetToken_in: [String!]
+
+  """All values that are not contained in given list."""
+  resetToken_not_in: [String!]
+
+  """All values less than the given value."""
+  resetToken_lt: String
+
+  """All values less than or equal the given value."""
+  resetToken_lte: String
+
+  """All values greater than the given value."""
+  resetToken_gt: String
+
+  """All values greater than or equal the given value."""
+  resetToken_gte: String
+
+  """All values containing the given string."""
+  resetToken_contains: String
+
+  """All values not containing the given string."""
+  resetToken_not_contains: String
+
+  """All values starting with the given string."""
+  resetToken_starts_with: String
+
+  """All values not starting with the given string."""
+  resetToken_not_starts_with: String
+
+  """All values ending with the given string."""
+  resetToken_ends_with: String
+
+  """All values not ending with the given string."""
+  resetToken_not_ends_with: String
+  resetTokenExpiry: Float
+
+  """All values that are not equal to given value."""
+  resetTokenExpiry_not: Float
+
+  """All values that are contained in given list."""
+  resetTokenExpiry_in: [Float!]
+
+  """All values that are not contained in given list."""
+  resetTokenExpiry_not_in: [Float!]
+
+  """All values less than the given value."""
+  resetTokenExpiry_lt: Float
+
+  """All values less than or equal the given value."""
+  resetTokenExpiry_lte: Float
+
+  """All values greater than the given value."""
+  resetTokenExpiry_gt: Float
+
+  """All values greater than or equal the given value."""
+  resetTokenExpiry_gte: Float
 }
 
 input UserWhereUniqueInput {
