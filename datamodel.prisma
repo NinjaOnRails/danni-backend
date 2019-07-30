@@ -48,9 +48,8 @@ type Tag {
 
 type User {
   id: ID! @id
-  username: String! @unique
+  email: String! @unique
   password: String!
-  email: String @unique
   name: String
   displayName: String @unique
   resetToken: String

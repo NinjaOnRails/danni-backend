@@ -59,9 +59,8 @@ input UpdateAudioInput {
 }
 
 input signupInput {
-  username: String!
+  email: String!
   password: String!
-  email: String
   name: String
   displayName: String
 }

@@ -192,7 +192,7 @@ const mutations = {
   },
   async signup(parent, { data }, ctx, info) {
     // Lowercase email
-    if (data.email) data.email = data.email.toLowerCase();
+    data.email = data.email.toLowerCase();
     // Hash password
     const password = await bcrypt.hash(data.password, 10);
     // Save user to db
