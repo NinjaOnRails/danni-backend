@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/danni/dev/dev
-# timestamp: Tue Jul 30 2019 12:45:50 GMT+0200 (Central European Summer Time)
+# timestamp: Tue Jul 30 2019 13:34:10 GMT+0200 (Central European Summer Time)
 
 type AggregateAudio {
   count: Int!
@@ -1625,7 +1625,7 @@ type User implements Node {
   email: String!
   password: String!
   name: String
-  displayName: String
+  displayName: String!
   resetToken: String
   resetTokenExpiry: Float
   permissions: [Permission!]!
@@ -1646,7 +1646,7 @@ input UserCreateInput {
   email: String!
   password: String!
   name: String
-  displayName: String
+  displayName: String!
   resetToken: String
   resetTokenExpiry: Float
   permissions: UserCreatepermissionsInput
@@ -1687,7 +1687,7 @@ type UserPreviousValues {
   email: String!
   password: String!
   name: String
-  displayName: String
+  displayName: String!
   resetToken: String
   resetTokenExpiry: Float
   permissions: [Permission!]!

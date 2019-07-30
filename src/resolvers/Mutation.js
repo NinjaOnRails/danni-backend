@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const faker = require('faker');
 const extractYoutubeId = require('../utils/extractYoutubeId');
 const validateVideoInput = require('../utils/validateVideoInput');
 const captionDownload = require('../utils/captionsDownload');
@@ -193,8 +194,12 @@ const mutations = {
   async signup(parent, { data }, ctx, info) {
     // Lowercase email
     data.email = data.email.toLowerCase();
+
+    if (!data.displayName) data.displayName = faker.name.findName();
+
     // Hash password
     const password = await bcrypt.hash(data.password, 10);
+
     // Save user to db
     const user = await ctx.db.mutation.createUser(
       {
@@ -206,13 +211,16 @@ const mutations = {
       },
       info
     );
+
     // Create JWT
     const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
+
     // Set jwt as cookie on response
     ctx.response.cookie('token', token, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year cookie
     });
+
     // Return the user to the browser
     return user;
   },
