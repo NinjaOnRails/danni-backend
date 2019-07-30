@@ -1,9 +1,12 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const faker = require('faker');
+const { randomBytes } = require('crypto');
+const { promisify } = require('util');
 const extractYoutubeId = require('../utils/extractYoutubeId');
 const validateVideoInput = require('../utils/validateVideoInput');
 const captionDownload = require('../utils/captionsDownload');
+const sendGridResetToken = require('../utils/sendGridResetToken');
 // const languageTags = require('../config/languageTags');
 
 const mutations = {
@@ -195,7 +198,18 @@ const mutations = {
     // Lowercase email
     data.email = data.email.toLowerCase();
 
+    // Check if Email taken
+    const emailTaken = await ctx.db.exists.User({ email: data.email });
+    if (emailTaken) throw new Error('Email đã có người khác sử dụng');
+
     if (!data.displayName) data.displayName = faker.name.findName();
+
+    // Check if display name taken
+    const displayNameTaken = await ctx.db.exists.User({
+      displayName: data.displayName,
+    });
+    if (displayNameTaken)
+      throw new Error('Tên hiển thị đã có người khác sử dụng');
 
     // Hash password
     const password = await bcrypt.hash(data.password, 10);
@@ -224,16 +238,16 @@ const mutations = {
     // Return the user to the browser
     return user;
   },
-  async signin(parent, { username, password }, ctx, info) {
-    // Check if there is user with that username
-    const user = await ctx.db.query.user({ where: { username } });
+  async signin(parent, { email, password }, ctx, info) {
+    // Check if there is user with that email
+    const user = await ctx.db.query.user({ where: { email } });
     if (!user) {
-      throw new Error(`No such user found for email ${username}`);
+      throw new Error('Invalid Email or Password!');
     }
     // Check if password is correct
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) {
-      throw new Error('Invalid Password!');
+      throw new Error('Invalid Email or Password!');
     }
     // Generate JWT Token
     const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
@@ -247,7 +261,79 @@ const mutations = {
   },
   signout(parent, args, ctx, info) {
     ctx.response.clearCookie('token');
-    return { message: 'Signed Out Successfully.' };
+    return { message: 'Đăng Xuất thành công.' };
+  },
+  async requestReset(parent, { email }, ctx, info) {
+    // 1. Check if real user
+    const user = await ctx.db.query.user({ where: { email } });
+    if (!user) {
+      return { message: 'Reset token sent!' };
+    }
+
+    // 2. Set reset token and expiry
+    const randomBytesPromiseified = promisify(randomBytes);
+    const resetToken = (await randomBytesPromiseified(20)).toString('hex');
+    const resetTokenExpiry = Date.now() + 3600000; // 1 hour from now
+    await ctx.db.mutation.updateUser({
+      where: { email },
+      data: { resetToken, resetTokenExpiry },
+    });
+
+    // 3. Email reset token
+    try {
+      await sendGridResetToken(user.email, resetToken);
+    } catch (error) {
+      console.log(error);
+    }
+
+    // 4. Return message
+    return { message: 'Reset token sent!' };
+  },
+  async resetPassword(
+    parent,
+    { password, confirmPassword, resetToken },
+    ctx,
+    info
+  ) {
+    // 1. Check if passwords match
+    if (password !== confirmPassword)
+      throw new Error('Hai mật khẩu không khớp');
+
+    // 2. Check token and expiration
+    const [user] = await ctx.db.query.users({
+      where: {
+        resetToken,
+        resetTokenExpiry_gte: Date.now() - 3600000,
+      },
+    });
+    if (!user) {
+      throw new Error('Token is invalid or expired!');
+    }
+
+    // 3. Hash new password
+    const newPassword = await bcrypt.hash(password, 10);
+
+    // 4. Save new password and remove old resetToken fields from db
+    const updatedUser = await ctx.db.mutation.updateUser({
+      where: { email: user.email },
+      data: {
+        password: newPassword,
+        resetToken: null,
+        resetTokenExpiry: null,
+      },
+    });
+
+    // 5. Generate JWT
+    const token = jwt.sign({ userId: updatedUser.id }, process.env.APP_SECRET);
+
+    // 6. Set JWT cookie
+    ctx.response.cookie('token', token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 365,
+    });
+
+    // 7. return the new user
+    return updatedUser;
   },
 };
 
