@@ -5,22 +5,31 @@ const { randomBytes } = require('crypto');
 const { promisify } = require('util');
 const extractYoutubeId = require('../utils/extractYoutubeId');
 const validateVideoInput = require('../utils/validateVideoInput');
+const validateAudioInput = require('../utils/validateAudioInput');
 const captionDownload = require('../utils/captionsDownload');
 const sendGridResetToken = require('../utils/sendGridResetToken');
 // const languageTags = require('../config/languageTags');
 
 const mutations = {
   async createVideo(parent, { data }, ctx, info) {
+    // Check if user is logged in
+    if (!ctx.request.userId) throw new Error('Bạn chưa đăng nhập');
+
     // Check if source is YouTube and extract ID from it
     const originId = extractYoutubeId(data.source);
 
     // Validate other input arguments
-    const videoCreateInput = await validateVideoInput(originId, data, ctx);
+    const videoCreateInput = await validateVideoInput(originId);
 
     // Save video to db
     const video = await ctx.db.mutation.createVideo(
       {
         data: {
+          addedBy: {
+            connect: {
+              id: ctx.request.userId,
+            },
+          },
           ...videoCreateInput,
         },
       },
@@ -78,21 +87,26 @@ const mutations = {
       },
     });
   },
-  async createAudio(
-    parent,
-    {
-      data: { source, language, video, author },
-    },
-    ctx,
-    info
-  ) {
+  async createAudio(parent, data, ctx, info) {
+    const { source, language, video } = data;
+
+    // Check if user is logged in
+    if (!ctx.request.userId) throw new Error('Bạn chưa đăng nhập');
+
+    // Validate other input arguments
+    const audioCreateInput = await validateAudioInput(data, ctx);
+
     // Save audio to db
     return ctx.db.mutation.createAudio(
       {
         data: {
           source,
           language,
-          author,
+          author: {
+            connect: {
+              id: ctx.request.userId,
+            },
+          },
           video: {
             connect: {
               id: video,

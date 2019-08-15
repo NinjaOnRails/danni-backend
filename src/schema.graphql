@@ -52,6 +52,8 @@ type Mutation {
     password: String!
     confirmPassword: String!
   ): User!
+  createComment(video: ID, text: String!): Comment!
+  createReply(comment: ID, text: String!): Reply!
 }
 
 type SuccessMessage {
@@ -73,27 +75,27 @@ input signupInput {
 
 input UpdateVideoInput {
   source: String
-  titleVi: String
-  descriptionVi: String
+  title: String
+  description: String
   tags: String
   defaultVolume: Int
 }
 
 input CreateVideoInput {
   source: String!
-  titleVi: String!
-  descriptionVi: String
-  tags: String
-  addedBy: String
-  defaultVolume: Int
+  addedBy: ID
 }
 
 input CreateAudioInput {
   source: String!
   language: Language
-  author: String
+  author: ID
   video: ID
   caption: ID
+  title: String!
+  description: String
+  tags: String
+  defaultVolume: Int
 }
 
 input CreateCaptionInput {

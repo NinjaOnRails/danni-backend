@@ -1,6 +1,6 @@
-endpoint: ${env:PRISMA_ENDPOINT}
+endpoint: https://eu1.prisma.sh/danni/dev/dev
 # endpoint: ${env:PRISMA_ENDPOINT_PROD}
-secret: ${env:PRISMA_SECRET}
+secret: 'wC_!F&?rWj0#Q6wP/n-1'
 # secret: ${env:PRISMA_SECRET_PROD}
 datamodel: datamodel.prisma
 hooks:

@@ -7,14 +7,10 @@ type Video {
   originLanguage: String
   originThumbnailUrl: String
   originThumbnailUrlSd: String
-  titleVi: String
-  descriptionVi: String
-  defaultVolume: Int! @default(value: 0)
-  tags: [Tag]!
-  addedBy: String! @default(value: "Anonymous")
-  startAt: Int! @default(value: 0)
+  addedBy: User! @relation(name: "VideoToUser")
   audio: [Audio]! @relation(name: "AudioToVideo", onDelete: CASCADE)
-  caption: [Caption]! @relation(name: "CaptionToVideo")
+  comment: [Comment]! @relation(name: "CommentToVideo", onDelete: CASCADE)
+  caption: [Caption]! @relation(name: "CaptionToVideo", onDelete: CASCADE)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
@@ -23,8 +19,13 @@ type Audio {
   id: ID! @id
   source: String! @unique
   language: Language
-  author: String
-  video: Video @relation(name: "AudioToVideo", onDelete: SET_NULL)
+  title: String
+  description: String
+  tags: [Tag]!
+  defaultVolume: Int! @default(value: 0)
+  startAt: Int! @default(value: 0)
+  author: User @relation(name: "AudioToUser")
+  video: Video @relation(name: "AudioToVideo")
   caption: Caption @relation(name: "AudioToCaption")
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
@@ -43,7 +44,7 @@ type Caption {
 type Tag {
   id: ID! @id
   text: String! @unique
-  video: [Video]!
+  audio: [Audio]!
 }
 
 type User {
@@ -55,6 +56,29 @@ type User {
   resetToken: String
   resetTokenExpiry: Float
   permissions: [Permission] @scalarList(strategy: RELATION)
+  video: [Video]! @relation(name: "VideoToUser", onDelete: SET_NULL)
+  audio: [Audio]! @relation(name: "AudioToUser", onDelete: SET_NULL)
+  comment: [Comment]! @relation(name: "CommentToUser", onDelete: SET_NULL)
+  reply: [Reply]! @relation(name: "ReplyToUser", onDelete: SET_NULL)
+}
+
+type Comment {
+  id: ID! @id
+  video: Video! @relation(name: "CommentToVideo")
+  author: User! @relation(name: "CommentToUser")
+  reply: [Reply]! @relation(name: "ReplyToComment", onDelete: CASCADE)
+  text: String!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Reply {
+  id: ID! @id
+  comment: Comment! @relation(name: "ReplyToComment")
+  author: User! @relation(name: "ReplyToUser")
+  text: String!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 enum Language {
@@ -88,4 +112,7 @@ enum Permission {
   AUDIOCREATE
   AUDIOUPDATE
   AUDIODELETE
+  COMMENTCREATE
+  COMMENTCREATE
+  COMMENTUPDATE
 }
