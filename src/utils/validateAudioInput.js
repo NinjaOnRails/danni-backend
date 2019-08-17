@@ -1,12 +1,11 @@
-const youtube = require('./youtube');
-
 module.exports = async (
-  { title, description, startAt, tags, defaultVolume },
+  { source, title, description, startAt, tags, defaultVolume },
   ctx,
   id = undefined
 ) => {
   // Prepare mutation input arguments
   const audioCreateInput = {
+    source: source.trim(),
     title: title ? title.trim() : undefined,
     description: description ? description.trim() : undefined,
   };
@@ -58,6 +57,7 @@ module.exports = async (
       });
     }
 
+    // A tags to input arguments
     audioCreateInput.tags = {};
     if (tagsConnect.length) audioCreateInput.tags.connect = [...tagsConnect];
     if (tagsCreate.length) audioCreateInput.tags.create = [...tagsCreate];

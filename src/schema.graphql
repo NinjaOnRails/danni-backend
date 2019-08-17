@@ -33,10 +33,11 @@ type Query {
   audiosConnection(where: AudioWhereInput): AudioConnection!
   captionsConnection(where: CaptionWhereInput): CaptionConnection!
   currentUser: User
+  cloudinaryAuth(source: String!, language: Language): CloudinarySignature
 }
 
 type Mutation {
-  createVideo(data: CreateVideoInput): Video!
+  createVideo(source: String!, language: String): Video!
   updateVideo(id: ID!, password: String!, data: UpdateVideoInput): Video!
   deleteVideo(id: ID!, password: String!): Video
   createAudio(data: CreateAudioInput!): Audio!
@@ -60,6 +61,11 @@ type SuccessMessage {
   message: String
 }
 
+type CloudinarySignature {
+  signature: String
+  timestamp: String
+}
+
 input UpdateAudioInput {
   source: String
   author: String
@@ -81,21 +87,14 @@ input UpdateVideoInput {
   defaultVolume: Int
 }
 
-input CreateVideoInput {
-  source: String!
-  addedBy: ID
-}
-
 input CreateAudioInput {
   source: String!
-  language: Language
-  author: ID
-  video: ID
-  caption: ID
+  language: Language!
   title: String!
   description: String
   tags: String
   defaultVolume: Int
+  video: ID!
 }
 
 input CreateCaptionInput {

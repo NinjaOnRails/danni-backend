@@ -2,11 +2,14 @@ type Video {
   id: ID! @id
   originId: String! @unique
   originTitle: String!
+  originDescription: String
   originAuthor: String
   originPlatform: String! @default(value: "YouTube")
   originLanguage: String
   originThumbnailUrl: String
   originThumbnailUrlSd: String
+  originTags: [Tag]!
+  language: Language
   addedBy: User! @relation(name: "VideoToUser")
   audio: [Audio]! @relation(name: "AudioToVideo", onDelete: CASCADE)
   comment: [Comment]! @relation(name: "CommentToVideo", onDelete: CASCADE)
@@ -19,7 +22,7 @@ type Audio {
   id: ID! @id
   source: String! @unique
   language: Language
-  title: String
+  title: String!
   description: String
   tags: [Tag]!
   defaultVolume: Int! @default(value: 0)

@@ -11,18 +11,24 @@ const sendGridResetToken = require('../utils/sendGridResetToken');
 // const languageTags = require('../config/languageTags');
 
 const mutations = {
-  async createVideo(parent, { data }, ctx, info) {
+  async createVideo(parent, { source, language }, ctx, info) {
     // Check if user is logged in
     if (!ctx.request.userId) throw new Error('Bạn chưa đăng nhập');
 
     // Check if source is YouTube and extract ID from it
-    const originId = extractYoutubeId(data.source);
+    const originId = extractYoutubeId(source);
+
+    // Check if video exists
+    let video = await ctx.db.query.video({
+      where: { originId },
+    });
+    if (video) return video;
 
     // Validate other input arguments
-    const videoCreateInput = await validateVideoInput(originId);
+    const videoCreateInput = await validateVideoInput(originId, ctx);
 
     // Save video to db
-    const video = await ctx.db.mutation.createVideo(
+    video = await ctx.db.mutation.createVideo(
       {
         data: {
           addedBy: {
@@ -31,6 +37,7 @@ const mutations = {
             },
           },
           ...videoCreateInput,
+          language,
         },
       },
       info
@@ -87,9 +94,7 @@ const mutations = {
       },
     });
   },
-  async createAudio(parent, data, ctx, info) {
-    const { source, language, video } = data;
-
+  async createAudio(parent, {data}, ctx, info) {
     // Check if user is logged in
     if (!ctx.request.userId) throw new Error('Bạn chưa đăng nhập');
 
@@ -100,8 +105,8 @@ const mutations = {
     return ctx.db.mutation.createAudio(
       {
         data: {
-          source,
-          language,
+          ...audioCreateInput,
+          language: data.language,
           author: {
             connect: {
               id: ctx.request.userId,
@@ -109,7 +114,7 @@ const mutations = {
           },
           video: {
             connect: {
-              id: video,
+              id: data.video,
             },
           },
         },

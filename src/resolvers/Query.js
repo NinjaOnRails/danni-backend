@@ -1,4 +1,5 @@
 const { forwardTo } = require('prisma-binding');
+const cloudinary = require('../utils/cloudinary');
 
 const Query = {
   videos: forwardTo('db'),
@@ -10,9 +11,7 @@ const Query = {
   tags: forwardTo('db'),
   currentUser(parent, args, ctx, info) {
     // Check if there is current user ID
-    if (!ctx.request.userId) {
-      return null;
-    }
+    if (!ctx.request.userId) return null;
 
     return ctx.db.query.user(
       {
@@ -22,6 +21,24 @@ const Query = {
       },
       info
     );
+  },
+  cloudinaryAuth(
+    parent,
+    { source, language },
+    {
+      request: { userId },
+    },
+    info
+  ) {
+    // Check if there is current user ID
+    if (!userId) throw new Error('Bạn chưa đăng nhập');
+
+    const { signature, timestamp } = cloudinary(source, userId, language);
+
+    return {
+      signature,
+      timestamp,
+    };
   },
 };
 
