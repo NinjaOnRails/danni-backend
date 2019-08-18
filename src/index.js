@@ -29,6 +29,12 @@ server.express.use(async (req, res, next) => {
   next();
 });
 
+// Ping itself every 30min to stay awake on Heroku
+var http = require('http');
+setInterval(function() {
+  http.get('https://dannitv.herokuapp.com').then(res => console.log(res));
+}, 300000);
+
 server.start(
   {
     cors: {

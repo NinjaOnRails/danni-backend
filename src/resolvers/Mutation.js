@@ -201,7 +201,7 @@ const mutations = {
   async createTag(parent, { text, video }, ctx, info) {
     const tag = ctx.db.mutation.createTag({
       data: {
-        text,
+        text: text.trim(),
         video: {
           connect: {
             id: video,
@@ -214,14 +214,17 @@ const mutations = {
     return tag;
   },
   async signup(parent, { data }, ctx, info) {
-    // Lowercase email
-    data.email = data.email.toLowerCase();
-
+    // Lowercase email and trim arguments
+    data.email = data.email.toLowerCase().trim();
+    data.name = data.name ? data.name.trim() : ''
+    
+    
     // Check if Email taken
     const emailTaken = await ctx.db.exists.User({ email: data.email });
     if (emailTaken) throw new Error('Email đã có người khác sử dụng');
-
+    
     if (!data.displayName) data.displayName = faker.name.findName();
+    data.displayName = data.displayName.trim()
 
     // Check if display name taken
     const displayNameTaken = await ctx.db.exists.User({
