@@ -29,12 +29,6 @@ server.express.use(async (req, res, next) => {
   next();
 });
 
-// Ping itself every 30min to stay awake on Heroku
-var http = require('http');
-setInterval(function() {
-  http.get('https://dannitv.herokuapp.com').then(res => console.log(res));
-}, 300000);
-
 server.start(
   {
     cors: {
@@ -50,3 +44,8 @@ server.start(
     console.log(`Server is now running on port http://localhost:${deets.port}`);
   }
 );
+
+// Ping itself every 15min to stay awake on Heroku
+setInterval(() => {
+  fetch('https://dannitv.herokuapp.com');
+}, 900000);
