@@ -6,7 +6,7 @@ module.exports = (source, userId, language) => {
     public_id: `${source}_${userId}_${language}`,
     tags: `${userId},${source},${timestamp},${language}`,
     timestamp,
-    upload_preset: 'danni-audio',
+    upload_preset: process.env.CLOUDINARY_UPLOAD_PRESET_AUDIO,
   };
 
   return {
