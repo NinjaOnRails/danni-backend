@@ -94,7 +94,7 @@ const mutations = {
       },
     });
   },
-  async createAudio(parent, {data}, ctx, info) {
+  async createAudio(parent, { data }, ctx, info) {
     // Check if user is logged in
     if (!ctx.request.userId) throw new Error('Bạn chưa đăng nhập');
 
@@ -216,15 +216,14 @@ const mutations = {
   async signup(parent, { data }, ctx, info) {
     // Lowercase email and trim arguments
     data.email = data.email.toLowerCase().trim();
-    data.name = data.name ? data.name.trim() : ''
-    
-    
+    data.name = data.name ? data.name.trim() : '';
+
     // Check if Email taken
     const emailTaken = await ctx.db.exists.User({ email: data.email });
     if (emailTaken) throw new Error('Email đã có người khác sử dụng');
-    
+
     if (!data.displayName) data.displayName = faker.name.findName();
-    data.displayName = data.displayName.trim()
+    data.displayName = data.displayName.trim();
 
     // Check if display name taken
     const displayNameTaken = await ctx.db.exists.User({
@@ -254,6 +253,7 @@ const mutations = {
     // Set jwt as cookie on response
     ctx.response.cookie('token', token, {
       httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year cookie
     });
 
@@ -274,8 +274,11 @@ const mutations = {
     // Generate JWT Token
     const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
     // Set the cookie with the token
+    console.log(process.env.NODE_ENV);
+    console.log(process.env.NODE_ENV === 'production');
     ctx.response.cookie('token', token, {
       httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
       maxAge: 1000 * 60 * 60 * 24 * 365,
     });
     // Return the user
