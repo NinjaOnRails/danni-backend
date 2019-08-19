@@ -248,7 +248,7 @@ const mutations = {
     );
 
     // Create JWT
-    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
+    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET, { expiresIn: '365d' });
 
     // Set jwt as cookie on response
     ctx.response.cookie('token', token, {
@@ -266,19 +266,23 @@ const mutations = {
     if (!user) {
       throw new Error('Invalid Email or Password!');
     }
+
     // Check if password is correct
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) {
       throw new Error('Invalid Email or Password!');
     }
+
     // Generate JWT Token
-    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
+    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET, { expiresIn: '365d' });
+
     // Set the cookie with the token
     ctx.response.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       maxAge: 1000 * 60 * 60 * 24 * 365,
     });
+    
     // Return the user
     return user;
   },
