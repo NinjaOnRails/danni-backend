@@ -274,8 +274,6 @@ const mutations = {
     // Generate JWT Token
     const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
     // Set the cookie with the token
-    console.log(process.env.NODE_ENV);
-    console.log(process.env.NODE_ENV === 'production');
     ctx.response.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
