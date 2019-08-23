@@ -248,7 +248,9 @@ const mutations = {
     );
 
     // Create JWT
-    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET, { expiresIn: '365d' });
+    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET, {
+      expiresIn: '365d',
+    });
 
     // Set jwt as cookie on response
     ctx.response.cookie('token', token, {
@@ -261,6 +263,8 @@ const mutations = {
     return user;
   },
   async signin(parent, { email, password }, ctx, info) {
+    email = email.toLowerCase().trim();
+
     // Check if there is user with that email
     const user = await ctx.db.query.user({ where: { email } });
     if (!user) {
@@ -274,7 +278,9 @@ const mutations = {
     }
 
     // Generate JWT Token
-    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET, { expiresIn: '365d' });
+    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET, {
+      expiresIn: '365d',
+    });
 
     // Set the cookie with the token
     ctx.response.cookie('token', token, {
@@ -282,7 +288,7 @@ const mutations = {
       secure: process.env.NODE_ENV === 'production',
       maxAge: 1000 * 60 * 60 * 24 * 365,
     });
-    
+
     // Return the user
     return user;
   },
