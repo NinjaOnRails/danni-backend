@@ -248,7 +248,7 @@ const mutations = {
     );
 
     // Create JWT
-    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET, {
+    const token = jwt.sign({ userId: user.id }, process.env.COOKIE_SECRET, {
       expiresIn: '365d',
     });
 
@@ -256,7 +256,8 @@ const mutations = {
     ctx.response.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year cookie
+      SameSite=strict,
+      maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year cookie,
     });
 
     // Return the user to the browser
@@ -278,7 +279,7 @@ const mutations = {
     }
 
     // Generate JWT Token
-    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET, {
+    const token = jwt.sign({ userId: user.id }, process.env.COOKIE_SECRET, {
       expiresIn: '365d',
     });
 
@@ -286,6 +287,7 @@ const mutations = {
     ctx.response.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
+      SameSite=strict,
       maxAge: 1000 * 60 * 60 * 24 * 365,
     });
 
@@ -357,11 +359,13 @@ const mutations = {
     });
 
     // 5. Generate JWT
-    const token = jwt.sign({ userId: updatedUser.id }, process.env.APP_SECRET);
+    const token = jwt.sign({ userId: updatedUser.id }, process.env.COOKIE_SECRET);
 
     // 6. Set JWT cookie
     ctx.response.cookie('token', token, {
       httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      SameSite=strict,
       maxAge: 1000 * 60 * 60 * 24 * 365,
     });
 
