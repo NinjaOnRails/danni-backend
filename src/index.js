@@ -47,5 +47,5 @@ server.start(
 
 // Ping itself every 15min to stay awake on Heroku
 setInterval(() => {
-  fetch('https://dannitv.herokuapp.com');
+  fetch('https://dannitv2.herokuapp.com');
 }, 900000);
