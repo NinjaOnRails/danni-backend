@@ -7,7 +7,9 @@ module.exports = async (
   const audioCreateInput = {
     source: source.trim(),
     title: title ? title.trim().substring(0, 99) : undefined,
-    description: description ? description.trim().substring(0, 4999) : undefined,
+    description: description
+      ? description.trim().substring(0, 4999)
+      : undefined,
     duration,
   };
 
@@ -46,10 +48,10 @@ module.exports = async (
     // Divide tags into new and old (and to disconnect)
     const tagsConnect = [];
     const tagsCreate = [];
-    for (const tag of tags) {
-      // Check individual tag length
-      if (tag.length > 63)
-        throw new Error('Each tag must be under 63 characters long');
+    for (let tag of tags) {
+      // Limit each tag length to 30 chars
+      tag = tag.substring(0, 29);
+
       // Query db for tag presence
       await ctx.db.query.tag({ where: { text: tag } }).then(res => {
         res
