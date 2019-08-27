@@ -268,7 +268,6 @@ const mutations = {
     ctx.response.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year cookie,
     });
 
@@ -299,7 +298,6 @@ const mutations = {
     ctx.response.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: true,
       maxAge: 1000 * 60 * 60 * 24 * 365,
     });
 
@@ -380,7 +378,6 @@ const mutations = {
     ctx.response.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: true,
       maxAge: 1000 * 60 * 60 * 24 * 365,
     });
 
