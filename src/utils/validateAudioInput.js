@@ -1,5 +1,5 @@
 module.exports = async (
-  { source, title, description, startAt, tags, defaultVolume },
+  { source, title, description, startAt, tags, defaultVolume, duration },
   ctx,
   id = undefined
 ) => {
@@ -8,6 +8,7 @@ module.exports = async (
     source: source.trim(),
     title: title ? title.trim() : undefined,
     description: description ? description.trim() : undefined,
+    duration,
   };
 
   // startAt validation

@@ -1,27 +1,51 @@
+const moment = require('moment');
 const youtube = require('./youtube');
 
 module.exports = async (originId, ctx, id = undefined) => {
-  // Fetch info from Youtube
-  const res = await youtube.get('/videos', {
+  // Fetch info and deconstruct response from Youtube
+  const {
+    data: {
+      items: [
+        {
+          snippet: {
+            thumbnails,
+            channelTitle,
+            localized: { title, description },
+            defaultAudioLanguage,
+            tags,
+          },
+        },
+      ],
+    },
+  } = await youtube.get('/videos', {
     params: {
       id: originId,
       part: 'snippet',
       key: process.env.YOUTUBE_API,
     },
   });
-  if (!res.data.items.length) throw new Error('Video not found on Youtube');
+  if (!channelTitle) throw new Error('Video not found on Youtube');
 
-  // Deconstruct response from Youtube
   const {
-    thumbnails,
-    channelTitle,
-    localized: { title, description },
-    defaultAudioLanguage,
-    tags,
-  } = res.data.items[0].snippet;
+    data: {
+      items: [
+        {
+          contentDetails: { duration },
+        },
+      ],
+    },
+  } = await youtube.get('/videos', {
+    params: {
+      id: originId,
+      part: 'contentDetails',
+      key: process.env.YOUTUBE_API,
+    },
+  });
+  if (!duration) throw new Error('Video not found on Youtube');
 
   // Prepare mutation input arguments
   const videoCreateInput = {
+    duration: moment.duration(duration, moment.ISO_8601).asSeconds(), // Convert default returned YouTube duration from ISO8601 to seconds
     originId,
     originTitle: title,
     originDescription: description,

@@ -98,6 +98,18 @@ const mutations = {
     // Check if user is logged in
     if (!ctx.request.userId) throw new Error('Bạn chưa đăng nhập');
 
+    // Check if user already added Audio to this Video in the same language
+    const audios = await ctx.db.query.audios({
+      where: {
+        AND: [
+          { video: { id: data.video } },
+          { author: { id: ctx.request.userId } },
+          { language: data.language}
+        ],
+      },
+    });
+    if (audios.length) throw new Error('Mỗi người chỉ được đăng 1 audio cho mỗi video trong ngôn ngữ này');
+
     // Validate other input arguments
     const audioCreateInput = await validateAudioInput(data, ctx);
 
@@ -256,7 +268,7 @@ const mutations = {
     ctx.response.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      SameSite=strict,
+      sameSite: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year cookie,
     });
 
@@ -287,7 +299,7 @@ const mutations = {
     ctx.response.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      SameSite=strict,
+      sameSite: true,
       maxAge: 1000 * 60 * 60 * 24 * 365,
     });
 
@@ -359,13 +371,16 @@ const mutations = {
     });
 
     // 5. Generate JWT
-    const token = jwt.sign({ userId: updatedUser.id }, process.env.COOKIE_SECRET);
+    const token = jwt.sign(
+      { userId: updatedUser.id },
+      process.env.COOKIE_SECRET
+    );
 
     // 6. Set JWT cookie
     ctx.response.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      SameSite=strict,
+      sameSite: true,
       maxAge: 1000 * 60 * 60 * 24 * 365,
     });
 
