@@ -93,7 +93,7 @@ input CreateAudioInput {
   title: String!
   description: String
   tags: String
-  duration: Int
+  duration: Int!
   defaultVolume: Int
   video: ID!
 }
