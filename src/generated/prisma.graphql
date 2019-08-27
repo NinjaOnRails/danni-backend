@@ -1,5 +1,5 @@
-# source: https://eu1.prisma.sh/danni/dev/dev
-# timestamp: Tue Aug 27 2019 14:22:53 GMT+0200 (Central European Summer Time)
+# source: https://danni-19aba07fdc.herokuapp.com/danni-2-0/prod
+# timestamp: Tue Aug 27 2019 16:27:53 GMT+0200 (Central European Summer Time)
 
 type AggregateAudio {
   count: Int!
@@ -35,7 +35,7 @@ type Audio implements Node {
   language: Language
   title: String!
   description: String
-  duration: Float
+  duration: Int
   tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
   defaultVolume: Int!
   startAt: Int!
@@ -62,7 +62,7 @@ input AudioCreateInput {
   language: Language
   title: String!
   description: String
-  duration: Float
+  duration: Int
   defaultVolume: Int
   startAt: Int
   tags: TagCreateManyWithoutAudioInput
@@ -97,7 +97,7 @@ input AudioCreateWithoutAuthorInput {
   language: Language
   title: String!
   description: String
-  duration: Float
+  duration: Int
   defaultVolume: Int
   startAt: Int
   tags: TagCreateManyWithoutAudioInput
@@ -111,7 +111,7 @@ input AudioCreateWithoutCaptionInput {
   language: Language
   title: String!
   description: String
-  duration: Float
+  duration: Int
   defaultVolume: Int
   startAt: Int
   tags: TagCreateManyWithoutAudioInput
@@ -125,7 +125,7 @@ input AudioCreateWithoutTagsInput {
   language: Language
   title: String!
   description: String
-  duration: Float
+  duration: Int
   defaultVolume: Int
   startAt: Int
   author: UserCreateOneWithoutAudioInput
@@ -139,7 +139,7 @@ input AudioCreateWithoutVideoInput {
   language: Language
   title: String!
   description: String
-  duration: Float
+  duration: Int
   defaultVolume: Int
   startAt: Int
   tags: TagCreateManyWithoutAudioInput
@@ -185,7 +185,7 @@ type AudioPreviousValues {
   language: Language
   title: String!
   description: String
-  duration: Float
+  duration: Int
   defaultVolume: Int!
   startAt: Int!
   createdAt: DateTime!
@@ -371,28 +371,28 @@ input AudioScalarWhereInput {
 
   """All values not ending with the given string."""
   description_not_ends_with: String
-  duration: Float
+  duration: Int
 
   """All values that are not equal to given value."""
-  duration_not: Float
+  duration_not: Int
 
   """All values that are contained in given list."""
-  duration_in: [Float!]
+  duration_in: [Int!]
 
   """All values that are not contained in given list."""
-  duration_not_in: [Float!]
+  duration_not_in: [Int!]
 
   """All values less than the given value."""
-  duration_lt: Float
+  duration_lt: Int
 
   """All values less than or equal the given value."""
-  duration_lte: Float
+  duration_lte: Int
 
   """All values greater than the given value."""
-  duration_gt: Float
+  duration_gt: Int
 
   """All values greater than or equal the given value."""
-  duration_gte: Float
+  duration_gte: Int
   defaultVolume: Int
 
   """All values that are not equal to given value."""
@@ -525,7 +525,7 @@ input AudioUpdateInput {
   language: Language
   title: String
   description: String
-  duration: Float
+  duration: Int
   defaultVolume: Int
   startAt: Int
   tags: TagUpdateManyWithoutAudioInput
@@ -539,7 +539,7 @@ input AudioUpdateManyDataInput {
   language: Language
   title: String
   description: String
-  duration: Float
+  duration: Int
   defaultVolume: Int
   startAt: Int
 }
@@ -549,7 +549,7 @@ input AudioUpdateManyMutationInput {
   language: Language
   title: String
   description: String
-  duration: Float
+  duration: Int
   defaultVolume: Int
   startAt: Int
 }
@@ -612,7 +612,7 @@ input AudioUpdateWithoutAuthorDataInput {
   language: Language
   title: String
   description: String
-  duration: Float
+  duration: Int
   defaultVolume: Int
   startAt: Int
   tags: TagUpdateManyWithoutAudioInput
@@ -625,7 +625,7 @@ input AudioUpdateWithoutCaptionDataInput {
   language: Language
   title: String
   description: String
-  duration: Float
+  duration: Int
   defaultVolume: Int
   startAt: Int
   tags: TagUpdateManyWithoutAudioInput
@@ -638,7 +638,7 @@ input AudioUpdateWithoutTagsDataInput {
   language: Language
   title: String
   description: String
-  duration: Float
+  duration: Int
   defaultVolume: Int
   startAt: Int
   author: UserUpdateOneWithoutAudioInput
@@ -651,7 +651,7 @@ input AudioUpdateWithoutVideoDataInput {
   language: Language
   title: String
   description: String
-  duration: Float
+  duration: Int
   defaultVolume: Int
   startAt: Int
   tags: TagUpdateManyWithoutAudioInput
@@ -882,28 +882,28 @@ input AudioWhereInput {
 
   """All values not ending with the given string."""
   description_not_ends_with: String
-  duration: Float
+  duration: Int
 
   """All values that are not equal to given value."""
-  duration_not: Float
+  duration_not: Int
 
   """All values that are contained in given list."""
-  duration_in: [Float!]
+  duration_in: [Int!]
 
   """All values that are not contained in given list."""
-  duration_not_in: [Float!]
+  duration_not_in: [Int!]
 
   """All values less than the given value."""
-  duration_lt: Float
+  duration_lt: Int
 
   """All values less than or equal the given value."""
-  duration_lte: Float
+  duration_lte: Int
 
   """All values greater than the given value."""
-  duration_gt: Float
+  duration_gt: Int
 
   """All values greater than or equal the given value."""
-  duration_gte: Float
+  duration_gte: Int
   defaultVolume: Int
 
   """All values that are not equal to given value."""
