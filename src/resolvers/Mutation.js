@@ -260,7 +260,7 @@ const mutations = {
     );
 
     // Create JWT
-    const token = jwt.sign({ userId: user.id }, process.env.COOKIE_SECRET, {
+    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET, {
       expiresIn: '365d',
     });
 
@@ -291,7 +291,7 @@ const mutations = {
     }
 
     // Generate JWT Token
-    const token = jwt.sign({ userId: user.id }, process.env.COOKIE_SECRET, {
+    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET, {
       expiresIn: '365d',
     });
 
@@ -373,7 +373,7 @@ const mutations = {
     // 5. Generate JWT
     const token = jwt.sign(
       { userId: updatedUser.id },
-      process.env.COOKIE_SECRET
+      process.env.APP_SECRET
     );
 
     // 6. Set JWT cookie
