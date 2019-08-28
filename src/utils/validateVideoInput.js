@@ -14,39 +14,27 @@ module.exports = async (originId, ctx, id = undefined) => {
             defaultAudioLanguage,
             tags,
           },
+          contentDetails: { duration },
+          statistics: { viewCount, likeCount, dislikeCount },
         },
       ],
     },
   } = await youtube.get('/videos', {
     params: {
       id: originId,
-      part: 'snippet',
+      part: 'snippet,contentDetails,statistics',
       key: process.env.YOUTUBE_API,
     },
   });
   if (!channelTitle) throw new Error('Video not found on Youtube');
 
-  const {
-    data: {
-      items: [
-        {
-          contentDetails: { duration },
-        },
-      ],
-    },
-  } = await youtube.get('/videos', {
-    params: {
-      id: originId,
-      part: 'contentDetails',
-      key: process.env.YOUTUBE_API,
-    },
-  });
-  if (!duration) throw new Error('Video not found on Youtube');
-
   // Prepare mutation input arguments
   const videoCreateInput = {
     duration: moment.duration(duration, moment.ISO_8601).asSeconds(), // Convert default returned YouTube duration from ISO8601 to seconds
     originId,
+    originViewCount: parseInt(viewCount),
+    originLikeCount: parseInt(likeCount),
+    originDislikeCount: parseInt(dislikeCount),
     originTitle: title,
     originDescription: description,
     originAuthor: channelTitle,

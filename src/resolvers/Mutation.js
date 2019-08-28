@@ -9,6 +9,8 @@ const validateAudioInput = require('../utils/validateAudioInput');
 const captionDownload = require('../utils/captionsDownload');
 const sendGridResetToken = require('../utils/sendGridResetToken');
 // const languageTags = require('../config/languageTags');
+const youtube = require('../utils/youtube');
+const moment = require('moment');
 
 const mutations = {
   async createVideo(parent, { source, language }, ctx, info) {
@@ -104,11 +106,14 @@ const mutations = {
         AND: [
           { video: { id: data.video } },
           { author: { id: ctx.request.userId } },
-          { language: data.language}
+          { language: data.language },
         ],
       },
     });
-    if (audios.length) throw new Error('Mỗi người chỉ được đăng 1 audio cho mỗi video trong ngôn ngữ này');
+    if (audios.length)
+      throw new Error(
+        'Mỗi người chỉ được đăng 1 audio cho mỗi video trong ngôn ngữ này'
+      );
 
     // Validate other input arguments
     const audioCreateInput = await validateAudioInput(data, ctx);
@@ -369,10 +374,7 @@ const mutations = {
     });
 
     // 5. Generate JWT
-    const token = jwt.sign(
-      { userId: updatedUser.id },
-      process.env.APP_SECRET
-    );
+    const token = jwt.sign({ userId: updatedUser.id }, process.env.APP_SECRET);
 
     // 6. Set JWT cookie
     ctx.response.cookie('token', token, {
@@ -383,6 +385,69 @@ const mutations = {
 
     // 7. return the new user
     return updatedUser;
+  },
+  async updateVideoDuration(parent, args, ctx, info) {
+    const videos = await ctx.db.query.videos();
+    videos.forEach(async video => {
+      let {
+        data: {
+          items: [
+            {
+              contentDetails: { duration },
+            },
+          ],
+        },
+      } = await youtube.get('/videos', {
+        params: {
+          id: video.originId,
+          part: 'contentDetails',
+          key: process.env.YOUTUBE_API,
+        },
+      });
+      duration = moment.duration(duration, moment.ISO_8601).asSeconds();
+      return ctx.db.mutation.updateVideo({
+        data: {
+          duration,
+        },
+        where: { id: video.id },
+      });
+    });
+    return { message: 'Finished' };
+  },
+  async updateVideoStats(parent, args, ctx, info) {
+    const videos = await ctx.db.query.videos();
+    videos.forEach(async video => {
+      let {
+        data: {
+          items: [
+            {
+              statistics: { viewCount, likeCount, dislikeCount },
+            },
+          ],
+        },
+      } = await youtube.get('/videos', {
+        params: {
+          id: video.originId,
+          part: 'statistics',
+          key: process.env.YOUTUBE_API,
+        },
+      });
+      return ctx.db.mutation.updateVideo({
+        data: {
+          originViewCount: parseInt(viewCount),
+          originLikeCount: parseInt(likeCount),
+          originDislikeCount: parseInt(dislikeCount),
+        },
+        where: { id: video.id },
+      });
+    });
+    return { message: 'Finished' };
+  },
+  updateAudioDuration(parent, { source, duration }, ctx, info) {
+    return ctx.db.mutation.updateAudio(
+      { data: { duration }, where: { source } },
+      info
+    );
   },
 };
 

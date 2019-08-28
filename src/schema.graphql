@@ -55,6 +55,9 @@ type Mutation {
   ): User!
   createComment(video: ID, text: String!): Comment!
   createReply(comment: ID, text: String!): Reply!
+  updateVideoDuration: SuccessMessage
+  updateVideoStats: SuccessMessage
+  updateAudioDuration(source: String!, duration: Int!): Audio!
 }
 
 type SuccessMessage {

@@ -1,5 +1,5 @@
 # source: https://danni-19aba07fdc.herokuapp.com/danni-2-0/prod
-# timestamp: Tue Aug 27 2019 16:27:53 GMT+0200 (Central European Summer Time)
+# timestamp: Wed Aug 28 2019 09:08:03 GMT+0200 (Central European Summer Time)
 
 type AggregateAudio {
   count: Int!
@@ -35,7 +35,7 @@ type Audio implements Node {
   language: Language
   title: String!
   description: String
-  duration: Int
+  duration: Int!
   tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
   defaultVolume: Int!
   startAt: Int!
@@ -62,7 +62,7 @@ input AudioCreateInput {
   language: Language
   title: String!
   description: String
-  duration: Int
+  duration: Int!
   defaultVolume: Int
   startAt: Int
   tags: TagCreateManyWithoutAudioInput
@@ -97,7 +97,7 @@ input AudioCreateWithoutAuthorInput {
   language: Language
   title: String!
   description: String
-  duration: Int
+  duration: Int!
   defaultVolume: Int
   startAt: Int
   tags: TagCreateManyWithoutAudioInput
@@ -111,7 +111,7 @@ input AudioCreateWithoutCaptionInput {
   language: Language
   title: String!
   description: String
-  duration: Int
+  duration: Int!
   defaultVolume: Int
   startAt: Int
   tags: TagCreateManyWithoutAudioInput
@@ -125,7 +125,7 @@ input AudioCreateWithoutTagsInput {
   language: Language
   title: String!
   description: String
-  duration: Int
+  duration: Int!
   defaultVolume: Int
   startAt: Int
   author: UserCreateOneWithoutAudioInput
@@ -139,7 +139,7 @@ input AudioCreateWithoutVideoInput {
   language: Language
   title: String!
   description: String
-  duration: Int
+  duration: Int!
   defaultVolume: Int
   startAt: Int
   tags: TagCreateManyWithoutAudioInput
@@ -185,7 +185,7 @@ type AudioPreviousValues {
   language: Language
   title: String!
   description: String
-  duration: Int
+  duration: Int!
   defaultVolume: Int!
   startAt: Int!
   createdAt: DateTime!
@@ -3663,7 +3663,10 @@ type Video implements Node {
   originThumbnailUrl: String
   originThumbnailUrlSd: String
   originTags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
-  duration: Int
+  originViewCount: Int!
+  originLikeCount: Int!
+  originDislikeCount: Int!
+  duration: Int!
   language: Language
   addedBy: User!
   audio(where: AudioWhereInput, orderBy: AudioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Audio!]
@@ -3693,7 +3696,10 @@ input VideoCreateInput {
   originLanguage: String
   originThumbnailUrl: String
   originThumbnailUrlSd: String
-  duration: Int
+  originViewCount: Int!
+  originLikeCount: Int!
+  originDislikeCount: Int!
+  duration: Int!
   language: Language
   originTags: TagCreateManyInput
   addedBy: UserCreateOneWithoutVideoInput!
@@ -3732,7 +3738,10 @@ input VideoCreateWithoutAddedByInput {
   originLanguage: String
   originThumbnailUrl: String
   originThumbnailUrlSd: String
-  duration: Int
+  originViewCount: Int!
+  originLikeCount: Int!
+  originDislikeCount: Int!
+  duration: Int!
   language: Language
   originTags: TagCreateManyInput
   audio: AudioCreateManyWithoutVideoInput
@@ -3750,7 +3759,10 @@ input VideoCreateWithoutAudioInput {
   originLanguage: String
   originThumbnailUrl: String
   originThumbnailUrlSd: String
-  duration: Int
+  originViewCount: Int!
+  originLikeCount: Int!
+  originDislikeCount: Int!
+  duration: Int!
   language: Language
   originTags: TagCreateManyInput
   addedBy: UserCreateOneWithoutVideoInput!
@@ -3768,7 +3780,10 @@ input VideoCreateWithoutCaptionInput {
   originLanguage: String
   originThumbnailUrl: String
   originThumbnailUrlSd: String
-  duration: Int
+  originViewCount: Int!
+  originLikeCount: Int!
+  originDislikeCount: Int!
+  duration: Int!
   language: Language
   originTags: TagCreateManyInput
   addedBy: UserCreateOneWithoutVideoInput!
@@ -3786,7 +3801,10 @@ input VideoCreateWithoutCommentInput {
   originLanguage: String
   originThumbnailUrl: String
   originThumbnailUrlSd: String
-  duration: Int
+  originViewCount: Int!
+  originLikeCount: Int!
+  originDislikeCount: Int!
+  duration: Int!
   language: Language
   originTags: TagCreateManyInput
   addedBy: UserCreateOneWithoutVideoInput!
@@ -3822,6 +3840,12 @@ enum VideoOrderByInput {
   originThumbnailUrl_DESC
   originThumbnailUrlSd_ASC
   originThumbnailUrlSd_DESC
+  originViewCount_ASC
+  originViewCount_DESC
+  originLikeCount_ASC
+  originLikeCount_DESC
+  originDislikeCount_ASC
+  originDislikeCount_DESC
   duration_ASC
   duration_DESC
   language_ASC
@@ -3842,7 +3866,10 @@ type VideoPreviousValues {
   originLanguage: String
   originThumbnailUrl: String
   originThumbnailUrlSd: String
-  duration: Int
+  originViewCount: Int!
+  originLikeCount: Int!
+  originDislikeCount: Int!
+  duration: Int!
   language: Language
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -4217,6 +4244,72 @@ input VideoScalarWhereInput {
 
   """All values not ending with the given string."""
   originThumbnailUrlSd_not_ends_with: String
+  originViewCount: Int
+
+  """All values that are not equal to given value."""
+  originViewCount_not: Int
+
+  """All values that are contained in given list."""
+  originViewCount_in: [Int!]
+
+  """All values that are not contained in given list."""
+  originViewCount_not_in: [Int!]
+
+  """All values less than the given value."""
+  originViewCount_lt: Int
+
+  """All values less than or equal the given value."""
+  originViewCount_lte: Int
+
+  """All values greater than the given value."""
+  originViewCount_gt: Int
+
+  """All values greater than or equal the given value."""
+  originViewCount_gte: Int
+  originLikeCount: Int
+
+  """All values that are not equal to given value."""
+  originLikeCount_not: Int
+
+  """All values that are contained in given list."""
+  originLikeCount_in: [Int!]
+
+  """All values that are not contained in given list."""
+  originLikeCount_not_in: [Int!]
+
+  """All values less than the given value."""
+  originLikeCount_lt: Int
+
+  """All values less than or equal the given value."""
+  originLikeCount_lte: Int
+
+  """All values greater than the given value."""
+  originLikeCount_gt: Int
+
+  """All values greater than or equal the given value."""
+  originLikeCount_gte: Int
+  originDislikeCount: Int
+
+  """All values that are not equal to given value."""
+  originDislikeCount_not: Int
+
+  """All values that are contained in given list."""
+  originDislikeCount_in: [Int!]
+
+  """All values that are not contained in given list."""
+  originDislikeCount_not_in: [Int!]
+
+  """All values less than the given value."""
+  originDislikeCount_lt: Int
+
+  """All values less than or equal the given value."""
+  originDislikeCount_lte: Int
+
+  """All values greater than the given value."""
+  originDislikeCount_gt: Int
+
+  """All values greater than or equal the given value."""
+  originDislikeCount_gte: Int
   duration: Int
 
   """All values that are not equal to given value."""
@@ -4341,6 +4434,9 @@ input VideoUpdateInput {
   originLanguage: String
   originThumbnailUrl: String
   originThumbnailUrlSd: String
+  originViewCount: Int
+  originLikeCount: Int
+  originDislikeCount: Int
   duration: Int
   language: Language
   originTags: TagUpdateManyInput
@@ -4359,6 +4455,9 @@ input VideoUpdateManyDataInput {
   originLanguage: String
   originThumbnailUrl: String
   originThumbnailUrlSd: String
+  originViewCount: Int
+  originLikeCount: Int
+  originDislikeCount: Int
   duration: Int
   language: Language
 }
@@ -4372,6 +4471,9 @@ input VideoUpdateManyMutationInput {
   originLanguage: String
   originThumbnailUrl: String
   originThumbnailUrlSd: String
+  originViewCount: Int
+  originLikeCount: Int
+  originDislikeCount: Int
   duration: Int
   language: Language
 }
@@ -4427,6 +4529,9 @@ input VideoUpdateWithoutAddedByDataInput {
   originLanguage: String
   originThumbnailUrl: String
   originThumbnailUrlSd: String
+  originViewCount: Int
+  originLikeCount: Int
+  originDislikeCount: Int
   duration: Int
   language: Language
   originTags: TagUpdateManyInput
@@ -4444,6 +4549,9 @@ input VideoUpdateWithoutAudioDataInput {
   originLanguage: String
   originThumbnailUrl: String
   originThumbnailUrlSd: String
+  originViewCount: Int
+  originLikeCount: Int
+  originDislikeCount: Int
   duration: Int
   language: Language
   originTags: TagUpdateManyInput
@@ -4461,6 +4569,9 @@ input VideoUpdateWithoutCaptionDataInput {
   originLanguage: String
   originThumbnailUrl: String
   originThumbnailUrlSd: String
+  originViewCount: Int
+  originLikeCount: Int
+  originDislikeCount: Int
   duration: Int
   language: Language
   originTags: TagUpdateManyInput
@@ -4478,6 +4589,9 @@ input VideoUpdateWithoutCommentDataInput {
   originLanguage: String
   originThumbnailUrl: String
   originThumbnailUrlSd: String
+  originViewCount: Int
+  originLikeCount: Int
+  originDislikeCount: Int
   duration: Int
   language: Language
   originTags: TagUpdateManyInput
@@ -4881,6 +4995,72 @@ input VideoWhereInput {
 
   """All values not ending with the given string."""
   originThumbnailUrlSd_not_ends_with: String
+  originViewCount: Int
+
+  """All values that are not equal to given value."""
+  originViewCount_not: Int
+
+  """All values that are contained in given list."""
+  originViewCount_in: [Int!]
+
+  """All values that are not contained in given list."""
+  originViewCount_not_in: [Int!]
+
+  """All values less than the given value."""
+  originViewCount_lt: Int
+
+  """All values less than or equal the given value."""
+  originViewCount_lte: Int
+
+  """All values greater than the given value."""
+  originViewCount_gt: Int
+
+  """All values greater than or equal the given value."""
+  originViewCount_gte: Int
+  originLikeCount: Int
+
+  """All values that are not equal to given value."""
+  originLikeCount_not: Int
+
+  """All values that are contained in given list."""
+  originLikeCount_in: [Int!]
+
+  """All values that are not contained in given list."""
+  originLikeCount_not_in: [Int!]
+
+  """All values less than the given value."""
+  originLikeCount_lt: Int
+
+  """All values less than or equal the given value."""
+  originLikeCount_lte: Int
+
+  """All values greater than the given value."""
+  originLikeCount_gt: Int
+
+  """All values greater than or equal the given value."""
+  originLikeCount_gte: Int
+  originDislikeCount: Int
+
+  """All values that are not equal to given value."""
+  originDislikeCount_not: Int
+
+  """All values that are contained in given list."""
+  originDislikeCount_in: [Int!]
+
+  """All values that are not contained in given list."""
+  originDislikeCount_not_in: [Int!]
+
+  """All values less than the given value."""
+  originDislikeCount_lt: Int
+
+  """All values less than or equal the given value."""
+  originDislikeCount_lte: Int
+
+  """All values greater than the given value."""
+  originDislikeCount_gt: Int
+
+  """All values greater than or equal the given value."""
+  originDislikeCount_gte: Int
   duration: Int
 
   """All values that are not equal to given value."""

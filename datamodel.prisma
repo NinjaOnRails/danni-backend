@@ -9,7 +9,10 @@ type Video {
   originThumbnailUrl: String
   originThumbnailUrlSd: String
   originTags: [Tag]!
-  duration: Int
+  originViewCount: Int!
+  originLikeCount: Int!
+  originDislikeCount: Int!
+  duration: Int!
   language: Language
   addedBy: User! @relation(name: "VideoToUser")
   audio: [Audio]! @relation(name: "AudioToVideo", onDelete: CASCADE)
@@ -25,7 +28,7 @@ type Audio {
   language: Language
   title: String!
   description: String
-  duration: Int
+  duration: Int!
   tags: [Tag]!
   defaultVolume: Int! @default(value: 0)
   startAt: Int! @default(value: 0)
