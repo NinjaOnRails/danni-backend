@@ -42,7 +42,7 @@ const mutations = {
           language,
         },
       },
-      info
+      info,
     );
     if (!video) throw new Error('Saving video to db failed');
 
@@ -84,7 +84,7 @@ const mutations = {
           id,
         },
       },
-      info
+      info,
     );
   },
   async deleteVideo(parent, { id, password }, ctx, info) {
@@ -112,7 +112,7 @@ const mutations = {
     });
     if (audios.length)
       throw new Error(
-        'Mỗi người chỉ được đăng 1 audio cho mỗi video trong ngôn ngữ này'
+        'Mỗi người chỉ được đăng 1 audio cho mỗi video trong ngôn ngữ này',
       );
 
     // Validate other input arguments
@@ -136,7 +136,7 @@ const mutations = {
           },
         },
       },
-      info
+      info,
     );
   },
   async updateAudio(
@@ -146,7 +146,7 @@ const mutations = {
       data: { source, language, author },
     },
     ctx,
-    info
+    info,
   ) {
     return ctx.db.mutation.updateAudio(
       {
@@ -159,7 +159,7 @@ const mutations = {
           id,
         },
       },
-      info
+      info,
     );
   },
   async createCaption(
@@ -168,7 +168,7 @@ const mutations = {
       data: { languageTag, xml, author, video },
     },
     ctx,
-    info
+    info,
   ) {
     // Check if video exists
     const videoExists = await ctx.db.query.video({ where: { id: video } });
@@ -188,7 +188,7 @@ const mutations = {
             },
           },
         },
-        info
+        info,
       );
       if (!captions) throw new Error('Saving captions to db failed');
       return captions;
@@ -210,7 +210,7 @@ const mutations = {
           },
         },
       },
-      info
+      info,
     );
     if (!captions) throw new Error('Saving captions to db failed');
     return captions;
@@ -229,6 +229,26 @@ const mutations = {
     if (!tag) throw new Error('Saving tag to db failed');
 
     return tag;
+  },
+  async createComment(parent, { video, text }, ctx, info) {
+    if (!ctx.request.userId) throw new Error('Bạn chưa đăng nhập');
+    const comment = await ctx.db.mutation.createComment({
+      data: {
+        author: {
+          connect: {
+            id: ctx.request.userId,
+          },
+        },
+        text,
+        video: {
+          connect: {
+            id: video,
+          },
+        },
+      },
+    });
+    if (!comment) throw new Error('Saving comment to db failed');
+    return comment;
   },
   async signup(parent, { data }, ctx, info) {
     // Lowercase email and trim arguments
@@ -261,7 +281,7 @@ const mutations = {
           permissions: { set: ['USER'] },
         },
       },
-      info
+      info,
     );
 
     // Create JWT
@@ -343,7 +363,7 @@ const mutations = {
     parent,
     { password, confirmPassword, resetToken },
     ctx,
-    info
+    info,
   ) {
     // 1. Check if passwords match
     if (password !== confirmPassword)
@@ -446,7 +466,7 @@ const mutations = {
   updateAudioDuration(parent, { source, duration }, ctx, info) {
     return ctx.db.mutation.updateAudio(
       { data: { duration }, where: { source } },
-      info
+      info,
     );
   },
 };
