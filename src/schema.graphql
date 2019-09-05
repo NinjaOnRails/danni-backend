@@ -54,7 +54,7 @@ type Mutation {
     confirmPassword: String!
   ): User!
   createComment(video: ID, text: String!): Comment!
-  createCommentReply(comment: ID, text: String!): Reply!
+  # createCommentReply(comment: ID, text: String!): Reply!
 
   updateVideoDuration: SuccessMessage
   updateVideoStats: SuccessMessage
