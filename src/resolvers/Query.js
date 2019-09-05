@@ -9,6 +9,8 @@ const Query = {
   caption: forwardTo('db'),
   tag: forwardTo('db'),
   tags: forwardTo('db'),
+  comment: forwardTo('db'),
+  comments: forwardTo('db'),
   currentUser(parent, args, ctx, info) {
     // Check if there is current user ID
     if (!ctx.request.userId) return null;

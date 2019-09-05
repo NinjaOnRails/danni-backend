@@ -96,7 +96,7 @@ const mutations = {
       },
     });
   },
-  
+
   async createAudio(parent, { data }, ctx, info) {
     // Check if user is logged in
     if (!ctx.request.userId) throw new Error('Please Sign In to continue');
@@ -113,7 +113,7 @@ const mutations = {
     });
     if (audios.length)
       throw new Error(
-        'Each user can only post 1 audio file for each video in given language'
+        'Each user can only post 1 audio file for each video in given language',
       );
 
     // Validate other input argumentsma
@@ -231,7 +231,7 @@ const mutations = {
 
     return tag;
   },
-  async createComment(parent, { video, text, defaultLanguage }, ctx, info) {
+  async createComment(parent, { video, text }, ctx, info) {
     if (!ctx.request.userId) throw new Error('Bạn chưa đăng nhập');
     const comment = await ctx.db.mutation.createComment({
       data: {
@@ -246,11 +246,31 @@ const mutations = {
             id: video,
           },
         },
-        defaultLanguage
       },
     });
     if (!comment) throw new Error('Saving comment to db failed');
     return comment;
+  },
+  async createCommentReply(parent, { comment, text }, ctx, info) {
+    if (!ctx.request.userId) throw new Error('Bạn chưa đăng nhập');
+    const commentReply = await ctx.db.mutation.createCommentReply({
+      data: {
+        author: {
+          connect: {
+            id: ctx.request.userId,
+          },
+        },
+        text,
+        comment: {
+          connect: {
+            id: comment,
+          },
+        },
+      },
+    });
+    if (!commentReply) throw new Error('Saving comment reply to db failed');
+    console.log(commentReply)
+    return commentReply;
   },
   async signup(parent, { data }, ctx, info) {
     // Lowercase email and trim arguments
@@ -368,8 +388,7 @@ const mutations = {
     info,
   ) {
     // 1. Check if passwords match
-    if (password !== confirmPassword)
-      throw new Error('Passwords do not match');
+    if (password !== confirmPassword) throw new Error('Passwords do not match');
 
     // 2. Check token and expiration
     const [user] = await ctx.db.query.users({
