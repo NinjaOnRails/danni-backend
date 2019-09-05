@@ -14,12 +14,23 @@ type Video {
   originDislikeCount: Int!
   duration: Int!
   language: Language
+  upvoteCount: Int! @default(value: 0)
+  downvoteCount: Int! @default(value: 0)
+  vote: [VideoVote]! @relation(name: "VideoVoteToVideo", onDelete: CASCADE)
   addedBy: User! @relation(name: "VideoToUser")
   audio: [Audio]! @relation(name: "AudioToVideo", onDelete: CASCADE)
   comment: [Comment]! @relation(name: "CommentToVideo", onDelete: CASCADE)
   caption: [Caption]! @relation(name: "CaptionToVideo", onDelete: CASCADE)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
+}
+
+type VideoVote {
+  id: ID! @id
+  user: User! @relation(name: "VideoVoteToUser")
+  video: Video! @relation(name: "VideoVoteToVideo")
+  createdAt: DateTime! @createdAt
+  type: VoteType!
 }
 
 type Audio {
@@ -32,11 +43,23 @@ type Audio {
   tags: [Tag]!
   defaultVolume: Int! @default(value: 0)
   startAt: Int! @default(value: 0)
+  upvoteCount: Int! @default(value: 0)
+  downvoteCount: Int! @default(value: 0)
+  vote: [AudioVote]! @relation(name: "AudioVoteToAudio", onDelete: CASCADE)
   author: User @relation(name: "AudioToUser")
   video: Video @relation(name: "AudioToVideo")
   caption: Caption @relation(name: "AudioToCaption")
+  comment: [Comment]! @relation(name: "CommentToAudio", onDelete: CASCADE)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
+}
+
+type AudioVote {
+  id: ID! @id
+  user: User! @relation(name: "AudioVoteToUser")
+  audio: Audio! @relation(name: "AudioVoteToAudio")
+  createdAt: DateTime! @createdAt
+  type: VoteType!
 }
 
 type Caption {
@@ -61,32 +84,74 @@ type User {
   password: String!
   name: String
   displayName: String! @unique
+  isNewsletterSubscribed: Boolean! @default(value: true)
   resetToken: String
   resetTokenExpiry: Float
+  contentLanguage: [Language] @scalarList(strategy: RELATION)
   permissions: [Permission] @scalarList(strategy: RELATION)
   video: [Video]! @relation(name: "VideoToUser", onDelete: SET_NULL)
+  videoVote: [VideoVote]! @relation(name: "VideoVoteToUser", onDelete: CASCADE)
   audio: [Audio]! @relation(name: "AudioToUser", onDelete: SET_NULL)
+  audioVote: [AudioVote]! @relation(name: "AudioVoteToUser", onDelete: CASCADE)
   comment: [Comment]! @relation(name: "CommentToUser", onDelete: SET_NULL)
-  reply: [Reply]! @relation(name: "ReplyToUser", onDelete: SET_NULL)
+  commentVote: [CommentVote]!
+    @relation(name: "CommentVoteToUser", onDelete: CASCADE)
+  commentReplyVote: [CommentReplyVote]!
+    @relation(name: "CommentReplyVoteToUser", onDelete: CASCADE)
+  commentReply: [CommentReply]!
+    @relation(name: "CommentReplyToUser", onDelete: SET_NULL)
+  createdAt: DateTime @createdAt
+  updatedAt: DateTime @updatedAt
 }
 
 type Comment {
   id: ID! @id
   video: Video! @relation(name: "CommentToVideo")
+  audio: Audio @relation(name: "CommentToAudio")
   author: User! @relation(name: "CommentToUser")
-  reply: [Reply]! @relation(name: "ReplyToComment", onDelete: CASCADE)
+  upvoteCount: Int! @default(value: 0)
+  downvoteCount: Int! @default(value: 0)
+  vote: [CommentVote]!
+    @relation(name: "CommentVoteToComment", onDelete: CASCADE)
+  reply: [CommentReply]!
+    @relation(name: "CommentReplyToComment", onDelete: CASCADE)
   text: String!
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
 
-type Reply {
+type CommentVote {
+  id: ID! @id
+  user: User! @relation(name: "CommentVoteToUser")
+  comment: Comment! @relation(name: "CommentVoteToComment")
+  createdAt: DateTime! @createdAt
+  type: VoteType!
+}
+
+type CommentReply {
   id: ID! @id
   comment: Comment! @relation(name: "ReplyToComment")
+  upvoteCount: Int! @default(value: 0)
+  downvoteCount: Int! @default(value: 0)
+  vote: [CommentReplyVote]!
+    @relation(name: "CommentReplyVoteToCommentReply", onDelete: CASCADE)
   author: User! @relation(name: "ReplyToUser")
   text: String!
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
+}
+
+type CommentReplyVote {
+  id: ID! @id
+  user: User! @relation(name: "CommentReplyVoteToUser")
+  commentReply: CommentReply! @relation(name: "CommentReplyVoteToCommentReply")
+  createdAt: DateTime! @createdAt
+  type: VoteType!
+}
+
+enum VoteType {
+  DOWNVOTE
+  UPVOTE
 }
 
 enum Language {
