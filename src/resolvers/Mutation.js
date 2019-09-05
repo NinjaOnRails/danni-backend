@@ -15,7 +15,7 @@ const moment = require('moment');
 const mutations = {
   async createVideo(parent, { source, language }, ctx, info) {
     // Check if user is logged in
-    if (!ctx.request.userId) throw new Error('Bạn chưa đăng nhập');
+    if (!ctx.request.userId) throw new Error('Please Sign In to continue');
 
     // Check if source is YouTube and extract ID from it
     const originId = extractYoutubeId(source);
@@ -96,9 +96,10 @@ const mutations = {
       },
     });
   },
+  
   async createAudio(parent, { data }, ctx, info) {
     // Check if user is logged in
-    if (!ctx.request.userId) throw new Error('Bạn chưa đăng nhập');
+    if (!ctx.request.userId) throw new Error('Please Sign In to continue');
 
     // Check if user already added Audio to this Video in the same language
     const audios = await ctx.db.query.audios({
@@ -112,10 +113,10 @@ const mutations = {
     });
     if (audios.length)
       throw new Error(
-        'Mỗi người chỉ được đăng 1 audio cho mỗi video trong ngôn ngữ này',
+        'Each user can only post 1 audio file for each video in given language'
       );
 
-    // Validate other input arguments
+    // Validate other input argumentsma
     const audioCreateInput = await validateAudioInput(data, ctx);
 
     // Save audio to db
@@ -258,7 +259,7 @@ const mutations = {
 
     // Check if Email taken
     const emailTaken = await ctx.db.exists.User({ email: data.email });
-    if (emailTaken) throw new Error('Email đã có người khác sử dụng');
+    if (emailTaken) throw new Error('Email you provided is already in use');
 
     if (!data.displayName) data.displayName = faker.name.findName();
     data.displayName = data.displayName.trim();
@@ -268,7 +269,7 @@ const mutations = {
       displayName: data.displayName,
     });
     if (displayNameTaken)
-      throw new Error('Tên hiển thị đã có người khác sử dụng');
+      throw new Error('Display Name you provided is already in use');
 
     // Hash password
     const password = await bcrypt.hash(data.password, 10);
@@ -368,7 +369,7 @@ const mutations = {
   ) {
     // 1. Check if passwords match
     if (password !== confirmPassword)
-      throw new Error('Hai mật khẩu không khớp');
+      throw new Error('Passwords do not match');
 
     // 2. Check token and expiration
     const [user] = await ctx.db.query.users({
