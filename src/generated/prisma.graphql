@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/danni/dev/dev
-# timestamp: Thu Sep 05 2019 16:16:46 GMT+0200 (Central European Summer Time)
+# timestamp: Thu Sep 05 2019 21:38:19 GMT+0200 (Central European Summer Time)
 
 type AggregateAudio {
   count: Int!
@@ -2216,7 +2216,7 @@ input CommentCreateInput {
   audio: AudioCreateOneWithoutCommentInput
   author: UserCreateOneWithoutCommentInput!
   vote: CommentVoteCreateManyWithoutCommentInput
-  reply: CommentReplyCreateManyInput
+  reply: CommentReplyCreateManyWithoutCommentInput
 }
 
 input CommentCreateManyWithoutAudioInput {
@@ -2234,8 +2234,8 @@ input CommentCreateManyWithoutVideoInput {
   connect: [CommentWhereUniqueInput!]
 }
 
-input CommentCreateOneInput {
-  create: CommentCreateInput
+input CommentCreateOneWithoutReplyInput {
+  create: CommentCreateWithoutReplyInput
   connect: CommentWhereUniqueInput
 }
 
@@ -2252,7 +2252,7 @@ input CommentCreateWithoutAudioInput {
   video: VideoCreateOneWithoutCommentInput!
   author: UserCreateOneWithoutCommentInput!
   vote: CommentVoteCreateManyWithoutCommentInput
-  reply: CommentReplyCreateManyInput
+  reply: CommentReplyCreateManyWithoutCommentInput
 }
 
 input CommentCreateWithoutAuthorInput {
@@ -2263,7 +2263,18 @@ input CommentCreateWithoutAuthorInput {
   video: VideoCreateOneWithoutCommentInput!
   audio: AudioCreateOneWithoutCommentInput
   vote: CommentVoteCreateManyWithoutCommentInput
-  reply: CommentReplyCreateManyInput
+  reply: CommentReplyCreateManyWithoutCommentInput
+}
+
+input CommentCreateWithoutReplyInput {
+  id: ID
+  upvoteCount: Int
+  downvoteCount: Int
+  text: String!
+  video: VideoCreateOneWithoutCommentInput!
+  audio: AudioCreateOneWithoutCommentInput
+  author: UserCreateOneWithoutCommentInput!
+  vote: CommentVoteCreateManyWithoutCommentInput
 }
 
 input CommentCreateWithoutVideoInput {
@@ -2274,7 +2285,7 @@ input CommentCreateWithoutVideoInput {
   audio: AudioCreateOneWithoutCommentInput
   author: UserCreateOneWithoutCommentInput!
   vote: CommentVoteCreateManyWithoutCommentInput
-  reply: CommentReplyCreateManyInput
+  reply: CommentReplyCreateManyWithoutCommentInput
 }
 
 input CommentCreateWithoutVoteInput {
@@ -2285,7 +2296,7 @@ input CommentCreateWithoutVoteInput {
   video: VideoCreateOneWithoutCommentInput!
   audio: AudioCreateOneWithoutCommentInput
   author: UserCreateOneWithoutCommentInput!
-  reply: CommentReplyCreateManyInput
+  reply: CommentReplyCreateManyWithoutCommentInput
 }
 
 """An edge in a connection."""
@@ -2348,7 +2359,7 @@ input CommentReplyCreateInput {
   upvoteCount: Int
   downvoteCount: Int
   text: String!
-  comment: CommentCreateOneInput!
+  comment: CommentCreateOneWithoutReplyInput!
   vote: CommentReplyVoteCreateManyWithoutCommentReplyInput
   author: UserCreateOneInput!
 }
@@ -2358,9 +2369,23 @@ input CommentReplyCreateManyInput {
   connect: [CommentReplyWhereUniqueInput!]
 }
 
+input CommentReplyCreateManyWithoutCommentInput {
+  create: [CommentReplyCreateWithoutCommentInput!]
+  connect: [CommentReplyWhereUniqueInput!]
+}
+
 input CommentReplyCreateOneWithoutVoteInput {
   create: CommentReplyCreateWithoutVoteInput
   connect: CommentReplyWhereUniqueInput
+}
+
+input CommentReplyCreateWithoutCommentInput {
+  id: ID
+  upvoteCount: Int
+  downvoteCount: Int
+  text: String!
+  vote: CommentReplyVoteCreateManyWithoutCommentReplyInput
+  author: UserCreateOneInput!
 }
 
 input CommentReplyCreateWithoutVoteInput {
@@ -2368,7 +2393,7 @@ input CommentReplyCreateWithoutVoteInput {
   upvoteCount: Int
   downvoteCount: Int
   text: String!
-  comment: CommentCreateOneInput!
+  comment: CommentCreateOneWithoutReplyInput!
   author: UserCreateOneInput!
 }
 
@@ -2625,7 +2650,7 @@ input CommentReplyUpdateDataInput {
   upvoteCount: Int
   downvoteCount: Int
   text: String
-  comment: CommentUpdateOneRequiredInput
+  comment: CommentUpdateOneRequiredWithoutReplyInput
   vote: CommentReplyVoteUpdateManyWithoutCommentReplyInput
   author: UserUpdateOneRequiredInput
 }
@@ -2634,7 +2659,7 @@ input CommentReplyUpdateInput {
   upvoteCount: Int
   downvoteCount: Int
   text: String
-  comment: CommentUpdateOneRequiredInput
+  comment: CommentUpdateOneRequiredWithoutReplyInput
   vote: CommentReplyVoteUpdateManyWithoutCommentReplyInput
   author: UserUpdateOneRequiredInput
 }
@@ -2663,6 +2688,18 @@ input CommentReplyUpdateManyMutationInput {
   text: String
 }
 
+input CommentReplyUpdateManyWithoutCommentInput {
+  create: [CommentReplyCreateWithoutCommentInput!]
+  connect: [CommentReplyWhereUniqueInput!]
+  set: [CommentReplyWhereUniqueInput!]
+  disconnect: [CommentReplyWhereUniqueInput!]
+  delete: [CommentReplyWhereUniqueInput!]
+  update: [CommentReplyUpdateWithWhereUniqueWithoutCommentInput!]
+  updateMany: [CommentReplyUpdateManyWithWhereNestedInput!]
+  deleteMany: [CommentReplyScalarWhereInput!]
+  upsert: [CommentReplyUpsertWithWhereUniqueWithoutCommentInput!]
+}
+
 input CommentReplyUpdateManyWithWhereNestedInput {
   where: CommentReplyScalarWhereInput!
   data: CommentReplyUpdateManyDataInput!
@@ -2675,17 +2712,30 @@ input CommentReplyUpdateOneRequiredWithoutVoteInput {
   upsert: CommentReplyUpsertWithoutVoteInput
 }
 
+input CommentReplyUpdateWithoutCommentDataInput {
+  upvoteCount: Int
+  downvoteCount: Int
+  text: String
+  vote: CommentReplyVoteUpdateManyWithoutCommentReplyInput
+  author: UserUpdateOneRequiredInput
+}
+
 input CommentReplyUpdateWithoutVoteDataInput {
   upvoteCount: Int
   downvoteCount: Int
   text: String
-  comment: CommentUpdateOneRequiredInput
+  comment: CommentUpdateOneRequiredWithoutReplyInput
   author: UserUpdateOneRequiredInput
 }
 
 input CommentReplyUpdateWithWhereUniqueNestedInput {
   where: CommentReplyWhereUniqueInput!
   data: CommentReplyUpdateDataInput!
+}
+
+input CommentReplyUpdateWithWhereUniqueWithoutCommentInput {
+  where: CommentReplyWhereUniqueInput!
+  data: CommentReplyUpdateWithoutCommentDataInput!
 }
 
 input CommentReplyUpsertWithoutVoteInput {
@@ -2697,6 +2747,12 @@ input CommentReplyUpsertWithWhereUniqueNestedInput {
   where: CommentReplyWhereUniqueInput!
   update: CommentReplyUpdateDataInput!
   create: CommentReplyCreateInput!
+}
+
+input CommentReplyUpsertWithWhereUniqueWithoutCommentInput {
+  where: CommentReplyWhereUniqueInput!
+  update: CommentReplyUpdateWithoutCommentDataInput!
+  create: CommentReplyCreateWithoutCommentInput!
 }
 
 type CommentReplyVote implements Node {
@@ -3458,17 +3514,6 @@ input CommentSubscriptionWhereInput {
   node: CommentWhereInput
 }
 
-input CommentUpdateDataInput {
-  upvoteCount: Int
-  downvoteCount: Int
-  text: String
-  video: VideoUpdateOneRequiredWithoutCommentInput
-  audio: AudioUpdateOneWithoutCommentInput
-  author: UserUpdateOneRequiredWithoutCommentInput
-  vote: CommentVoteUpdateManyWithoutCommentInput
-  reply: CommentReplyUpdateManyInput
-}
-
 input CommentUpdateInput {
   upvoteCount: Int
   downvoteCount: Int
@@ -3477,7 +3522,7 @@ input CommentUpdateInput {
   audio: AudioUpdateOneWithoutCommentInput
   author: UserUpdateOneRequiredWithoutCommentInput
   vote: CommentVoteUpdateManyWithoutCommentInput
-  reply: CommentReplyUpdateManyInput
+  reply: CommentReplyUpdateManyWithoutCommentInput
 }
 
 input CommentUpdateManyDataInput {
@@ -3533,11 +3578,11 @@ input CommentUpdateManyWithWhereNestedInput {
   data: CommentUpdateManyDataInput!
 }
 
-input CommentUpdateOneRequiredInput {
-  create: CommentCreateInput
+input CommentUpdateOneRequiredWithoutReplyInput {
+  create: CommentCreateWithoutReplyInput
   connect: CommentWhereUniqueInput
-  update: CommentUpdateDataInput
-  upsert: CommentUpsertNestedInput
+  update: CommentUpdateWithoutReplyDataInput
+  upsert: CommentUpsertWithoutReplyInput
 }
 
 input CommentUpdateOneRequiredWithoutVoteInput {
@@ -3554,7 +3599,7 @@ input CommentUpdateWithoutAudioDataInput {
   video: VideoUpdateOneRequiredWithoutCommentInput
   author: UserUpdateOneRequiredWithoutCommentInput
   vote: CommentVoteUpdateManyWithoutCommentInput
-  reply: CommentReplyUpdateManyInput
+  reply: CommentReplyUpdateManyWithoutCommentInput
 }
 
 input CommentUpdateWithoutAuthorDataInput {
@@ -3564,7 +3609,17 @@ input CommentUpdateWithoutAuthorDataInput {
   video: VideoUpdateOneRequiredWithoutCommentInput
   audio: AudioUpdateOneWithoutCommentInput
   vote: CommentVoteUpdateManyWithoutCommentInput
-  reply: CommentReplyUpdateManyInput
+  reply: CommentReplyUpdateManyWithoutCommentInput
+}
+
+input CommentUpdateWithoutReplyDataInput {
+  upvoteCount: Int
+  downvoteCount: Int
+  text: String
+  video: VideoUpdateOneRequiredWithoutCommentInput
+  audio: AudioUpdateOneWithoutCommentInput
+  author: UserUpdateOneRequiredWithoutCommentInput
+  vote: CommentVoteUpdateManyWithoutCommentInput
 }
 
 input CommentUpdateWithoutVideoDataInput {
@@ -3574,7 +3629,7 @@ input CommentUpdateWithoutVideoDataInput {
   audio: AudioUpdateOneWithoutCommentInput
   author: UserUpdateOneRequiredWithoutCommentInput
   vote: CommentVoteUpdateManyWithoutCommentInput
-  reply: CommentReplyUpdateManyInput
+  reply: CommentReplyUpdateManyWithoutCommentInput
 }
 
 input CommentUpdateWithoutVoteDataInput {
@@ -3584,7 +3639,7 @@ input CommentUpdateWithoutVoteDataInput {
   video: VideoUpdateOneRequiredWithoutCommentInput
   audio: AudioUpdateOneWithoutCommentInput
   author: UserUpdateOneRequiredWithoutCommentInput
-  reply: CommentReplyUpdateManyInput
+  reply: CommentReplyUpdateManyWithoutCommentInput
 }
 
 input CommentUpdateWithWhereUniqueWithoutAudioInput {
@@ -3602,9 +3657,9 @@ input CommentUpdateWithWhereUniqueWithoutVideoInput {
   data: CommentUpdateWithoutVideoDataInput!
 }
 
-input CommentUpsertNestedInput {
-  update: CommentUpdateDataInput!
-  create: CommentCreateInput!
+input CommentUpsertWithoutReplyInput {
+  update: CommentUpdateWithoutReplyDataInput!
+  create: CommentCreateWithoutReplyInput!
 }
 
 input CommentUpsertWithoutVoteInput {
@@ -4213,10 +4268,10 @@ type Mutation {
   createAudio(data: AudioCreateInput!): Audio!
   createAudioVote(data: AudioVoteCreateInput!): AudioVote!
   createCaption(data: CaptionCreateInput!): Caption!
+  createComment(data: CommentCreateInput!): Comment!
   createCommentVote(data: CommentVoteCreateInput!): CommentVote!
   createCommentReplyVote(data: CommentReplyVoteCreateInput!): CommentReplyVote!
   createTag(data: TagCreateInput!): Tag!
-  createComment(data: CommentCreateInput!): Comment!
   createUser(data: UserCreateInput!): User!
   createCommentReply(data: CommentReplyCreateInput!): CommentReply!
   updateVideo(data: VideoUpdateInput!, where: VideoWhereUniqueInput!): Video
@@ -4224,10 +4279,10 @@ type Mutation {
   updateAudio(data: AudioUpdateInput!, where: AudioWhereUniqueInput!): Audio
   updateAudioVote(data: AudioVoteUpdateInput!, where: AudioVoteWhereUniqueInput!): AudioVote
   updateCaption(data: CaptionUpdateInput!, where: CaptionWhereUniqueInput!): Caption
+  updateComment(data: CommentUpdateInput!, where: CommentWhereUniqueInput!): Comment
   updateCommentVote(data: CommentVoteUpdateInput!, where: CommentVoteWhereUniqueInput!): CommentVote
   updateCommentReplyVote(data: CommentReplyVoteUpdateInput!, where: CommentReplyVoteWhereUniqueInput!): CommentReplyVote
   updateTag(data: TagUpdateInput!, where: TagWhereUniqueInput!): Tag
-  updateComment(data: CommentUpdateInput!, where: CommentWhereUniqueInput!): Comment
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateCommentReply(data: CommentReplyUpdateInput!, where: CommentReplyWhereUniqueInput!): CommentReply
   deleteVideo(where: VideoWhereUniqueInput!): Video
@@ -4235,10 +4290,10 @@ type Mutation {
   deleteAudio(where: AudioWhereUniqueInput!): Audio
   deleteAudioVote(where: AudioVoteWhereUniqueInput!): AudioVote
   deleteCaption(where: CaptionWhereUniqueInput!): Caption
+  deleteComment(where: CommentWhereUniqueInput!): Comment
   deleteCommentVote(where: CommentVoteWhereUniqueInput!): CommentVote
   deleteCommentReplyVote(where: CommentReplyVoteWhereUniqueInput!): CommentReplyVote
   deleteTag(where: TagWhereUniqueInput!): Tag
-  deleteComment(where: CommentWhereUniqueInput!): Comment
   deleteUser(where: UserWhereUniqueInput!): User
   deleteCommentReply(where: CommentReplyWhereUniqueInput!): CommentReply
   upsertVideo(where: VideoWhereUniqueInput!, create: VideoCreateInput!, update: VideoUpdateInput!): Video!
@@ -4246,10 +4301,10 @@ type Mutation {
   upsertAudio(where: AudioWhereUniqueInput!, create: AudioCreateInput!, update: AudioUpdateInput!): Audio!
   upsertAudioVote(where: AudioVoteWhereUniqueInput!, create: AudioVoteCreateInput!, update: AudioVoteUpdateInput!): AudioVote!
   upsertCaption(where: CaptionWhereUniqueInput!, create: CaptionCreateInput!, update: CaptionUpdateInput!): Caption!
+  upsertComment(where: CommentWhereUniqueInput!, create: CommentCreateInput!, update: CommentUpdateInput!): Comment!
   upsertCommentVote(where: CommentVoteWhereUniqueInput!, create: CommentVoteCreateInput!, update: CommentVoteUpdateInput!): CommentVote!
   upsertCommentReplyVote(where: CommentReplyVoteWhereUniqueInput!, create: CommentReplyVoteCreateInput!, update: CommentReplyVoteUpdateInput!): CommentReplyVote!
   upsertTag(where: TagWhereUniqueInput!, create: TagCreateInput!, update: TagUpdateInput!): Tag!
-  upsertComment(where: CommentWhereUniqueInput!, create: CommentCreateInput!, update: CommentUpdateInput!): Comment!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   upsertCommentReply(where: CommentReplyWhereUniqueInput!, create: CommentReplyCreateInput!, update: CommentReplyUpdateInput!): CommentReply!
   updateManyVideos(data: VideoUpdateManyMutationInput!, where: VideoWhereInput): BatchPayload!
@@ -4257,10 +4312,10 @@ type Mutation {
   updateManyAudios(data: AudioUpdateManyMutationInput!, where: AudioWhereInput): BatchPayload!
   updateManyAudioVotes(data: AudioVoteUpdateManyMutationInput!, where: AudioVoteWhereInput): BatchPayload!
   updateManyCaptions(data: CaptionUpdateManyMutationInput!, where: CaptionWhereInput): BatchPayload!
+  updateManyComments(data: CommentUpdateManyMutationInput!, where: CommentWhereInput): BatchPayload!
   updateManyCommentVotes(data: CommentVoteUpdateManyMutationInput!, where: CommentVoteWhereInput): BatchPayload!
   updateManyCommentReplyVotes(data: CommentReplyVoteUpdateManyMutationInput!, where: CommentReplyVoteWhereInput): BatchPayload!
   updateManyTags(data: TagUpdateManyMutationInput!, where: TagWhereInput): BatchPayload!
-  updateManyComments(data: CommentUpdateManyMutationInput!, where: CommentWhereInput): BatchPayload!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   updateManyCommentReplies(data: CommentReplyUpdateManyMutationInput!, where: CommentReplyWhereInput): BatchPayload!
   deleteManyVideos(where: VideoWhereInput): BatchPayload!
@@ -4268,10 +4323,10 @@ type Mutation {
   deleteManyAudios(where: AudioWhereInput): BatchPayload!
   deleteManyAudioVotes(where: AudioVoteWhereInput): BatchPayload!
   deleteManyCaptions(where: CaptionWhereInput): BatchPayload!
+  deleteManyComments(where: CommentWhereInput): BatchPayload!
   deleteManyCommentVotes(where: CommentVoteWhereInput): BatchPayload!
   deleteManyCommentReplyVotes(where: CommentReplyVoteWhereInput): BatchPayload!
   deleteManyTags(where: TagWhereInput): BatchPayload!
-  deleteManyComments(where: CommentWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
   deleteManyCommentReplies(where: CommentReplyWhereInput): BatchPayload!
 }
@@ -4322,10 +4377,10 @@ type Query {
   audios(where: AudioWhereInput, orderBy: AudioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Audio]!
   audioVotes(where: AudioVoteWhereInput, orderBy: AudioVoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AudioVote]!
   captions(where: CaptionWhereInput, orderBy: CaptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Caption]!
+  comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment]!
   commentVotes(where: CommentVoteWhereInput, orderBy: CommentVoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CommentVote]!
   commentReplyVotes(where: CommentReplyVoteWhereInput, orderBy: CommentReplyVoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CommentReplyVote]!
   tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag]!
-  comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment]!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   commentReplies(where: CommentReplyWhereInput, orderBy: CommentReplyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CommentReply]!
   video(where: VideoWhereUniqueInput!): Video
@@ -4333,10 +4388,10 @@ type Query {
   audio(where: AudioWhereUniqueInput!): Audio
   audioVote(where: AudioVoteWhereUniqueInput!): AudioVote
   caption(where: CaptionWhereUniqueInput!): Caption
+  comment(where: CommentWhereUniqueInput!): Comment
   commentVote(where: CommentVoteWhereUniqueInput!): CommentVote
   commentReplyVote(where: CommentReplyVoteWhereUniqueInput!): CommentReplyVote
   tag(where: TagWhereUniqueInput!): Tag
-  comment(where: CommentWhereUniqueInput!): Comment
   user(where: UserWhereUniqueInput!): User
   commentReply(where: CommentReplyWhereUniqueInput!): CommentReply
   videosConnection(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): VideoConnection!
@@ -4344,10 +4399,10 @@ type Query {
   audiosConnection(where: AudioWhereInput, orderBy: AudioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AudioConnection!
   audioVotesConnection(where: AudioVoteWhereInput, orderBy: AudioVoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AudioVoteConnection!
   captionsConnection(where: CaptionWhereInput, orderBy: CaptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CaptionConnection!
+  commentsConnection(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CommentConnection!
   commentVotesConnection(where: CommentVoteWhereInput, orderBy: CommentVoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CommentVoteConnection!
   commentReplyVotesConnection(where: CommentReplyVoteWhereInput, orderBy: CommentReplyVoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CommentReplyVoteConnection!
   tagsConnection(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TagConnection!
-  commentsConnection(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CommentConnection!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   commentRepliesConnection(where: CommentReplyWhereInput, orderBy: CommentReplyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CommentReplyConnection!
 
@@ -4364,10 +4419,10 @@ type Subscription {
   audio(where: AudioSubscriptionWhereInput): AudioSubscriptionPayload
   audioVote(where: AudioVoteSubscriptionWhereInput): AudioVoteSubscriptionPayload
   caption(where: CaptionSubscriptionWhereInput): CaptionSubscriptionPayload
+  comment(where: CommentSubscriptionWhereInput): CommentSubscriptionPayload
   commentVote(where: CommentVoteSubscriptionWhereInput): CommentVoteSubscriptionPayload
   commentReplyVote(where: CommentReplyVoteSubscriptionWhereInput): CommentReplyVoteSubscriptionPayload
   tag(where: TagSubscriptionWhereInput): TagSubscriptionPayload
-  comment(where: CommentSubscriptionWhereInput): CommentSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
   commentReply(where: CommentReplySubscriptionWhereInput): CommentReplySubscriptionPayload
 }

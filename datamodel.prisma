@@ -130,7 +130,7 @@ type CommentVote {
 
 type CommentReply {
   id: ID! @id
-  comment: Comment! @relation(name: "ReplyToComment")
+  comment: Comment! @relation(name: "CommentReplyToComment")
   upvoteCount: Int! @default(value: 0)
   downvoteCount: Int! @default(value: 0)
   vote: [CommentReplyVote]!
