@@ -230,7 +230,7 @@ const mutations = {
 
     return tag;
   },
-  async createComment(parent, { video, text }, ctx, info) {
+  async createComment(parent, { video, text, defaultLanguage }, ctx, info) {
     if (!ctx.request.userId) throw new Error('Bạn chưa đăng nhập');
     const comment = await ctx.db.mutation.createComment({
       data: {
@@ -245,6 +245,7 @@ const mutations = {
             id: video,
           },
         },
+        defaultLanguage
       },
     });
     if (!comment) throw new Error('Saving comment to db failed');
