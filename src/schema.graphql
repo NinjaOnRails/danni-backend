@@ -65,6 +65,7 @@ type Mutation {
   updateVideoDuration: SuccessMessage
   updateVideoStats: SuccessMessage
   updateAudioDuration(source: String!, duration: Int!): Audio!
+  updateContentLanguage(contentLanguage: [Language]): User
 }
 
 type SuccessMessage {
