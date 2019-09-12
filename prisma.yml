@@ -1,7 +1,7 @@
-endpoint: ${env:PRISMA_ENDPOINT}
-# endpoint: ${env:PRISMA_ENDPOINT_PROD}
-secret: ${env:PRISMA_SECRET}
-# secret: ${env:PRISMA_SECRET_PROD}
+# endpoint: ${env:PRISMA_ENDPOINT}
+endpoint: ${env:PRISMA_ENDPOINT_PROD}
+# secret: ${env:PRISMA_SECRET}
+secret: ${env:PRISMA_SECRET_PROD}
 datamodel: datamodel.prisma
 hooks:
   post-deploy:
