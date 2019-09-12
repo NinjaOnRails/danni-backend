@@ -300,6 +300,7 @@ const mutations = {
         data: {
           ...data,
           password,
+          contentLanguage: {set: data.contentLanguage},
           permissions: { set: ['USER'] },
         },
       },

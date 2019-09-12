@@ -86,6 +86,7 @@ input UpdateAudioInput {
 input signupInput {
   email: String!
   password: String!
+  contentLanguage: [Language]
   name: String
   displayName: String
 }
