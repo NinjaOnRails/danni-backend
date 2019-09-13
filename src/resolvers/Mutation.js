@@ -42,7 +42,7 @@ const mutations = {
           language,
         },
       },
-      info,
+      info
     );
     if (!video) throw new Error('Saving video to db failed');
 
@@ -84,7 +84,7 @@ const mutations = {
           id,
         },
       },
-      info,
+      info
     );
   },
   async deleteVideo(parent, { id, password }, ctx, info) {
@@ -113,7 +113,7 @@ const mutations = {
     });
     if (audios.length)
       throw new Error(
-        'Each user can only post 1 audio file for each video in given language',
+        'Each user can only post 1 audio file for each video in given language'
       );
 
     // Validate other input argumentsma
@@ -137,7 +137,7 @@ const mutations = {
           },
         },
       },
-      info,
+      info
     );
   },
   async updateAudio(
@@ -147,7 +147,7 @@ const mutations = {
       data: { source, language, author },
     },
     ctx,
-    info,
+    info
   ) {
     return ctx.db.mutation.updateAudio(
       {
@@ -160,7 +160,7 @@ const mutations = {
           id,
         },
       },
-      info,
+      info
     );
   },
   async createCaption(
@@ -169,7 +169,7 @@ const mutations = {
       data: { languageTag, xml, author, video },
     },
     ctx,
-    info,
+    info
   ) {
     // Check if video exists
     const videoExists = await ctx.db.query.video({ where: { id: video } });
@@ -189,7 +189,7 @@ const mutations = {
             },
           },
         },
-        info,
+        info
       );
       if (!captions) throw new Error('Saving captions to db failed');
       return captions;
@@ -211,7 +211,7 @@ const mutations = {
           },
         },
       },
-      info,
+      info
     );
     if (!captions) throw new Error('Saving captions to db failed');
     return captions;
@@ -251,6 +251,50 @@ const mutations = {
     if (!comment) throw new Error('Saving comment to db failed');
     return comment;
   },
+  async updateComment(parent, data, ctx, info) {
+    if (!ctx.request.userId) throw new Error('Bạn chưa đăng nhập');
+    const existingComment = await ctx.db.query.comment(
+      {
+        where: {
+          id: data.comment,
+          // author: { connect: { id: ctx.request.userId } },
+        },
+      },
+      `{id text author{id} }`
+    );
+    if (existingComment.author.id !== ctx.request.userId)
+      throw new Error('Comment not found');
+    const { comment, text } = data;
+    if (!text) return existingComment;
+    return ctx.db.mutation.updateComment({
+      data: {
+        text,
+      },
+      where: {
+        id: comment,
+      },
+    });
+  },
+  async deleteComment(parent, { comment }, ctx, info) {
+    if (!ctx.request.userId) throw new Error('Bạn chưa đăng nhập');
+    const existingComment = await ctx.db.query.comment(
+      {
+        where: {
+          id: comment,
+          // author: { connect: { id: ctx.request.userId } },
+        },
+      },
+      `{ author{id} }`
+    );
+    if (existingComment.author.id !== ctx.request.userId)
+      throw new Error('Comment not found');
+    return ctx.db.mutation.deleteComment({
+      where: {
+        id: comment,
+      },
+    });
+  },
+
   async createCommentReply(parent, { comment, text }, ctx, info) {
     if (!ctx.request.userId) throw new Error('Bạn chưa đăng nhập');
     const commentReply = await ctx.db.mutation.createCommentReply({
@@ -269,8 +313,50 @@ const mutations = {
       },
     });
     if (!commentReply) throw new Error('Saving comment reply to db failed');
-    console.log(commentReply)
     return commentReply;
+  },
+  async updateCommentReply(parent, data, ctx, info) {
+    if (!ctx.request.userId) throw new Error('Bạn chưa đăng nhập');
+    const existingReply = await ctx.db.query.commentReply(
+      {
+        where: {
+          id: data.commentReply,
+          // author: { connect: { id: ctx.request.userId } },
+        },
+      },
+      `{id text author{id} }`
+    );
+    if (existingReply.author.id !== ctx.request.userId)
+      throw new Error('Reply not found');
+    if (!data.text) return existingReply;
+    const { commentReply, text } = data;
+    return ctx.db.mutation.updateCommentReply({
+      data: {
+        text,
+      },
+      where: {
+        id: commentReply,
+      },
+    });
+  },
+  async deleteCommentReply(parent, { commentReply }, ctx, info) {
+    if (!ctx.request.userId) throw new Error('Bạn chưa đăng nhập');
+    const existing = await ctx.db.query.commentReply(
+      {
+        where: {
+          id: commentReply,
+          // author: { connect: { id: ctx.request.userId } },
+        },
+      },
+      `{ author{id} }`
+    );
+    if (existing.author.id !== ctx.request.userId)
+      throw new Error('Reply not found');
+    return ctx.db.mutation.deleteCommentReply({
+      where: {
+        id: commentReply,
+      },
+    });
   },
   async signup(parent, { data }, ctx, info) {
     // Lowercase email and trim arguments
@@ -303,7 +389,7 @@ const mutations = {
           permissions: { set: ['USER'] },
         },
       },
-      info,
+      info
     );
 
     // Create JWT
@@ -385,7 +471,7 @@ const mutations = {
     parent,
     { password, confirmPassword, resetToken },
     ctx,
-    info,
+    info
   ) {
     // 1. Check if passwords match
     if (password !== confirmPassword) throw new Error('Passwords do not match');
@@ -487,7 +573,7 @@ const mutations = {
   updateAudioDuration(parent, { source, duration }, ctx, info) {
     return ctx.db.mutation.updateAudio(
       { data: { duration }, where: { source } },
-      info,
+      info
     );
   },
 };

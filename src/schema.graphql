@@ -31,11 +31,19 @@ type Query {
     skip: Int
     first: Int
   ): [Comment]!
+  commentReplies(
+    where: CommentReplyWhereInput
+    orderBy: CommentReplyOrderByInput
+    skip: Int
+    first: Int
+  ): [CommentReply]!
+
   video(where: VideoWhereUniqueInput!): Video
   audio(where: AudioWhereUniqueInput!): Audio
   caption(where: CaptionWhereUniqueInput!): Caption
   tag(where: TagWhereUniqueInput!): Tag
   comment(where: CommentWhereUniqueInput!): Comment
+  commentReply(where: CommentReplyWhereUniqueInput!): CommentReply
   videosConnection(where: VideoWhereInput): VideoConnection!
   audiosConnection(where: AudioWhereInput): AudioConnection!
   captionsConnection(where: CaptionWhereInput): CaptionConnection!
@@ -61,7 +69,11 @@ type Mutation {
     confirmPassword: String!
   ): User!
   createComment(video: ID, text: String!): Comment!
+  updateComment(comment: ID, text: String): Comment!
+  deleteComment(comment: ID): Comment!
   createCommentReply(comment: ID, text: String!): CommentReply!
+  updateCommentReply(commentReply: ID, text: String): CommentReply!
+  deleteCommentReply(commentReply: ID): CommentReply!
   updateVideoDuration: SuccessMessage
   updateVideoStats: SuccessMessage
   updateAudioDuration(source: String!, duration: Int!): Audio!

@@ -11,6 +11,8 @@ const Query = {
   tags: forwardTo('db'),
   comment: forwardTo('db'),
   comments: forwardTo('db'),
+  commentReply: forwardTo('db'),
+  commentReplies: forwardTo('db'),
   currentUser(parent, args, ctx, info) {
     // Check if there is current user ID
     if (!ctx.request.userId) return null;
