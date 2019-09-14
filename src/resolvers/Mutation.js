@@ -232,7 +232,7 @@ const mutations = {
     return tag;
   },
   async createComment(parent, { video, text }, ctx, info) {
-    if (!ctx.request.userId) throw new Error('Bạn chưa đăng nhập');
+    if (!ctx.request.userId) throw new Error('Please sign in first');
     const comment = await ctx.db.mutation.createComment({
       data: {
         author: {
@@ -296,7 +296,7 @@ const mutations = {
   },
 
   async createCommentReply(parent, { comment, text }, ctx, info) {
-    if (!ctx.request.userId) throw new Error('Bạn chưa đăng nhập');
+    if (!ctx.request.userId) throw new Error('Please sign in first');
     const commentReply = await ctx.db.mutation.createCommentReply({
       data: {
         author: {
@@ -386,6 +386,7 @@ const mutations = {
         data: {
           ...data,
           password,
+          contentLanguage: {set: data.contentLanguage},
           permissions: { set: ['USER'] },
         },
       },
@@ -573,6 +574,22 @@ const mutations = {
   updateAudioDuration(parent, { source, duration }, ctx, info) {
     return ctx.db.mutation.updateAudio(
       { data: { duration }, where: { source } },
+      info
+    );
+  },
+  async updateContentLanguage(parent, { contentLanguage }, ctx, info) {
+    if (!ctx.request.userId) throw new Error('Please sign in first');
+
+    // Update content language
+    return ctx.db.mutation.updateUser(
+      {
+        data: {
+          contentLanguage: {
+            set: contentLanguage,
+          },
+        },
+        where: { id: ctx.request.userId },
+      },
       info
     );
   },

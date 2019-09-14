@@ -77,6 +77,7 @@ type Mutation {
   updateVideoDuration: SuccessMessage
   updateVideoStats: SuccessMessage
   updateAudioDuration(source: String!, duration: Int!): Audio!
+  updateContentLanguage(contentLanguage: [Language]): User
 }
 
 type SuccessMessage {
@@ -97,6 +98,7 @@ input UpdateAudioInput {
 input signupInput {
   email: String!
   password: String!
+  contentLanguage: [Language]
   name: String
   displayName: String
 }
