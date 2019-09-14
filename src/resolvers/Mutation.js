@@ -251,6 +251,50 @@ const mutations = {
     if (!comment) throw new Error('Saving comment to db failed');
     return comment;
   },
+  async updateComment(parent, data, ctx, info) {
+    if (!ctx.request.userId) throw new Error('Bạn chưa đăng nhập');
+    const existingComment = await ctx.db.query.comment(
+      {
+        where: {
+          id: data.comment,
+          // author: { connect: { id: ctx.request.userId } },
+        },
+      },
+      `{id text author{id} }`
+    );
+    if (existingComment.author.id !== ctx.request.userId)
+      throw new Error('Comment not found');
+    const { comment, text } = data;
+    if (!text) return existingComment;
+    return ctx.db.mutation.updateComment({
+      data: {
+        text,
+      },
+      where: {
+        id: comment,
+      },
+    });
+  },
+  async deleteComment(parent, { comment }, ctx, info) {
+    if (!ctx.request.userId) throw new Error('Bạn chưa đăng nhập');
+    const existingComment = await ctx.db.query.comment(
+      {
+        where: {
+          id: comment,
+          // author: { connect: { id: ctx.request.userId } },
+        },
+      },
+      `{ author{id} }`
+    );
+    if (existingComment.author.id !== ctx.request.userId)
+      throw new Error('Comment not found');
+    return ctx.db.mutation.deleteComment({
+      where: {
+        id: comment,
+      },
+    });
+  },
+
   async createCommentReply(parent, { comment, text }, ctx, info) {
     if (!ctx.request.userId) throw new Error('Please sign in first');
     const commentReply = await ctx.db.mutation.createCommentReply({
@@ -269,8 +313,50 @@ const mutations = {
       },
     });
     if (!commentReply) throw new Error('Saving comment reply to db failed');
-    console.log(commentReply);
     return commentReply;
+  },
+  async updateCommentReply(parent, data, ctx, info) {
+    if (!ctx.request.userId) throw new Error('Bạn chưa đăng nhập');
+    const existingReply = await ctx.db.query.commentReply(
+      {
+        where: {
+          id: data.commentReply,
+          // author: { connect: { id: ctx.request.userId } },
+        },
+      },
+      `{id text author{id} }`
+    );
+    if (existingReply.author.id !== ctx.request.userId)
+      throw new Error('Reply not found');
+    if (!data.text) return existingReply;
+    const { commentReply, text } = data;
+    return ctx.db.mutation.updateCommentReply({
+      data: {
+        text,
+      },
+      where: {
+        id: commentReply,
+      },
+    });
+  },
+  async deleteCommentReply(parent, { commentReply }, ctx, info) {
+    if (!ctx.request.userId) throw new Error('Bạn chưa đăng nhập');
+    const existing = await ctx.db.query.commentReply(
+      {
+        where: {
+          id: commentReply,
+          // author: { connect: { id: ctx.request.userId } },
+        },
+      },
+      `{ author{id} }`
+    );
+    if (existing.author.id !== ctx.request.userId)
+      throw new Error('Reply not found');
+    return ctx.db.mutation.deleteCommentReply({
+      where: {
+        id: commentReply,
+      },
+    });
   },
   async signup(parent, { data }, ctx, info) {
     // Lowercase email and trim arguments
