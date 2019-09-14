@@ -5,5 +5,3 @@ node_modules/
 variables.env
 now.json
 .env
-src/db.js
-db.js

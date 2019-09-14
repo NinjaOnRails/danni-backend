@@ -252,18 +252,17 @@ const mutations = {
     return comment;
   },
   async updateComment(parent, data, ctx, info) {
-    if (!ctx.request.userId) throw new Error('Bạn chưa đăng nhập');
+    if (!ctx.request.userId) throw new Error('Please sign in first');
     const existingComment = await ctx.db.query.comment(
       {
         where: {
           id: data.comment,
-          // author: { connect: { id: ctx.request.userId } },
         },
       },
       `{id text author{id} }`
     );
     if (existingComment.author.id !== ctx.request.userId)
-      throw new Error('Comment not found');
+      throw new Error('You do not have permission to do that');
     const { comment, text } = data;
     if (!text) return existingComment;
     return ctx.db.mutation.updateComment({
@@ -276,18 +275,17 @@ const mutations = {
     });
   },
   async deleteComment(parent, { comment }, ctx, info) {
-    if (!ctx.request.userId) throw new Error('Bạn chưa đăng nhập');
+    if (!ctx.request.userId) throw new Error('Please sign in first');
     const existingComment = await ctx.db.query.comment(
       {
         where: {
           id: comment,
-          // author: { connect: { id: ctx.request.userId } },
         },
       },
       `{ author{id} }`
     );
     if (existingComment.author.id !== ctx.request.userId)
-      throw new Error('Comment not found');
+      throw new Error('You do not have permission to do that');
     return ctx.db.mutation.deleteComment({
       where: {
         id: comment,
@@ -316,18 +314,17 @@ const mutations = {
     return commentReply;
   },
   async updateCommentReply(parent, data, ctx, info) {
-    if (!ctx.request.userId) throw new Error('Bạn chưa đăng nhập');
+    if (!ctx.request.userId) throw new Error('Please sign in first');
     const existingReply = await ctx.db.query.commentReply(
       {
         where: {
           id: data.commentReply,
-          // author: { connect: { id: ctx.request.userId } },
         },
       },
       `{id text author{id} }`
     );
     if (existingReply.author.id !== ctx.request.userId)
-      throw new Error('Reply not found');
+      throw new Error('You do not have permission to do that');
     if (!data.text) return existingReply;
     const { commentReply, text } = data;
     return ctx.db.mutation.updateCommentReply({
@@ -340,12 +337,11 @@ const mutations = {
     });
   },
   async deleteCommentReply(parent, { commentReply }, ctx, info) {
-    if (!ctx.request.userId) throw new Error('Bạn chưa đăng nhập');
+    if (!ctx.request.userId) throw new Error('Please sign in first');
     const existing = await ctx.db.query.commentReply(
       {
         where: {
           id: commentReply,
-          // author: { connect: { id: ctx.request.userId } },
         },
       },
       `{ author{id} }`
@@ -414,13 +410,13 @@ const mutations = {
     // Check if there is user with that email
     const user = await ctx.db.query.user({ where: { email } });
     if (!user) {
-      throw new Error('Invalid Email or Password!');
+      throw new Error('Invalid Email or Password');
     }
 
     // Check if password is correct
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) {
-      throw new Error('Invalid Email or Password!');
+      throw new Error('Invalid Email or Password');
     }
 
     // Generate JWT Token
@@ -440,13 +436,13 @@ const mutations = {
   },
   signout(parent, args, ctx, info) {
     ctx.response.clearCookie('token');
-    return { message: 'Đăng Xuất thành công.' };
+    return { message: 'Sign out successful' };
   },
   async requestReset(parent, { email }, ctx, info) {
     // 1. Check if real user
     const user = await ctx.db.query.user({ where: { email } });
     if (!user) {
-      return { message: 'Reset token sent!' };
+      return { message: 'Reset token sent' };
     }
 
     // 2. Set reset token and expiry
@@ -466,7 +462,7 @@ const mutations = {
     }
 
     // 4. Return message
-    return { message: 'Reset token sent!' };
+    return { message: 'Reset token sent' };
   },
   async resetPassword(
     parent,
@@ -485,7 +481,7 @@ const mutations = {
       },
     });
     if (!user) {
-      throw new Error('Token is invalid or expired!');
+      throw new Error('Token is invalid or expired');
     }
 
     // 3. Hash new password
