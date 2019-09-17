@@ -37,13 +37,26 @@ type Query {
     skip: Int
     first: Int
   ): [CommentReply]!
-
+  commentVotes(
+    where: CommentVoteWhereInput
+    orderBy: CommentVoteOrderByInput
+    skip: Int
+    first: Int
+  ): [CommentReply]!
+  commentReplyVotes(
+    where: CommentReplyVoteWhereInput
+    orderBy: CommentReplyVoteOrderByInput
+    skip: Int
+    first: Int
+  ): [CommentReply]!
   video(where: VideoWhereUniqueInput!): Video
   audio(where: AudioWhereUniqueInput!): Audio
   caption(where: CaptionWhereUniqueInput!): Caption
   tag(where: TagWhereUniqueInput!): Tag
   comment(where: CommentWhereUniqueInput!): Comment
   commentReply(where: CommentReplyWhereUniqueInput!): CommentReply
+  commentVote(where: CommentVoteWhereInput!): CommentVote
+  commentReplyVote(where: CommentReplyVoteWhereUniqueInput!): CommentReplyVote
   videosConnection(where: VideoWhereInput): VideoConnection!
   audiosConnection(where: AudioWhereInput): AudioConnection!
   captionsConnection(where: CaptionWhereInput): CaptionConnection!
@@ -74,6 +87,23 @@ type Mutation {
   createCommentReply(comment: ID, text: String!): CommentReply!
   updateCommentReply(commentReply: ID, text: String): CommentReply!
   deleteCommentReply(commentReply: ID): CommentReply!
+
+  createCommentUpvote(comment: ID, type: VoteType): CommentVote!
+  deleteCommentUpvote(comment: ID): CommentVote!
+  createCommentDownvote(comment: ID, type: VoteType): CommentVote!
+  deleteCommentDownvote(comment: ID): CommentVote!
+
+  createCommentVote(comment: ID, type: VoteType): CommentVote!
+  createCommentReplyVote(commentReply: ID, type: VoteType): CommentReplyVote!
+
+  createCommentReplyUpvote(commentReply: ID, type: VoteType): CommentReplyVote!
+  deleteCommentReplyUpvote(commentReply: ID): CommentReplyVote!
+  createCommentReplyDownvote(
+    commentReply: ID
+    type: VoteType
+  ): CommentReplyVote!
+  deleteCommentReplyDownvote(commentReply: ID): CommentReplyVote!
+
   updateVideoDuration: SuccessMessage
   updateVideoStats: SuccessMessage
   updateAudioDuration(source: String!, duration: Int!): Audio!

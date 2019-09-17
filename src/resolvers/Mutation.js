@@ -354,6 +354,116 @@ const mutations = {
       },
     });
   },
+  async createCommentVote(parent, { comment, type }, ctx, info) {
+    if (!ctx.request.userId) throw new Error('Please sign in first');
+    let upvoteIncrement;
+    let downvoteIncrement;
+    let upVote;
+    const votingComment = await ctx.db.query.comment(
+      {
+        where: { id: comment },
+      },
+      `{upvoteCount downvoteCount vote{id type user{id}}}`
+    );
+    const existingVote =
+      votingComment.vote.length > 0
+        ? votingComment.vote.filter(
+            vote => vote.user.id === ctx.request.userId
+          )[0]
+        : false;
+    console.log(type);
+    if (!existingVote && type === 'DOWNVOTE') {
+      console.log('Vote didnt exist, downvote');
+      upvoteIncrement = 0;
+      downvoteIncrement = 1;
+    } else if (!existingVote && type === 'UPVOTE') {
+      console.log('Vote didnt exist, upvote');
+      upvoteIncrement = 1;
+      downvoteIncrement = 0;
+    } else if (
+      existingVote &&
+      (existingVote.type !== type && type === 'DOWNVOTE')
+    ) {
+      console.log('Vote exist different, downvote');
+
+      upvoteIncrement = -1;
+      downvoteIncrement = 1;
+    } else if (
+      existingVote &&
+      (existingVote.type !== type && type === 'UPVOTE')
+    ) {
+      console.log('Vote exist different, upvote');
+
+      upvoteIncrement = 1;
+      downvoteIncrement = -1;
+    } else if (
+      existingVote &&
+      (existingVote.type === type && type === 'DOWNVOTE')
+    ) {
+      console.log('Vote exist same, downvote');
+
+      upvoteIncrement = 0;
+      downvoteIncrement = -1;
+    } else if (
+      existingVote &&
+      (existingVote.type === type && type === 'UPVOTE')
+    ) {
+      console.log('Vote exist same, upvote');
+
+      upvoteIncrement = -1;
+      downvoteIncrement = 0;
+    } else {
+      console.log('Nope');
+    }
+
+    if (!existingVote) {
+      upVote = await ctx.db.mutation.createCommentVote({
+        data: {
+          comment: { connect: { id: comment } },
+          type,
+          user: { connect: { id: ctx.request.userId } },
+        },
+      });
+    } else {
+      if (existingVote.type !== type) {
+        upVote = await ctx.db.mutation.updateCommentVote({
+          where: { id: existingVote.id },
+          data: {
+            type,
+          },
+        });
+      } else {
+        upVote = await ctx.db.mutation.deleteCommentVote({
+          where: { id: existingVote.id },
+        });
+      }
+    }
+    const upvotedComment = await ctx.db.mutation.updateComment({
+      data: {
+        upvoteCount: votingComment.upvoteCount + upvoteIncrement,
+        downvoteCount: votingComment.downvoteCount + downvoteIncrement,
+      },
+      where: {
+        id: comment,
+      },
+    });
+    if (!upVote || !upvotedComment) throw new Error('Upvote comment failed!');
+    return upVote;
+  },
+
+  async createCommentReplyUpvote(parent, { commentReply, type }, ctx, info) {
+    if (!ctx.request.userId) throw new Error('Please sign in first');
+    const existingVote = await ctx.db.query.commentReplyVote({
+      where: {
+        commentReply: {
+          id: commentReply,
+        },
+        author: {
+          id: ctx.request.userId,
+        },
+      },
+    });
+  },
   async signup(parent, { data }, ctx, info) {
     // Lowercase email and trim arguments
     data.email = data.email.toLowerCase().trim();
@@ -382,7 +492,7 @@ const mutations = {
         data: {
           ...data,
           password,
-          contentLanguage: {set: data.contentLanguage},
+          contentLanguage: { set: data.contentLanguage },
           permissions: { set: ['USER'] },
         },
       },

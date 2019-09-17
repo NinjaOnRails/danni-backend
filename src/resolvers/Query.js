@@ -13,6 +13,10 @@ const Query = {
   comments: forwardTo('db'),
   commentReply: forwardTo('db'),
   commentReplies: forwardTo('db'),
+  commentVote: forwardTo("db"),
+  commentVotes: forwardTo("db"),
+  commentReplyVote: forwardTo("db"),
+  commentReplyVotes: forwardTo("db"),
   currentUser(parent, args, ctx, info) {
     // Check if there is current user ID
     if (!ctx.request.userId) return null;
