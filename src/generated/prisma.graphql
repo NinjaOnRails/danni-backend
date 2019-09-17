@@ -1,5 +1,5 @@
-# source: https://eu1.prisma.sh/danni/dev/dev
-# timestamp: Thu Sep 05 2019 21:38:19 GMT+0200 (Central European Summer Time)
+# source: https://danni-19aba07fdc.herokuapp.com/danni-2-0/prod
+# timestamp: Tue Sep 17 2019 14:06:36 GMT+0200 (Central European Summer Time)
 
 type AggregateAudio {
   count: Int!
@@ -2187,7 +2187,7 @@ type Comment implements Node {
   id: ID!
   video: Video!
   audio: Audio
-  author: User!
+  author: User
   upvoteCount: Int!
   downvoteCount: Int!
   vote(where: CommentVoteWhereInput, orderBy: CommentVoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CommentVote!]
@@ -2214,7 +2214,7 @@ input CommentCreateInput {
   text: String!
   video: VideoCreateOneWithoutCommentInput!
   audio: AudioCreateOneWithoutCommentInput
-  author: UserCreateOneWithoutCommentInput!
+  author: UserCreateOneWithoutCommentInput
   vote: CommentVoteCreateManyWithoutCommentInput
   reply: CommentReplyCreateManyWithoutCommentInput
 }
@@ -2250,7 +2250,7 @@ input CommentCreateWithoutAudioInput {
   downvoteCount: Int
   text: String!
   video: VideoCreateOneWithoutCommentInput!
-  author: UserCreateOneWithoutCommentInput!
+  author: UserCreateOneWithoutCommentInput
   vote: CommentVoteCreateManyWithoutCommentInput
   reply: CommentReplyCreateManyWithoutCommentInput
 }
@@ -2273,7 +2273,7 @@ input CommentCreateWithoutReplyInput {
   text: String!
   video: VideoCreateOneWithoutCommentInput!
   audio: AudioCreateOneWithoutCommentInput
-  author: UserCreateOneWithoutCommentInput!
+  author: UserCreateOneWithoutCommentInput
   vote: CommentVoteCreateManyWithoutCommentInput
 }
 
@@ -2283,7 +2283,7 @@ input CommentCreateWithoutVideoInput {
   downvoteCount: Int
   text: String!
   audio: AudioCreateOneWithoutCommentInput
-  author: UserCreateOneWithoutCommentInput!
+  author: UserCreateOneWithoutCommentInput
   vote: CommentVoteCreateManyWithoutCommentInput
   reply: CommentReplyCreateManyWithoutCommentInput
 }
@@ -2295,7 +2295,7 @@ input CommentCreateWithoutVoteInput {
   text: String!
   video: VideoCreateOneWithoutCommentInput!
   audio: AudioCreateOneWithoutCommentInput
-  author: UserCreateOneWithoutCommentInput!
+  author: UserCreateOneWithoutCommentInput
   reply: CommentReplyCreateManyWithoutCommentInput
 }
 
@@ -2338,7 +2338,7 @@ type CommentReply implements Node {
   upvoteCount: Int!
   downvoteCount: Int!
   vote(where: CommentReplyVoteWhereInput, orderBy: CommentReplyVoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CommentReplyVote!]
-  author: User!
+  author: User
   text: String!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -2361,7 +2361,7 @@ input CommentReplyCreateInput {
   text: String!
   comment: CommentCreateOneWithoutReplyInput!
   vote: CommentReplyVoteCreateManyWithoutCommentReplyInput
-  author: UserCreateOneInput!
+  author: UserCreateOneInput
 }
 
 input CommentReplyCreateManyInput {
@@ -2385,7 +2385,7 @@ input CommentReplyCreateWithoutCommentInput {
   downvoteCount: Int
   text: String!
   vote: CommentReplyVoteCreateManyWithoutCommentReplyInput
-  author: UserCreateOneInput!
+  author: UserCreateOneInput
 }
 
 input CommentReplyCreateWithoutVoteInput {
@@ -2394,7 +2394,7 @@ input CommentReplyCreateWithoutVoteInput {
   downvoteCount: Int
   text: String!
   comment: CommentCreateOneWithoutReplyInput!
-  author: UserCreateOneInput!
+  author: UserCreateOneInput
 }
 
 """An edge in a connection."""
@@ -2652,7 +2652,7 @@ input CommentReplyUpdateDataInput {
   text: String
   comment: CommentUpdateOneRequiredWithoutReplyInput
   vote: CommentReplyVoteUpdateManyWithoutCommentReplyInput
-  author: UserUpdateOneRequiredInput
+  author: UserUpdateOneInput
 }
 
 input CommentReplyUpdateInput {
@@ -2661,7 +2661,7 @@ input CommentReplyUpdateInput {
   text: String
   comment: CommentUpdateOneRequiredWithoutReplyInput
   vote: CommentReplyVoteUpdateManyWithoutCommentReplyInput
-  author: UserUpdateOneRequiredInput
+  author: UserUpdateOneInput
 }
 
 input CommentReplyUpdateManyDataInput {
@@ -2717,7 +2717,7 @@ input CommentReplyUpdateWithoutCommentDataInput {
   downvoteCount: Int
   text: String
   vote: CommentReplyVoteUpdateManyWithoutCommentReplyInput
-  author: UserUpdateOneRequiredInput
+  author: UserUpdateOneInput
 }
 
 input CommentReplyUpdateWithoutVoteDataInput {
@@ -2725,7 +2725,7 @@ input CommentReplyUpdateWithoutVoteDataInput {
   downvoteCount: Int
   text: String
   comment: CommentUpdateOneRequiredWithoutReplyInput
-  author: UserUpdateOneRequiredInput
+  author: UserUpdateOneInput
 }
 
 input CommentReplyUpdateWithWhereUniqueNestedInput {
@@ -3520,7 +3520,7 @@ input CommentUpdateInput {
   text: String
   video: VideoUpdateOneRequiredWithoutCommentInput
   audio: AudioUpdateOneWithoutCommentInput
-  author: UserUpdateOneRequiredWithoutCommentInput
+  author: UserUpdateOneWithoutCommentInput
   vote: CommentVoteUpdateManyWithoutCommentInput
   reply: CommentReplyUpdateManyWithoutCommentInput
 }
@@ -3597,7 +3597,7 @@ input CommentUpdateWithoutAudioDataInput {
   downvoteCount: Int
   text: String
   video: VideoUpdateOneRequiredWithoutCommentInput
-  author: UserUpdateOneRequiredWithoutCommentInput
+  author: UserUpdateOneWithoutCommentInput
   vote: CommentVoteUpdateManyWithoutCommentInput
   reply: CommentReplyUpdateManyWithoutCommentInput
 }
@@ -3618,7 +3618,7 @@ input CommentUpdateWithoutReplyDataInput {
   text: String
   video: VideoUpdateOneRequiredWithoutCommentInput
   audio: AudioUpdateOneWithoutCommentInput
-  author: UserUpdateOneRequiredWithoutCommentInput
+  author: UserUpdateOneWithoutCommentInput
   vote: CommentVoteUpdateManyWithoutCommentInput
 }
 
@@ -3627,7 +3627,7 @@ input CommentUpdateWithoutVideoDataInput {
   downvoteCount: Int
   text: String
   audio: AudioUpdateOneWithoutCommentInput
-  author: UserUpdateOneRequiredWithoutCommentInput
+  author: UserUpdateOneWithoutCommentInput
   vote: CommentVoteUpdateManyWithoutCommentInput
   reply: CommentReplyUpdateManyWithoutCommentInput
 }
@@ -3638,7 +3638,7 @@ input CommentUpdateWithoutVoteDataInput {
   text: String
   video: VideoUpdateOneRequiredWithoutCommentInput
   audio: AudioUpdateOneWithoutCommentInput
-  author: UserUpdateOneRequiredWithoutCommentInput
+  author: UserUpdateOneWithoutCommentInput
   reply: CommentReplyUpdateManyWithoutCommentInput
 }
 
@@ -5167,9 +5167,11 @@ input UserUpdateManyMutationInput {
   permissions: UserUpdatepermissionsInput
 }
 
-input UserUpdateOneRequiredInput {
+input UserUpdateOneInput {
   create: UserCreateInput
   connect: UserWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
   update: UserUpdateDataInput
   upsert: UserUpsertNestedInput
 }
@@ -5179,13 +5181,6 @@ input UserUpdateOneRequiredWithoutAudioVoteInput {
   connect: UserWhereUniqueInput
   update: UserUpdateWithoutAudioVoteDataInput
   upsert: UserUpsertWithoutAudioVoteInput
-}
-
-input UserUpdateOneRequiredWithoutCommentInput {
-  create: UserCreateWithoutCommentInput
-  connect: UserWhereUniqueInput
-  update: UserUpdateWithoutCommentDataInput
-  upsert: UserUpsertWithoutCommentInput
 }
 
 input UserUpdateOneRequiredWithoutCommentReplyVoteInput {
@@ -5202,13 +5197,6 @@ input UserUpdateOneRequiredWithoutCommentVoteInput {
   upsert: UserUpsertWithoutCommentVoteInput
 }
 
-input UserUpdateOneRequiredWithoutVideoInput {
-  create: UserCreateWithoutVideoInput
-  connect: UserWhereUniqueInput
-  update: UserUpdateWithoutVideoDataInput
-  upsert: UserUpsertWithoutVideoInput
-}
-
 input UserUpdateOneRequiredWithoutVideoVoteInput {
   create: UserCreateWithoutVideoVoteInput
   connect: UserWhereUniqueInput
@@ -5223,6 +5211,24 @@ input UserUpdateOneWithoutAudioInput {
   delete: Boolean
   update: UserUpdateWithoutAudioDataInput
   upsert: UserUpsertWithoutAudioInput
+}
+
+input UserUpdateOneWithoutCommentInput {
+  create: UserCreateWithoutCommentInput
+  connect: UserWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: UserUpdateWithoutCommentDataInput
+  upsert: UserUpsertWithoutCommentInput
+}
+
+input UserUpdateOneWithoutVideoInput {
+  create: UserCreateWithoutVideoInput
+  connect: UserWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: UserUpdateWithoutVideoDataInput
+  upsert: UserUpsertWithoutVideoInput
 }
 
 input UserUpdatepermissionsInput {
@@ -5772,7 +5778,7 @@ type Video implements Node {
   upvoteCount: Int!
   downvoteCount: Int!
   vote(where: VideoVoteWhereInput, orderBy: VideoVoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [VideoVote!]
-  addedBy: User!
+  addedBy: User
   audio(where: AudioWhereInput, orderBy: AudioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Audio!]
   comment(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
   caption(where: CaptionWhereInput, orderBy: CaptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Caption!]
@@ -5809,7 +5815,7 @@ input VideoCreateInput {
   downvoteCount: Int
   originTags: TagCreateManyInput
   vote: VideoVoteCreateManyWithoutVideoInput
-  addedBy: UserCreateOneWithoutVideoInput!
+  addedBy: UserCreateOneWithoutVideoInput
   audio: AudioCreateManyWithoutVideoInput
   comment: CommentCreateManyWithoutVideoInput
   caption: CaptionCreateManyWithoutVideoInput
@@ -5883,7 +5889,7 @@ input VideoCreateWithoutAudioInput {
   downvoteCount: Int
   originTags: TagCreateManyInput
   vote: VideoVoteCreateManyWithoutVideoInput
-  addedBy: UserCreateOneWithoutVideoInput!
+  addedBy: UserCreateOneWithoutVideoInput
   comment: CommentCreateManyWithoutVideoInput
   caption: CaptionCreateManyWithoutVideoInput
 }
@@ -5907,7 +5913,7 @@ input VideoCreateWithoutCaptionInput {
   downvoteCount: Int
   originTags: TagCreateManyInput
   vote: VideoVoteCreateManyWithoutVideoInput
-  addedBy: UserCreateOneWithoutVideoInput!
+  addedBy: UserCreateOneWithoutVideoInput
   audio: AudioCreateManyWithoutVideoInput
   comment: CommentCreateManyWithoutVideoInput
 }
@@ -5931,7 +5937,7 @@ input VideoCreateWithoutCommentInput {
   downvoteCount: Int
   originTags: TagCreateManyInput
   vote: VideoVoteCreateManyWithoutVideoInput
-  addedBy: UserCreateOneWithoutVideoInput!
+  addedBy: UserCreateOneWithoutVideoInput
   audio: AudioCreateManyWithoutVideoInput
   caption: CaptionCreateManyWithoutVideoInput
 }
@@ -5954,7 +5960,7 @@ input VideoCreateWithoutVoteInput {
   upvoteCount: Int
   downvoteCount: Int
   originTags: TagCreateManyInput
-  addedBy: UserCreateOneWithoutVideoInput!
+  addedBy: UserCreateOneWithoutVideoInput
   audio: AudioCreateManyWithoutVideoInput
   comment: CommentCreateManyWithoutVideoInput
   caption: CaptionCreateManyWithoutVideoInput
@@ -6641,7 +6647,7 @@ input VideoUpdateInput {
   downvoteCount: Int
   originTags: TagUpdateManyInput
   vote: VideoVoteUpdateManyWithoutVideoInput
-  addedBy: UserUpdateOneRequiredWithoutVideoInput
+  addedBy: UserUpdateOneWithoutVideoInput
   audio: AudioUpdateManyWithoutVideoInput
   comment: CommentUpdateManyWithoutVideoInput
   caption: CaptionUpdateManyWithoutVideoInput
@@ -6773,7 +6779,7 @@ input VideoUpdateWithoutAudioDataInput {
   downvoteCount: Int
   originTags: TagUpdateManyInput
   vote: VideoVoteUpdateManyWithoutVideoInput
-  addedBy: UserUpdateOneRequiredWithoutVideoInput
+  addedBy: UserUpdateOneWithoutVideoInput
   comment: CommentUpdateManyWithoutVideoInput
   caption: CaptionUpdateManyWithoutVideoInput
 }
@@ -6796,7 +6802,7 @@ input VideoUpdateWithoutCaptionDataInput {
   downvoteCount: Int
   originTags: TagUpdateManyInput
   vote: VideoVoteUpdateManyWithoutVideoInput
-  addedBy: UserUpdateOneRequiredWithoutVideoInput
+  addedBy: UserUpdateOneWithoutVideoInput
   audio: AudioUpdateManyWithoutVideoInput
   comment: CommentUpdateManyWithoutVideoInput
 }
@@ -6819,7 +6825,7 @@ input VideoUpdateWithoutCommentDataInput {
   downvoteCount: Int
   originTags: TagUpdateManyInput
   vote: VideoVoteUpdateManyWithoutVideoInput
-  addedBy: UserUpdateOneRequiredWithoutVideoInput
+  addedBy: UserUpdateOneWithoutVideoInput
   audio: AudioUpdateManyWithoutVideoInput
   caption: CaptionUpdateManyWithoutVideoInput
 }
@@ -6841,7 +6847,7 @@ input VideoUpdateWithoutVoteDataInput {
   upvoteCount: Int
   downvoteCount: Int
   originTags: TagUpdateManyInput
-  addedBy: UserUpdateOneRequiredWithoutVideoInput
+  addedBy: UserUpdateOneWithoutVideoInput
   audio: AudioUpdateManyWithoutVideoInput
   comment: CommentUpdateManyWithoutVideoInput
   caption: CaptionUpdateManyWithoutVideoInput

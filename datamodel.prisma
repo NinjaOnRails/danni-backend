@@ -17,7 +17,7 @@ type Video {
   upvoteCount: Int! @default(value: 0)
   downvoteCount: Int! @default(value: 0)
   vote: [VideoVote]! @relation(name: "VideoVoteToVideo", onDelete: CASCADE)
-  addedBy: User! @relation(name: "VideoToUser")
+  addedBy: User @relation(name: "VideoToUser")
   audio: [Audio]! @relation(name: "AudioToVideo", onDelete: CASCADE)
   comment: [Comment]! @relation(name: "CommentToVideo", onDelete: CASCADE)
   caption: [Caption]! @relation(name: "CaptionToVideo", onDelete: CASCADE)
@@ -108,7 +108,7 @@ type Comment {
   id: ID! @id
   video: Video! @relation(name: "CommentToVideo")
   audio: Audio @relation(name: "CommentToAudio")
-  author: User! @relation(name: "CommentToUser")
+  author: User @relation(name: "CommentToUser")
   upvoteCount: Int! @default(value: 0)
   downvoteCount: Int! @default(value: 0)
   vote: [CommentVote]!
@@ -135,7 +135,7 @@ type CommentReply {
   downvoteCount: Int! @default(value: 0)
   vote: [CommentReplyVote]!
     @relation(name: "CommentReplyVoteToCommentReply", onDelete: CASCADE)
-  author: User! @relation(name: "ReplyToUser")
+  author: User @relation(name: "ReplyToUser")
   text: String!
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
