@@ -401,7 +401,6 @@ const mutations = {
       (existingVote.type === type && type === 'DOWNVOTE')
     ) {
       console.log('Vote exist same, downvote');
-
       upvoteIncrement = 0;
       downvoteIncrement = -1;
     } else if (
@@ -409,7 +408,6 @@ const mutations = {
       (existingVote.type === type && type === 'UPVOTE')
     ) {
       console.log('Vote exist same, upvote');
-
       upvoteIncrement = -1;
       downvoteIncrement = 0;
     } else {
@@ -438,6 +436,8 @@ const mutations = {
         });
       }
     }
+    console.log(upvoteIncrement, downvoteIncrement)
+    console.log(votingComment.upvoteCount, votingComment.downvoteCount)
     const upvotedComment = await ctx.db.mutation.updateComment({
       data: {
         upvoteCount: votingComment.upvoteCount + upvoteIncrement,
