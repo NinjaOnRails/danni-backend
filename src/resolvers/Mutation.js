@@ -354,6 +354,21 @@ const mutations = {
       },
     });
   },
+  async createCommentVote(parent, { comment, type }, ctx, info) {
+    if (!ctx.request.userId) throw new Error('Please sign in first');
+    let upVote;
+    const existingVote = await ctx.db.query.commentVote(
+      {
+        where: {
+          id: comment,
+          
+        },
+      },
+      `{ id type }`
+    );
+
+   
+  },
   async signup(parent, { data }, ctx, info) {
     // Lowercase email and trim arguments
     data.email = data.email.toLowerCase().trim();
@@ -382,7 +397,7 @@ const mutations = {
         data: {
           ...data,
           password,
-          contentLanguage: {set: data.contentLanguage},
+          contentLanguage: { set: data.contentLanguage },
           permissions: { set: ['USER'] },
         },
       },
