@@ -383,21 +383,41 @@ const mutations = {
         },
         query
       );
-      return vote;
     } else if (existingVote.type !== type) {
-      vote = await ctx.db.mutation.updateCommentVote(
+      // Just updating vote create issue with Optimistic UI
+      // vote = await ctx.db.mutation.updateCommentVote(
+      //   {
+      //     data: {
+      //       type,
+      //     },
+      //     where: {
+      //       id: existingVote.id,
+      //     },
+      //   },
+      //   query
+      // );
+      ctx.db.mutation.deleteCommentVote(
         {
-          data: {
-            type,
-          },
           where: {
             id: existingVote.id,
           },
         },
         query
       );
-      console.log(vote)
-      return existingVote;
+      vote = await ctx.db.mutation.createCommentVote(
+        {
+          data: {
+            type,
+            comment: { connect: { id: comment } },
+            user: {
+              connect: {
+                id: ctx.request.userId,
+              },
+            },
+          },
+        },
+        query
+      );
     } else if (existingVote.type === type) {
       vote = await ctx.db.mutation.deleteCommentVote(
         {
@@ -407,13 +427,13 @@ const mutations = {
         },
         query
       );
-      return vote;
     }
+    return vote;
   },
   async createCommentReplyVote(parent, { commentReply, type }, ctx, info) {
     if (!ctx.request.userId) throw new Error('Please sign in first');
     const query = `{id type user{id}}`;
-
+    let vote;
     const votingCommentReply = await ctx.db.query.commentReply(
       {
         where: { id: commentReply },
@@ -427,7 +447,7 @@ const mutations = {
           )
         : null;
     if (!existingVote) {
-      return await ctx.db.mutation.createCommentReplyVote(
+      vote = await ctx.db.mutation.createCommentReplyVote(
         {
           data: {
             type,
@@ -442,19 +462,41 @@ const mutations = {
         query
       );
     } else if (existingVote.type !== type) {
-      return await ctx.db.mutation.updateCommentReplyVote(
+      // vote = await ctx.db.mutation.updateCommentReplyVote(
+      //   {
+      //     data: {
+      //       type,
+      //     },
+      //     where: {
+      //       id: existingVote.id,
+      //     },
+      //   },
+      //   query
+      // );
+      ctx.db.mutation.deleteCommentReplyVote(
         {
-          data: {
-            type,
-          },
           where: {
             id: existingVote.id,
           },
         },
         query
       );
+      vote = await ctx.db.mutation.createCommentReplyVote(
+        {
+          data: {
+            type,
+            commentReply: { connect: { id: commentReply } },
+            user: {
+              connect: {
+                id: ctx.request.userId,
+              },
+            },
+          },
+        },
+        query
+      );
     } else if (existingVote.type === type) {
-      return await ctx.db.mutation.deleteCommentReplyVote(
+      vote = await ctx.db.mutation.deleteCommentReplyVote(
         {
           where: {
             id: existingVote.id,
@@ -463,6 +505,7 @@ const mutations = {
         query
       );
     }
+    return vote;
   },
   async signup(parent, { data }, ctx, info) {
     // Lowercase email and trim arguments
