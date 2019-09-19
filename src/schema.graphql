@@ -73,11 +73,8 @@ type Mutation {
   createCommentReply(comment: ID, text: String!): CommentReply!
   updateCommentReply(commentReply: ID, text: String): CommentReply!
   deleteCommentReply(commentReply: ID): CommentReply!
-  createCommentReplyVote(
-    commentReply: CommentReply!
-    type: VoteType!
-  ): CommentReplyVote!
-  createCommentVote(comment: Comment!, type: VoteType!): CommentVote!
+  createCommentReplyVote(commentReply: ID!, type: VoteType!): CommentReplyVote!
+  createCommentVote(comment: ID!, type: VoteType!): CommentVote!
   updateVideoDuration: SuccessMessage
   updateVideoStats: SuccessMessage
   updateAudioDuration(source: String!, duration: Int!): Audio!
