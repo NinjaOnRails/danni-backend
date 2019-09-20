@@ -357,7 +357,7 @@ const mutations = {
   async createCommentVote(parent, { comment, type }, ctx, info) {
     if (!ctx.request.userId) throw new Error('Please sign in first');
     const query = `{id type user{id}}`;
-    const votingComment = await ctx.db.query.comment(
+    const votingComment = await  ctx.db.query.comment(
       {
         where: { id: comment },
       },
@@ -369,7 +369,7 @@ const mutations = {
         : null;
     let vote;
     if (!existingVote) {
-      vote = await ctx.db.mutation.createCommentVote(
+      vote =  ctx.db.mutation.createCommentVote(
         {
           data: {
             type,
@@ -404,7 +404,7 @@ const mutations = {
         },
         query
       );
-      vote = await ctx.db.mutation.createCommentVote(
+      vote =  ctx.db.mutation.createCommentVote(
         {
           data: {
             type,
@@ -419,7 +419,7 @@ const mutations = {
         query
       );
     } else if (existingVote.type === type) {
-      vote = await ctx.db.mutation.deleteCommentVote(
+      vote =  ctx.db.mutation.deleteCommentVote(
         {
           where: {
             id: existingVote.id,
@@ -447,7 +447,7 @@ const mutations = {
           )
         : null;
     if (!existingVote) {
-      vote = await ctx.db.mutation.createCommentReplyVote(
+      vote =  ctx.db.mutation.createCommentReplyVote(
         {
           data: {
             type,
@@ -481,7 +481,7 @@ const mutations = {
         },
         query
       );
-      vote = await ctx.db.mutation.createCommentReplyVote(
+      vote = ctx.db.mutation.createCommentReplyVote(
         {
           data: {
             type,
@@ -496,7 +496,7 @@ const mutations = {
         query
       );
     } else if (existingVote.type === type) {
-      vote = await ctx.db.mutation.deleteCommentReplyVote(
+      vote = ctx.db.mutation.deleteCommentReplyVote(
         {
           where: {
             id: existingVote.id,
