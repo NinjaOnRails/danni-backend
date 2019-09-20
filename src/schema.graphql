@@ -37,7 +37,6 @@ type Query {
     skip: Int
     first: Int
   ): [CommentReply]!
-
   video(where: VideoWhereUniqueInput!): Video
   audio(where: AudioWhereUniqueInput!): Audio
   caption(where: CaptionWhereUniqueInput!): Caption
@@ -74,6 +73,8 @@ type Mutation {
   createCommentReply(comment: ID, text: String!): CommentReply!
   updateCommentReply(commentReply: ID, text: String): CommentReply!
   deleteCommentReply(commentReply: ID): CommentReply!
+  createCommentReplyVote(commentReply: ID!, type: VoteType!): CommentReplyVote!
+  createCommentVote(comment: ID!, type: VoteType!): CommentVote!
   updateVideoDuration: SuccessMessage
   updateVideoStats: SuccessMessage
   updateAudioDuration(source: String!, duration: Int!): Audio!

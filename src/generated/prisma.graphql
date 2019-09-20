@@ -1,5 +1,6 @@
-# source: https://danni-19aba07fdc.herokuapp.com/danni-2-0/prod
-# timestamp: Tue Sep 17 2019 14:06:36 GMT+0200 (Central European Summer Time)
+# source: https://eu1.prisma.sh/danni/dev/dev
+# timestamp: Thu Sep 19 2019 15:52:44 GMT+0200 (Central European Summer Time)
+
 
 type AggregateAudio {
   count: Int!
@@ -2187,9 +2188,7 @@ type Comment implements Node {
   id: ID!
   video: Video!
   audio: Audio
-  author: User
-  upvoteCount: Int!
-  downvoteCount: Int!
+  author: User!
   vote(where: CommentVoteWhereInput, orderBy: CommentVoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CommentVote!]
   reply(where: CommentReplyWhereInput, orderBy: CommentReplyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CommentReply!]
   text: String!
@@ -2209,8 +2208,6 @@ type CommentConnection {
 
 input CommentCreateInput {
   id: ID
-  upvoteCount: Int
-  downvoteCount: Int
   text: String!
   video: VideoCreateOneWithoutCommentInput!
   audio: AudioCreateOneWithoutCommentInput
@@ -2246,8 +2243,6 @@ input CommentCreateOneWithoutVoteInput {
 
 input CommentCreateWithoutAudioInput {
   id: ID
-  upvoteCount: Int
-  downvoteCount: Int
   text: String!
   video: VideoCreateOneWithoutCommentInput!
   author: UserCreateOneWithoutCommentInput
@@ -2257,8 +2252,6 @@ input CommentCreateWithoutAudioInput {
 
 input CommentCreateWithoutAuthorInput {
   id: ID
-  upvoteCount: Int
-  downvoteCount: Int
   text: String!
   video: VideoCreateOneWithoutCommentInput!
   audio: AudioCreateOneWithoutCommentInput
@@ -2268,8 +2261,6 @@ input CommentCreateWithoutAuthorInput {
 
 input CommentCreateWithoutReplyInput {
   id: ID
-  upvoteCount: Int
-  downvoteCount: Int
   text: String!
   video: VideoCreateOneWithoutCommentInput!
   audio: AudioCreateOneWithoutCommentInput
@@ -2279,8 +2270,6 @@ input CommentCreateWithoutReplyInput {
 
 input CommentCreateWithoutVideoInput {
   id: ID
-  upvoteCount: Int
-  downvoteCount: Int
   text: String!
   audio: AudioCreateOneWithoutCommentInput
   author: UserCreateOneWithoutCommentInput
@@ -2290,8 +2279,6 @@ input CommentCreateWithoutVideoInput {
 
 input CommentCreateWithoutVoteInput {
   id: ID
-  upvoteCount: Int
-  downvoteCount: Int
   text: String!
   video: VideoCreateOneWithoutCommentInput!
   audio: AudioCreateOneWithoutCommentInput
@@ -2311,10 +2298,6 @@ type CommentEdge {
 enum CommentOrderByInput {
   id_ASC
   id_DESC
-  upvoteCount_ASC
-  upvoteCount_DESC
-  downvoteCount_ASC
-  downvoteCount_DESC
   text_ASC
   text_DESC
   createdAt_ASC
@@ -2325,8 +2308,6 @@ enum CommentOrderByInput {
 
 type CommentPreviousValues {
   id: ID!
-  upvoteCount: Int!
-  downvoteCount: Int!
   text: String!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -2335,8 +2316,6 @@ type CommentPreviousValues {
 type CommentReply implements Node {
   id: ID!
   comment: Comment!
-  upvoteCount: Int!
-  downvoteCount: Int!
   vote(where: CommentReplyVoteWhereInput, orderBy: CommentReplyVoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CommentReplyVote!]
   author: User
   text: String!
@@ -2356,8 +2335,6 @@ type CommentReplyConnection {
 
 input CommentReplyCreateInput {
   id: ID
-  upvoteCount: Int
-  downvoteCount: Int
   text: String!
   comment: CommentCreateOneWithoutReplyInput!
   vote: CommentReplyVoteCreateManyWithoutCommentReplyInput
@@ -2381,8 +2358,6 @@ input CommentReplyCreateOneWithoutVoteInput {
 
 input CommentReplyCreateWithoutCommentInput {
   id: ID
-  upvoteCount: Int
-  downvoteCount: Int
   text: String!
   vote: CommentReplyVoteCreateManyWithoutCommentReplyInput
   author: UserCreateOneInput
@@ -2390,8 +2365,6 @@ input CommentReplyCreateWithoutCommentInput {
 
 input CommentReplyCreateWithoutVoteInput {
   id: ID
-  upvoteCount: Int
-  downvoteCount: Int
   text: String!
   comment: CommentCreateOneWithoutReplyInput!
   author: UserCreateOneInput
@@ -2409,10 +2382,6 @@ type CommentReplyEdge {
 enum CommentReplyOrderByInput {
   id_ASC
   id_DESC
-  upvoteCount_ASC
-  upvoteCount_DESC
-  downvoteCount_ASC
-  downvoteCount_DESC
   text_ASC
   text_DESC
   createdAt_ASC
@@ -2423,8 +2392,6 @@ enum CommentReplyOrderByInput {
 
 type CommentReplyPreviousValues {
   id: ID!
-  upvoteCount: Int!
-  downvoteCount: Int!
   text: String!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -2479,50 +2446,6 @@ input CommentReplyScalarWhereInput {
 
   """All values not ending with the given string."""
   id_not_ends_with: ID
-  upvoteCount: Int
-
-  """All values that are not equal to given value."""
-  upvoteCount_not: Int
-
-  """All values that are contained in given list."""
-  upvoteCount_in: [Int!]
-
-  """All values that are not contained in given list."""
-  upvoteCount_not_in: [Int!]
-
-  """All values less than the given value."""
-  upvoteCount_lt: Int
-
-  """All values less than or equal the given value."""
-  upvoteCount_lte: Int
-
-  """All values greater than the given value."""
-  upvoteCount_gt: Int
-
-  """All values greater than or equal the given value."""
-  upvoteCount_gte: Int
-  downvoteCount: Int
-
-  """All values that are not equal to given value."""
-  downvoteCount_not: Int
-
-  """All values that are contained in given list."""
-  downvoteCount_in: [Int!]
-
-  """All values that are not contained in given list."""
-  downvoteCount_not_in: [Int!]
-
-  """All values less than the given value."""
-  downvoteCount_lt: Int
-
-  """All values less than or equal the given value."""
-  downvoteCount_lte: Int
-
-  """All values greater than the given value."""
-  downvoteCount_gt: Int
-
-  """All values greater than or equal the given value."""
-  downvoteCount_gte: Int
   text: String
 
   """All values that are not equal to given value."""
@@ -2647,8 +2570,6 @@ input CommentReplySubscriptionWhereInput {
 }
 
 input CommentReplyUpdateDataInput {
-  upvoteCount: Int
-  downvoteCount: Int
   text: String
   comment: CommentUpdateOneRequiredWithoutReplyInput
   vote: CommentReplyVoteUpdateManyWithoutCommentReplyInput
@@ -2656,8 +2577,6 @@ input CommentReplyUpdateDataInput {
 }
 
 input CommentReplyUpdateInput {
-  upvoteCount: Int
-  downvoteCount: Int
   text: String
   comment: CommentUpdateOneRequiredWithoutReplyInput
   vote: CommentReplyVoteUpdateManyWithoutCommentReplyInput
@@ -2665,8 +2584,6 @@ input CommentReplyUpdateInput {
 }
 
 input CommentReplyUpdateManyDataInput {
-  upvoteCount: Int
-  downvoteCount: Int
   text: String
 }
 
@@ -2683,8 +2600,6 @@ input CommentReplyUpdateManyInput {
 }
 
 input CommentReplyUpdateManyMutationInput {
-  upvoteCount: Int
-  downvoteCount: Int
   text: String
 }
 
@@ -2713,16 +2628,12 @@ input CommentReplyUpdateOneRequiredWithoutVoteInput {
 }
 
 input CommentReplyUpdateWithoutCommentDataInput {
-  upvoteCount: Int
-  downvoteCount: Int
   text: String
   vote: CommentReplyVoteUpdateManyWithoutCommentReplyInput
   author: UserUpdateOneInput
 }
 
 input CommentReplyUpdateWithoutVoteDataInput {
-  upvoteCount: Int
-  downvoteCount: Int
   text: String
   comment: CommentUpdateOneRequiredWithoutReplyInput
   author: UserUpdateOneInput
@@ -3159,50 +3070,6 @@ input CommentReplyWhereInput {
 
   """All values not ending with the given string."""
   id_not_ends_with: ID
-  upvoteCount: Int
-
-  """All values that are not equal to given value."""
-  upvoteCount_not: Int
-
-  """All values that are contained in given list."""
-  upvoteCount_in: [Int!]
-
-  """All values that are not contained in given list."""
-  upvoteCount_not_in: [Int!]
-
-  """All values less than the given value."""
-  upvoteCount_lt: Int
-
-  """All values less than or equal the given value."""
-  upvoteCount_lte: Int
-
-  """All values greater than the given value."""
-  upvoteCount_gt: Int
-
-  """All values greater than or equal the given value."""
-  upvoteCount_gte: Int
-  downvoteCount: Int
-
-  """All values that are not equal to given value."""
-  downvoteCount_not: Int
-
-  """All values that are contained in given list."""
-  downvoteCount_in: [Int!]
-
-  """All values that are not contained in given list."""
-  downvoteCount_not_in: [Int!]
-
-  """All values less than the given value."""
-  downvoteCount_lt: Int
-
-  """All values less than or equal the given value."""
-  downvoteCount_lte: Int
-
-  """All values greater than the given value."""
-  downvoteCount_gt: Int
-
-  """All values greater than or equal the given value."""
-  downvoteCount_gte: Int
   text: String
 
   """All values that are not equal to given value."""
@@ -3347,50 +3214,6 @@ input CommentScalarWhereInput {
 
   """All values not ending with the given string."""
   id_not_ends_with: ID
-  upvoteCount: Int
-
-  """All values that are not equal to given value."""
-  upvoteCount_not: Int
-
-  """All values that are contained in given list."""
-  upvoteCount_in: [Int!]
-
-  """All values that are not contained in given list."""
-  upvoteCount_not_in: [Int!]
-
-  """All values less than the given value."""
-  upvoteCount_lt: Int
-
-  """All values less than or equal the given value."""
-  upvoteCount_lte: Int
-
-  """All values greater than the given value."""
-  upvoteCount_gt: Int
-
-  """All values greater than or equal the given value."""
-  upvoteCount_gte: Int
-  downvoteCount: Int
-
-  """All values that are not equal to given value."""
-  downvoteCount_not: Int
-
-  """All values that are contained in given list."""
-  downvoteCount_in: [Int!]
-
-  """All values that are not contained in given list."""
-  downvoteCount_not_in: [Int!]
-
-  """All values less than the given value."""
-  downvoteCount_lt: Int
-
-  """All values less than or equal the given value."""
-  downvoteCount_lte: Int
-
-  """All values greater than the given value."""
-  downvoteCount_gt: Int
-
-  """All values greater than or equal the given value."""
-  downvoteCount_gte: Int
   text: String
 
   """All values that are not equal to given value."""
@@ -3515,8 +3338,6 @@ input CommentSubscriptionWhereInput {
 }
 
 input CommentUpdateInput {
-  upvoteCount: Int
-  downvoteCount: Int
   text: String
   video: VideoUpdateOneRequiredWithoutCommentInput
   audio: AudioUpdateOneWithoutCommentInput
@@ -3526,14 +3347,10 @@ input CommentUpdateInput {
 }
 
 input CommentUpdateManyDataInput {
-  upvoteCount: Int
-  downvoteCount: Int
   text: String
 }
 
 input CommentUpdateManyMutationInput {
-  upvoteCount: Int
-  downvoteCount: Int
   text: String
 }
 
@@ -3593,8 +3410,6 @@ input CommentUpdateOneRequiredWithoutVoteInput {
 }
 
 input CommentUpdateWithoutAudioDataInput {
-  upvoteCount: Int
-  downvoteCount: Int
   text: String
   video: VideoUpdateOneRequiredWithoutCommentInput
   author: UserUpdateOneWithoutCommentInput
@@ -3603,8 +3418,6 @@ input CommentUpdateWithoutAudioDataInput {
 }
 
 input CommentUpdateWithoutAuthorDataInput {
-  upvoteCount: Int
-  downvoteCount: Int
   text: String
   video: VideoUpdateOneRequiredWithoutCommentInput
   audio: AudioUpdateOneWithoutCommentInput
@@ -3613,8 +3426,6 @@ input CommentUpdateWithoutAuthorDataInput {
 }
 
 input CommentUpdateWithoutReplyDataInput {
-  upvoteCount: Int
-  downvoteCount: Int
   text: String
   video: VideoUpdateOneRequiredWithoutCommentInput
   audio: AudioUpdateOneWithoutCommentInput
@@ -3623,8 +3434,6 @@ input CommentUpdateWithoutReplyDataInput {
 }
 
 input CommentUpdateWithoutVideoDataInput {
-  upvoteCount: Int
-  downvoteCount: Int
   text: String
   audio: AudioUpdateOneWithoutCommentInput
   author: UserUpdateOneWithoutCommentInput
@@ -3633,8 +3442,6 @@ input CommentUpdateWithoutVideoDataInput {
 }
 
 input CommentUpdateWithoutVoteDataInput {
-  upvoteCount: Int
-  downvoteCount: Int
   text: String
   video: VideoUpdateOneRequiredWithoutCommentInput
   audio: AudioUpdateOneWithoutCommentInput
@@ -4089,50 +3896,6 @@ input CommentWhereInput {
 
   """All values not ending with the given string."""
   id_not_ends_with: ID
-  upvoteCount: Int
-
-  """All values that are not equal to given value."""
-  upvoteCount_not: Int
-
-  """All values that are contained in given list."""
-  upvoteCount_in: [Int!]
-
-  """All values that are not contained in given list."""
-  upvoteCount_not_in: [Int!]
-
-  """All values less than the given value."""
-  upvoteCount_lt: Int
-
-  """All values less than or equal the given value."""
-  upvoteCount_lte: Int
-
-  """All values greater than the given value."""
-  upvoteCount_gt: Int
-
-  """All values greater than or equal the given value."""
-  upvoteCount_gte: Int
-  downvoteCount: Int
-
-  """All values that are not equal to given value."""
-  downvoteCount_not: Int
-
-  """All values that are contained in given list."""
-  downvoteCount_in: [Int!]
-
-  """All values that are not contained in given list."""
-  downvoteCount_not_in: [Int!]
-
-  """All values less than the given value."""
-  downvoteCount_lt: Int
-
-  """All values less than or equal the given value."""
-  downvoteCount_lte: Int
-
-  """All values greater than the given value."""
-  downvoteCount_gt: Int
-
-  """All values greater than or equal the given value."""
-  downvoteCount_gte: Int
   text: String
 
   """All values that are not equal to given value."""
@@ -7818,6 +7581,6 @@ input VideoWhereUniqueInput {
 }
 
 enum VoteType {
-  DOWNVOTE
   UPVOTE
+  DOWNVOTE
 }

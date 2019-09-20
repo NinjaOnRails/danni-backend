@@ -354,6 +354,159 @@ const mutations = {
       },
     });
   },
+  async createCommentVote(parent, { comment, type }, ctx, info) {
+    if (!ctx.request.userId) throw new Error('Please sign in first');
+    const query = `{id type user{id}}`;
+    const votingComment = await  ctx.db.query.comment(
+      {
+        where: { id: comment },
+      },
+      `{vote{id type user{id}}}`
+    );
+    const existingVote =
+      votingComment.vote.length > 0
+        ? votingComment.vote.find(vote => vote.user.id === ctx.request.userId)
+        : null;
+    let vote;
+    if (!existingVote) {
+      vote =  ctx.db.mutation.createCommentVote(
+        {
+          data: {
+            type,
+            comment: { connect: { id: comment } },
+            user: {
+              connect: {
+                id: ctx.request.userId,
+              },
+            },
+          },
+        },
+        query
+      );
+    } else if (existingVote.type !== type) {
+      // Just updating vote create issue with Optimistic UI
+      // vote = await ctx.db.mutation.updateCommentVote(
+      //   {
+      //     data: {
+      //       type,
+      //     },
+      //     where: {
+      //       id: existingVote.id,
+      //     },
+      //   },
+      //   query
+      // );
+      ctx.db.mutation.deleteCommentVote(
+        {
+          where: {
+            id: existingVote.id,
+          },
+        },
+        query
+      );
+      vote =  ctx.db.mutation.createCommentVote(
+        {
+          data: {
+            type,
+            comment: { connect: { id: comment } },
+            user: {
+              connect: {
+                id: ctx.request.userId,
+              },
+            },
+          },
+        },
+        query
+      );
+    } else if (existingVote.type === type) {
+      vote =  ctx.db.mutation.deleteCommentVote(
+        {
+          where: {
+            id: existingVote.id,
+          },
+        },
+        query
+      );
+    }
+    return vote;
+  },
+  async createCommentReplyVote(parent, { commentReply, type }, ctx, info) {
+    if (!ctx.request.userId) throw new Error('Please sign in first');
+    const query = `{id type user{id}}`;
+    let vote;
+    const votingCommentReply = await ctx.db.query.commentReply(
+      {
+        where: { id: commentReply },
+      },
+      `{vote{id type user{id}}}`
+    );
+    const existingVote =
+      votingCommentReply.vote.length > 0
+        ? votingCommentReply.vote.find(
+            vote => vote.user.id === ctx.request.userId
+          )
+        : null;
+    if (!existingVote) {
+      vote =  ctx.db.mutation.createCommentReplyVote(
+        {
+          data: {
+            type,
+            commentReply: { connect: { id: commentReply } },
+            user: {
+              connect: {
+                id: ctx.request.userId,
+              },
+            },
+          },
+        },
+        query
+      );
+    } else if (existingVote.type !== type) {
+      // vote = await ctx.db.mutation.updateCommentReplyVote(
+      //   {
+      //     data: {
+      //       type,
+      //     },
+      //     where: {
+      //       id: existingVote.id,
+      //     },
+      //   },
+      //   query
+      // );
+      ctx.db.mutation.deleteCommentReplyVote(
+        {
+          where: {
+            id: existingVote.id,
+          },
+        },
+        query
+      );
+      vote = ctx.db.mutation.createCommentReplyVote(
+        {
+          data: {
+            type,
+            commentReply: { connect: { id: commentReply } },
+            user: {
+              connect: {
+                id: ctx.request.userId,
+              },
+            },
+          },
+        },
+        query
+      );
+    } else if (existingVote.type === type) {
+      vote = ctx.db.mutation.deleteCommentReplyVote(
+        {
+          where: {
+            id: existingVote.id,
+          },
+        },
+        query
+      );
+    }
+    return vote;
+  },
   async signup(parent, { data }, ctx, info) {
     // Lowercase email and trim arguments
     data.email = data.email.toLowerCase().trim();
@@ -382,7 +535,7 @@ const mutations = {
         data: {
           ...data,
           password,
-          contentLanguage: {set: data.contentLanguage},
+          contentLanguage: { set: data.contentLanguage },
           permissions: { set: ['USER'] },
         },
       },

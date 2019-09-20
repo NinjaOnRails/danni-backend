@@ -108,9 +108,7 @@ type Comment {
   id: ID! @id
   video: Video! @relation(name: "CommentToVideo")
   audio: Audio @relation(name: "CommentToAudio")
-  author: User @relation(name: "CommentToUser")
-  upvoteCount: Int! @default(value: 0)
-  downvoteCount: Int! @default(value: 0)
+  author: User! @relation(name: "CommentToUser")
   vote: [CommentVote]!
     @relation(name: "CommentVoteToComment", onDelete: CASCADE)
   reply: [CommentReply]!
@@ -131,8 +129,6 @@ type CommentVote {
 type CommentReply {
   id: ID! @id
   comment: Comment! @relation(name: "CommentReplyToComment")
-  upvoteCount: Int! @default(value: 0)
-  downvoteCount: Int! @default(value: 0)
   vote: [CommentReplyVote]!
     @relation(name: "CommentReplyVoteToCommentReply", onDelete: CASCADE)
   author: User @relation(name: "ReplyToUser")
@@ -150,8 +146,8 @@ type CommentReplyVote {
 }
 
 enum VoteType {
-  DOWNVOTE
   UPVOTE
+  DOWNVOTE
 }
 
 enum Language {
