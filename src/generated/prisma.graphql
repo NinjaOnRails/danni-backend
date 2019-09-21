@@ -1,6 +1,5 @@
-# source: https://eu1.prisma.sh/danni/dev/dev
-# timestamp: Thu Sep 19 2019 15:52:44 GMT+0200 (Central European Summer Time)
-
+# source: https://danni-19aba07fdc.herokuapp.com/danni-2-0/prod
+# timestamp: Sat Sep 21 2019 18:15:44 GMT+0200 (Central European Summer Time)
 
 type AggregateAudio {
   count: Int!
@@ -2188,7 +2187,7 @@ type Comment implements Node {
   id: ID!
   video: Video!
   audio: Audio
-  author: User!
+  author: User
   vote(where: CommentVoteWhereInput, orderBy: CommentVoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CommentVote!]
   reply(where: CommentReplyWhereInput, orderBy: CommentReplyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CommentReply!]
   text: String!
