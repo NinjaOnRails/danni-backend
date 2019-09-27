@@ -58,7 +58,7 @@ type Mutation {
   updateAudio(id: ID!, data: UpdateAudioInput): Audio!
   createCaption(data: CreateCaptionInput!): Caption!
   createTag(text: String!, video: ID!): Tag!
-  signup(data: signupInput): User!
+  signup(data: SignupInput): User!
   signin(email: String!, password: String!): User!
   signout: SuccessMessage
   requestReset(email: String!): SuccessMessage
@@ -79,7 +79,7 @@ type Mutation {
   updateVideoStats: SuccessMessage
   updateAudioDuration(source: String!, duration: Int!): Audio!
   updateContentLanguage(contentLanguage: [Language]): User
-  facebookLogin(accessToken: String!, contentLanguage: [Language]): User!
+  facebookLogin(data: FacebookLoginInput): User!
 }
 
 type SuccessMessage {
@@ -97,7 +97,13 @@ input UpdateAudioInput {
   language: Language
 }
 
-input signupInput {
+input FacebookLoginInput {
+  accessToken: String!
+  contentLanguage: [Language]
+  facebookUserId: String!
+}
+
+input SignupInput {
   email: String!
   password: String!
   contentLanguage: [Language]

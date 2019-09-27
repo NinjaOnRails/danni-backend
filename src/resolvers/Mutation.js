@@ -662,8 +662,15 @@ const mutations = {
     // 7. return the new user
     return updatedUser;
   },
-  async facebookLogin(parent, { accessToken, contentLanguage }, ctx, info) {
-    const userData = await getFacebookUser(accessToken);
+  async facebookLogin(
+    parent,
+    {
+      data: { accessToken, contentLanguage, facebookUserId },
+    },
+    ctx,
+    info
+  ) {
+    const userData = await getFacebookUser(facebookUserId, accessToken);
     const { id, name, picture } = userData;
     if (!userData) throw new Error('Could not authenticate with Facebook');
 
