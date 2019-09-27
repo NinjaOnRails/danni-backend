@@ -1,5 +1,5 @@
-# source: https://danni-19aba07fdc.herokuapp.com/danni-2-0/prod
-# timestamp: Sat Sep 21 2019 18:15:44 GMT+0200 (Central European Summer Time)
+# source: https://eu1.prisma.sh/danni/dev/dev
+# timestamp: Fri Sep 27 2019 19:57:07 GMT+0200 (Central European Summer Time)
 
 type AggregateAudio {
   count: Int!
@@ -4549,8 +4549,8 @@ input TagWhereUniqueInput {
 
 type User implements Node {
   id: ID!
-  email: String!
-  password: String!
+  email: String
+  password: String
   name: String
   displayName: String!
   isNewsletterSubscribed: Boolean!
@@ -4568,6 +4568,10 @@ type User implements Node {
   commentReply(where: CommentReplyWhereInput, orderBy: CommentReplyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CommentReply!]
   createdAt: DateTime
   updatedAt: DateTime
+  facebookUserId: String
+  facebookName: String
+  facebookPicture: String
+  avatar: String
 }
 
 """A connection to a list of items."""
@@ -4586,13 +4590,17 @@ input UserCreatecontentLanguageInput {
 
 input UserCreateInput {
   id: ID
-  email: String!
-  password: String!
+  email: String
+  password: String
   name: String
   displayName: String!
   isNewsletterSubscribed: Boolean
   resetToken: String
   resetTokenExpiry: Float
+  facebookUserId: String
+  facebookName: String
+  facebookPicture: String
+  avatar: String
   contentLanguage: UserCreatecontentLanguageInput
   permissions: UserCreatepermissionsInput
   video: VideoCreateManyWithoutAddedByInput
@@ -4651,13 +4659,17 @@ input UserCreatepermissionsInput {
 
 input UserCreateWithoutAudioInput {
   id: ID
-  email: String!
-  password: String!
+  email: String
+  password: String
   name: String
   displayName: String!
   isNewsletterSubscribed: Boolean
   resetToken: String
   resetTokenExpiry: Float
+  facebookUserId: String
+  facebookName: String
+  facebookPicture: String
+  avatar: String
   contentLanguage: UserCreatecontentLanguageInput
   permissions: UserCreatepermissionsInput
   video: VideoCreateManyWithoutAddedByInput
@@ -4671,13 +4683,17 @@ input UserCreateWithoutAudioInput {
 
 input UserCreateWithoutAudioVoteInput {
   id: ID
-  email: String!
-  password: String!
+  email: String
+  password: String
   name: String
   displayName: String!
   isNewsletterSubscribed: Boolean
   resetToken: String
   resetTokenExpiry: Float
+  facebookUserId: String
+  facebookName: String
+  facebookPicture: String
+  avatar: String
   contentLanguage: UserCreatecontentLanguageInput
   permissions: UserCreatepermissionsInput
   video: VideoCreateManyWithoutAddedByInput
@@ -4691,13 +4707,17 @@ input UserCreateWithoutAudioVoteInput {
 
 input UserCreateWithoutCommentInput {
   id: ID
-  email: String!
-  password: String!
+  email: String
+  password: String
   name: String
   displayName: String!
   isNewsletterSubscribed: Boolean
   resetToken: String
   resetTokenExpiry: Float
+  facebookUserId: String
+  facebookName: String
+  facebookPicture: String
+  avatar: String
   contentLanguage: UserCreatecontentLanguageInput
   permissions: UserCreatepermissionsInput
   video: VideoCreateManyWithoutAddedByInput
@@ -4711,13 +4731,17 @@ input UserCreateWithoutCommentInput {
 
 input UserCreateWithoutCommentReplyVoteInput {
   id: ID
-  email: String!
-  password: String!
+  email: String
+  password: String
   name: String
   displayName: String!
   isNewsletterSubscribed: Boolean
   resetToken: String
   resetTokenExpiry: Float
+  facebookUserId: String
+  facebookName: String
+  facebookPicture: String
+  avatar: String
   contentLanguage: UserCreatecontentLanguageInput
   permissions: UserCreatepermissionsInput
   video: VideoCreateManyWithoutAddedByInput
@@ -4731,13 +4755,17 @@ input UserCreateWithoutCommentReplyVoteInput {
 
 input UserCreateWithoutCommentVoteInput {
   id: ID
-  email: String!
-  password: String!
+  email: String
+  password: String
   name: String
   displayName: String!
   isNewsletterSubscribed: Boolean
   resetToken: String
   resetTokenExpiry: Float
+  facebookUserId: String
+  facebookName: String
+  facebookPicture: String
+  avatar: String
   contentLanguage: UserCreatecontentLanguageInput
   permissions: UserCreatepermissionsInput
   video: VideoCreateManyWithoutAddedByInput
@@ -4751,13 +4779,17 @@ input UserCreateWithoutCommentVoteInput {
 
 input UserCreateWithoutVideoInput {
   id: ID
-  email: String!
-  password: String!
+  email: String
+  password: String
   name: String
   displayName: String!
   isNewsletterSubscribed: Boolean
   resetToken: String
   resetTokenExpiry: Float
+  facebookUserId: String
+  facebookName: String
+  facebookPicture: String
+  avatar: String
   contentLanguage: UserCreatecontentLanguageInput
   permissions: UserCreatepermissionsInput
   videoVote: VideoVoteCreateManyWithoutUserInput
@@ -4771,13 +4803,17 @@ input UserCreateWithoutVideoInput {
 
 input UserCreateWithoutVideoVoteInput {
   id: ID
-  email: String!
-  password: String!
+  email: String
+  password: String
   name: String
   displayName: String!
   isNewsletterSubscribed: Boolean
   resetToken: String
   resetTokenExpiry: Float
+  facebookUserId: String
+  facebookName: String
+  facebookPicture: String
+  avatar: String
   contentLanguage: UserCreatecontentLanguageInput
   permissions: UserCreatepermissionsInput
   video: VideoCreateManyWithoutAddedByInput
@@ -4819,12 +4855,20 @@ enum UserOrderByInput {
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
+  facebookUserId_ASC
+  facebookUserId_DESC
+  facebookName_ASC
+  facebookName_DESC
+  facebookPicture_ASC
+  facebookPicture_DESC
+  avatar_ASC
+  avatar_DESC
 }
 
 type UserPreviousValues {
   id: ID!
-  email: String!
-  password: String!
+  email: String
+  password: String
   name: String
   displayName: String!
   isNewsletterSubscribed: Boolean!
@@ -4834,6 +4878,10 @@ type UserPreviousValues {
   permissions: [Permission!]!
   createdAt: DateTime
   updatedAt: DateTime
+  facebookUserId: String
+  facebookName: String
+  facebookPicture: String
+  avatar: String
 }
 
 type UserSubscriptionPayload {
@@ -4885,6 +4933,10 @@ input UserUpdateDataInput {
   isNewsletterSubscribed: Boolean
   resetToken: String
   resetTokenExpiry: Float
+  facebookUserId: String
+  facebookName: String
+  facebookPicture: String
+  avatar: String
   contentLanguage: UserUpdatecontentLanguageInput
   permissions: UserUpdatepermissionsInput
   video: VideoUpdateManyWithoutAddedByInput
@@ -4905,6 +4957,10 @@ input UserUpdateInput {
   isNewsletterSubscribed: Boolean
   resetToken: String
   resetTokenExpiry: Float
+  facebookUserId: String
+  facebookName: String
+  facebookPicture: String
+  avatar: String
   contentLanguage: UserUpdatecontentLanguageInput
   permissions: UserUpdatepermissionsInput
   video: VideoUpdateManyWithoutAddedByInput
@@ -4925,6 +4981,10 @@ input UserUpdateManyMutationInput {
   isNewsletterSubscribed: Boolean
   resetToken: String
   resetTokenExpiry: Float
+  facebookUserId: String
+  facebookName: String
+  facebookPicture: String
+  avatar: String
   contentLanguage: UserUpdatecontentLanguageInput
   permissions: UserUpdatepermissionsInput
 }
@@ -5005,6 +5065,10 @@ input UserUpdateWithoutAudioDataInput {
   isNewsletterSubscribed: Boolean
   resetToken: String
   resetTokenExpiry: Float
+  facebookUserId: String
+  facebookName: String
+  facebookPicture: String
+  avatar: String
   contentLanguage: UserUpdatecontentLanguageInput
   permissions: UserUpdatepermissionsInput
   video: VideoUpdateManyWithoutAddedByInput
@@ -5024,6 +5088,10 @@ input UserUpdateWithoutAudioVoteDataInput {
   isNewsletterSubscribed: Boolean
   resetToken: String
   resetTokenExpiry: Float
+  facebookUserId: String
+  facebookName: String
+  facebookPicture: String
+  avatar: String
   contentLanguage: UserUpdatecontentLanguageInput
   permissions: UserUpdatepermissionsInput
   video: VideoUpdateManyWithoutAddedByInput
@@ -5043,6 +5111,10 @@ input UserUpdateWithoutCommentDataInput {
   isNewsletterSubscribed: Boolean
   resetToken: String
   resetTokenExpiry: Float
+  facebookUserId: String
+  facebookName: String
+  facebookPicture: String
+  avatar: String
   contentLanguage: UserUpdatecontentLanguageInput
   permissions: UserUpdatepermissionsInput
   video: VideoUpdateManyWithoutAddedByInput
@@ -5062,6 +5134,10 @@ input UserUpdateWithoutCommentReplyVoteDataInput {
   isNewsletterSubscribed: Boolean
   resetToken: String
   resetTokenExpiry: Float
+  facebookUserId: String
+  facebookName: String
+  facebookPicture: String
+  avatar: String
   contentLanguage: UserUpdatecontentLanguageInput
   permissions: UserUpdatepermissionsInput
   video: VideoUpdateManyWithoutAddedByInput
@@ -5081,6 +5157,10 @@ input UserUpdateWithoutCommentVoteDataInput {
   isNewsletterSubscribed: Boolean
   resetToken: String
   resetTokenExpiry: Float
+  facebookUserId: String
+  facebookName: String
+  facebookPicture: String
+  avatar: String
   contentLanguage: UserUpdatecontentLanguageInput
   permissions: UserUpdatepermissionsInput
   video: VideoUpdateManyWithoutAddedByInput
@@ -5100,6 +5180,10 @@ input UserUpdateWithoutVideoDataInput {
   isNewsletterSubscribed: Boolean
   resetToken: String
   resetTokenExpiry: Float
+  facebookUserId: String
+  facebookName: String
+  facebookPicture: String
+  avatar: String
   contentLanguage: UserUpdatecontentLanguageInput
   permissions: UserUpdatepermissionsInput
   videoVote: VideoVoteUpdateManyWithoutUserInput
@@ -5119,6 +5203,10 @@ input UserUpdateWithoutVideoVoteDataInput {
   isNewsletterSubscribed: Boolean
   resetToken: String
   resetTokenExpiry: Float
+  facebookUserId: String
+  facebookName: String
+  facebookPicture: String
+  avatar: String
   contentLanguage: UserUpdatecontentLanguageInput
   permissions: UserUpdatepermissionsInput
   video: VideoUpdateManyWithoutAddedByInput
@@ -5489,6 +5577,166 @@ input UserWhereInput {
 
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
+  facebookUserId: String
+
+  """All values that are not equal to given value."""
+  facebookUserId_not: String
+
+  """All values that are contained in given list."""
+  facebookUserId_in: [String!]
+
+  """All values that are not contained in given list."""
+  facebookUserId_not_in: [String!]
+
+  """All values less than the given value."""
+  facebookUserId_lt: String
+
+  """All values less than or equal the given value."""
+  facebookUserId_lte: String
+
+  """All values greater than the given value."""
+  facebookUserId_gt: String
+
+  """All values greater than or equal the given value."""
+  facebookUserId_gte: String
+
+  """All values containing the given string."""
+  facebookUserId_contains: String
+
+  """All values not containing the given string."""
+  facebookUserId_not_contains: String
+
+  """All values starting with the given string."""
+  facebookUserId_starts_with: String
+
+  """All values not starting with the given string."""
+  facebookUserId_not_starts_with: String
+
+  """All values ending with the given string."""
+  facebookUserId_ends_with: String
+
+  """All values not ending with the given string."""
+  facebookUserId_not_ends_with: String
+  facebookName: String
+
+  """All values that are not equal to given value."""
+  facebookName_not: String
+
+  """All values that are contained in given list."""
+  facebookName_in: [String!]
+
+  """All values that are not contained in given list."""
+  facebookName_not_in: [String!]
+
+  """All values less than the given value."""
+  facebookName_lt: String
+
+  """All values less than or equal the given value."""
+  facebookName_lte: String
+
+  """All values greater than the given value."""
+  facebookName_gt: String
+
+  """All values greater than or equal the given value."""
+  facebookName_gte: String
+
+  """All values containing the given string."""
+  facebookName_contains: String
+
+  """All values not containing the given string."""
+  facebookName_not_contains: String
+
+  """All values starting with the given string."""
+  facebookName_starts_with: String
+
+  """All values not starting with the given string."""
+  facebookName_not_starts_with: String
+
+  """All values ending with the given string."""
+  facebookName_ends_with: String
+
+  """All values not ending with the given string."""
+  facebookName_not_ends_with: String
+  facebookPicture: String
+
+  """All values that are not equal to given value."""
+  facebookPicture_not: String
+
+  """All values that are contained in given list."""
+  facebookPicture_in: [String!]
+
+  """All values that are not contained in given list."""
+  facebookPicture_not_in: [String!]
+
+  """All values less than the given value."""
+  facebookPicture_lt: String
+
+  """All values less than or equal the given value."""
+  facebookPicture_lte: String
+
+  """All values greater than the given value."""
+  facebookPicture_gt: String
+
+  """All values greater than or equal the given value."""
+  facebookPicture_gte: String
+
+  """All values containing the given string."""
+  facebookPicture_contains: String
+
+  """All values not containing the given string."""
+  facebookPicture_not_contains: String
+
+  """All values starting with the given string."""
+  facebookPicture_starts_with: String
+
+  """All values not starting with the given string."""
+  facebookPicture_not_starts_with: String
+
+  """All values ending with the given string."""
+  facebookPicture_ends_with: String
+
+  """All values not ending with the given string."""
+  facebookPicture_not_ends_with: String
+  avatar: String
+
+  """All values that are not equal to given value."""
+  avatar_not: String
+
+  """All values that are contained in given list."""
+  avatar_in: [String!]
+
+  """All values that are not contained in given list."""
+  avatar_not_in: [String!]
+
+  """All values less than the given value."""
+  avatar_lt: String
+
+  """All values less than or equal the given value."""
+  avatar_lte: String
+
+  """All values greater than the given value."""
+  avatar_gt: String
+
+  """All values greater than or equal the given value."""
+  avatar_gte: String
+
+  """All values containing the given string."""
+  avatar_contains: String
+
+  """All values not containing the given string."""
+  avatar_not_contains: String
+
+  """All values starting with the given string."""
+  avatar_starts_with: String
+
+  """All values not starting with the given string."""
+  avatar_not_starts_with: String
+
+  """All values ending with the given string."""
+  avatar_ends_with: String
+
+  """All values not ending with the given string."""
+  avatar_not_ends_with: String
   video_every: VideoWhereInput
   video_some: VideoWhereInput
   video_none: VideoWhereInput
@@ -5519,6 +5767,7 @@ input UserWhereUniqueInput {
   id: ID
   email: String
   displayName: String
+  facebookUserId: String
 }
 
 type Video implements Node {

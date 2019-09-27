@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const faker = require('faker');
 const { randomBytes } = require('crypto');
 const { promisify } = require('util');
+const moment = require('moment');
 const extractYoutubeId = require('../utils/extractYoutubeId');
 const validateVideoInput = require('../utils/validateVideoInput');
 const validateAudioInput = require('../utils/validateAudioInput');
@@ -10,7 +11,7 @@ const captionDownload = require('../utils/captionsDownload');
 const sendGridResetToken = require('../utils/sendGridResetToken');
 // const languageTags = require('../config/languageTags');
 const youtube = require('../utils/youtube');
-const moment = require('moment');
+const getFacebookUser = require('../utils/getFacebookUser');
 
 const mutations = {
   async createVideo(parent, { source, language }, ctx, info) {
@@ -357,7 +358,7 @@ const mutations = {
   async createCommentVote(parent, { comment, type }, ctx, info) {
     if (!ctx.request.userId) throw new Error('Please sign in first');
     const query = `{id type user{id}}`;
-    const votingComment = await  ctx.db.query.comment(
+    const votingComment = await ctx.db.query.comment(
       {
         where: { id: comment },
       },
@@ -369,7 +370,7 @@ const mutations = {
         : null;
     let vote;
     if (!existingVote) {
-      vote =  ctx.db.mutation.createCommentVote(
+      vote = ctx.db.mutation.createCommentVote(
         {
           data: {
             type,
@@ -404,7 +405,7 @@ const mutations = {
         },
         query
       );
-      vote =  ctx.db.mutation.createCommentVote(
+      vote = ctx.db.mutation.createCommentVote(
         {
           data: {
             type,
@@ -419,7 +420,7 @@ const mutations = {
         query
       );
     } else if (existingVote.type === type) {
-      vote =  ctx.db.mutation.deleteCommentVote(
+      vote = ctx.db.mutation.deleteCommentVote(
         {
           where: {
             id: existingVote.id,
@@ -447,7 +448,7 @@ const mutations = {
           )
         : null;
     if (!existingVote) {
-      vote =  ctx.db.mutation.createCommentReplyVote(
+      vote = ctx.db.mutation.createCommentReplyVote(
         {
           data: {
             type,
@@ -633,9 +634,7 @@ const mutations = {
         resetTokenExpiry_gte: Date.now() - 3600000,
       },
     });
-    if (!user) {
-      throw new Error('Token is invalid or expired');
-    }
+    if (!user) throw new Error('Token is invalid or expired');
 
     // 3. Hash new password
     const newPassword = await bcrypt.hash(password, 10);
@@ -662,6 +661,50 @@ const mutations = {
 
     // 7. return the new user
     return updatedUser;
+  },
+  async facebookLogin(parent, { accessToken, contentLanguage }, ctx, info) {
+    const userData = await getFacebookUser(accessToken);
+    const { id, name, picture } = userData;
+    if (!userData) throw new Error('Could not authenticate with Facebook');
+
+    // Check if user exists
+    let user = await ctx.db.query.user({
+      where: { facebookUserId: id },
+    });
+
+    // If not create him
+    if (!user) {
+      // Save user to db
+      user = await ctx.db.mutation.createUser(
+        {
+          data: {
+            facebookUserId: id,
+            facebookName: name || null,
+            displayName: name || null,
+            facebookPicture: picture ? picture.data.url : null,
+            avatar: picture ? picture.data.url : null,
+            contentLanguage: { set: contentLanguage },
+            permissions: { set: ['USER'] },
+          },
+        },
+        info
+      );
+    }
+
+    // Create JWT
+    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET, {
+      expiresIn: '365d',
+    });
+
+    // Set jwt as cookie on response
+    ctx.response.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year cookie,
+    });
+
+    // Return the user to the browser
+    return user;
   },
   async updateVideoDuration(parent, args, ctx, info) {
     const videos = await ctx.db.query.videos();

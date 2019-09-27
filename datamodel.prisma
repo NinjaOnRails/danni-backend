@@ -80,8 +80,8 @@ type Tag {
 
 type User {
   id: ID! @id
-  email: String! @unique
-  password: String!
+  email: String @unique
+  password: String
   name: String
   displayName: String! @unique
   isNewsletterSubscribed: Boolean! @default(value: true)
@@ -102,6 +102,10 @@ type User {
     @relation(name: "CommentReplyToUser", onDelete: SET_NULL)
   createdAt: DateTime @createdAt
   updatedAt: DateTime @updatedAt
+  facebookUserId: String @unique
+  facebookName: String
+  facebookPicture: String
+  avatar: String
 }
 
 type Comment {
