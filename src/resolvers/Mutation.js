@@ -670,18 +670,24 @@ const mutations = {
     ctx,
     info
   ) {
+    // Verify access token by fetching user data
     const userData = await getFacebookUser(facebookUserId, accessToken);
     const { id, name, picture } = userData;
     if (!userData) throw new Error('Could not authenticate with Facebook');
 
     // Check if user exists
-    let user = await ctx.db.query.user({
-      where: { facebookUserId: id },
-    });
+    let user = await ctx.db.query.user(
+      {
+        where: { facebookUserId: id },
+      },
+      `{id displayName}`
+    );
+
+    firstLogin = Boolean(!user);
 
     // If not create him
-    if (!user) {
-      // Save user to db
+    if (firstLogin) {
+      // Save new user to db
       user = await ctx.db.mutation.createUser(
         {
           data: {
@@ -694,7 +700,7 @@ const mutations = {
             permissions: { set: ['USER'] },
           },
         },
-        info
+        `{id displayName}`
       );
     }
 
@@ -710,8 +716,7 @@ const mutations = {
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year cookie,
     });
 
-    // Return the user to the browser
-    return user;
+    return { user, firstLogin };
   },
   async updateVideoDuration(parent, args, ctx, info) {
     const videos = await ctx.db.query.videos();

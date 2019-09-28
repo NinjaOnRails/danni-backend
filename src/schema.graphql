@@ -79,7 +79,12 @@ type Mutation {
   updateVideoStats: SuccessMessage
   updateAudioDuration(source: String!, duration: Int!): Audio!
   updateContentLanguage(contentLanguage: [Language]): User
-  facebookLogin(data: FacebookLoginInput): User!
+  facebookLogin(data: FacebookLoginInput): facebookLoginResult!
+}
+
+type facebookLoginResult {
+  user: User!
+  firstLogin: Boolean!
 }
 
 type SuccessMessage {
@@ -140,7 +145,7 @@ type User {
   id: ID!
   name: String
   displayName: String
-  email: String!
+  email: String
   permissions: [Permission!]!
   contentLanguage: [Language]
   facebookPicture: String
