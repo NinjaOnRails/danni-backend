@@ -1,5 +1,4 @@
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const faker = require('faker');
 const { randomBytes } = require('crypto');
 const { promisify } = require('util');
@@ -12,6 +11,7 @@ const sendGridResetToken = require('../utils/sendGridResetToken');
 // const languageTags = require('../config/languageTags');
 const youtube = require('../utils/youtube');
 const getFacebookUser = require('../utils/getFacebookUser');
+const setCookie = require('../utils/cookie');
 
 const mutations = {
   async createVideo(parent, { source, language }, ctx, info) {
@@ -543,17 +543,7 @@ const mutations = {
       info
     );
 
-    // Create JWT
-    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET, {
-      expiresIn: '365d',
-    });
-
-    // Set jwt as cookie on response
-    ctx.response.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year cookie,
-    });
+    setCookie({ userId: user.id, ctx });
 
     // Return the user to the browser
     return user;
@@ -573,17 +563,7 @@ const mutations = {
       throw new Error('Invalid Email or Password');
     }
 
-    // Generate JWT Token
-    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET, {
-      expiresIn: '365d',
-    });
-
-    // Set the cookie with the token
-    ctx.response.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 1000 * 60 * 60 * 24 * 365,
-    });
+    setCookie({ userId: user.id, ctx });
 
     // Return the user
     return user;
@@ -649,15 +629,7 @@ const mutations = {
       },
     });
 
-    // 5. Generate JWT
-    const token = jwt.sign({ userId: updatedUser.id }, process.env.APP_SECRET);
-
-    // 6. Set JWT cookie
-    ctx.response.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 1000 * 60 * 60 * 24 * 365,
-    });
+    setCookie({ userId: user.id, ctx });
 
     // 7. return the new user
     return updatedUser;
@@ -704,17 +676,7 @@ const mutations = {
       );
     }
 
-    // Create JWT
-    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET, {
-      expiresIn: '365d',
-    });
-
-    // Set jwt as cookie on response
-    ctx.response.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year cookie,
-    });
+    setCookie({ userId: user.id, ctx });
 
     return { user, firstLogin };
   },
