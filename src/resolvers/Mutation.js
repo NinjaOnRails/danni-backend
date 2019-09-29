@@ -583,7 +583,7 @@ const mutations = {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       maxAge: 1000 * 60 * 60 * 24 * 365,
-      sameSite: 'strict',
+      sameSite: 'lax',
     });
 
     // Return the user
