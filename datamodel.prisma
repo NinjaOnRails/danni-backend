@@ -23,6 +23,7 @@ type Video {
   caption: [Caption]! @relation(name: "CaptionToVideo", onDelete: CASCADE)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
+  isListed: Boolean @default(value: true)
 }
 
 type VideoVote {
@@ -52,6 +53,7 @@ type Audio {
   comment: [Comment]! @relation(name: "CommentToAudio", onDelete: CASCADE)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
+  isListed: Boolean @default(value: true)
 }
 
 type AudioVote {

@@ -1,5 +1,5 @@
-# source: https://eu1.prisma.sh/danni/dev/dev
-# timestamp: Fri Sep 27 2019 19:57:07 GMT+0200 (Central European Summer Time)
+# source: https://danni-19aba07fdc.herokuapp.com/danni-2-0/prod
+# timestamp: Mon Oct 07 2019 16:42:06 GMT+0200 (Central European Summer Time)
 
 type AggregateAudio {
   count: Int!
@@ -64,6 +64,7 @@ type Audio implements Node {
   comment(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
   createdAt: DateTime!
   updatedAt: DateTime!
+  isListed: Boolean
 }
 
 """A connection to a list of items."""
@@ -87,6 +88,7 @@ input AudioCreateInput {
   startAt: Int
   upvoteCount: Int
   downvoteCount: Int
+  isListed: Boolean
   tags: TagCreateManyWithoutAudioInput
   vote: AudioVoteCreateManyWithoutAudioInput
   author: UserCreateOneWithoutAudioInput
@@ -136,6 +138,7 @@ input AudioCreateWithoutAuthorInput {
   startAt: Int
   upvoteCount: Int
   downvoteCount: Int
+  isListed: Boolean
   tags: TagCreateManyWithoutAudioInput
   vote: AudioVoteCreateManyWithoutAudioInput
   video: VideoCreateOneWithoutAudioInput
@@ -154,6 +157,7 @@ input AudioCreateWithoutCaptionInput {
   startAt: Int
   upvoteCount: Int
   downvoteCount: Int
+  isListed: Boolean
   tags: TagCreateManyWithoutAudioInput
   vote: AudioVoteCreateManyWithoutAudioInput
   author: UserCreateOneWithoutAudioInput
@@ -172,6 +176,7 @@ input AudioCreateWithoutCommentInput {
   startAt: Int
   upvoteCount: Int
   downvoteCount: Int
+  isListed: Boolean
   tags: TagCreateManyWithoutAudioInput
   vote: AudioVoteCreateManyWithoutAudioInput
   author: UserCreateOneWithoutAudioInput
@@ -190,6 +195,7 @@ input AudioCreateWithoutTagsInput {
   startAt: Int
   upvoteCount: Int
   downvoteCount: Int
+  isListed: Boolean
   vote: AudioVoteCreateManyWithoutAudioInput
   author: UserCreateOneWithoutAudioInput
   video: VideoCreateOneWithoutAudioInput
@@ -208,6 +214,7 @@ input AudioCreateWithoutVideoInput {
   startAt: Int
   upvoteCount: Int
   downvoteCount: Int
+  isListed: Boolean
   tags: TagCreateManyWithoutAudioInput
   vote: AudioVoteCreateManyWithoutAudioInput
   author: UserCreateOneWithoutAudioInput
@@ -226,6 +233,7 @@ input AudioCreateWithoutVoteInput {
   startAt: Int
   upvoteCount: Int
   downvoteCount: Int
+  isListed: Boolean
   tags: TagCreateManyWithoutAudioInput
   author: UserCreateOneWithoutAudioInput
   video: VideoCreateOneWithoutAudioInput
@@ -267,6 +275,8 @@ enum AudioOrderByInput {
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
+  isListed_ASC
+  isListed_DESC
 }
 
 type AudioPreviousValues {
@@ -282,6 +292,7 @@ type AudioPreviousValues {
   downvoteCount: Int!
   createdAt: DateTime!
   updatedAt: DateTime!
+  isListed: Boolean
 }
 
 input AudioScalarWhereInput {
@@ -617,6 +628,10 @@ input AudioScalarWhereInput {
 
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
+  isListed: Boolean
+
+  """All values that are not equal to given value."""
+  isListed_not: Boolean
 }
 
 type AudioSubscriptionPayload {
@@ -666,6 +681,7 @@ input AudioUpdateInput {
   startAt: Int
   upvoteCount: Int
   downvoteCount: Int
+  isListed: Boolean
   tags: TagUpdateManyWithoutAudioInput
   vote: AudioVoteUpdateManyWithoutAudioInput
   author: UserUpdateOneWithoutAudioInput
@@ -684,6 +700,7 @@ input AudioUpdateManyDataInput {
   startAt: Int
   upvoteCount: Int
   downvoteCount: Int
+  isListed: Boolean
 }
 
 input AudioUpdateManyMutationInput {
@@ -696,6 +713,7 @@ input AudioUpdateManyMutationInput {
   startAt: Int
   upvoteCount: Int
   downvoteCount: Int
+  isListed: Boolean
 }
 
 input AudioUpdateManyWithoutAuthorInput {
@@ -777,6 +795,7 @@ input AudioUpdateWithoutAuthorDataInput {
   startAt: Int
   upvoteCount: Int
   downvoteCount: Int
+  isListed: Boolean
   tags: TagUpdateManyWithoutAudioInput
   vote: AudioVoteUpdateManyWithoutAudioInput
   video: VideoUpdateOneWithoutAudioInput
@@ -794,6 +813,7 @@ input AudioUpdateWithoutCaptionDataInput {
   startAt: Int
   upvoteCount: Int
   downvoteCount: Int
+  isListed: Boolean
   tags: TagUpdateManyWithoutAudioInput
   vote: AudioVoteUpdateManyWithoutAudioInput
   author: UserUpdateOneWithoutAudioInput
@@ -811,6 +831,7 @@ input AudioUpdateWithoutCommentDataInput {
   startAt: Int
   upvoteCount: Int
   downvoteCount: Int
+  isListed: Boolean
   tags: TagUpdateManyWithoutAudioInput
   vote: AudioVoteUpdateManyWithoutAudioInput
   author: UserUpdateOneWithoutAudioInput
@@ -828,6 +849,7 @@ input AudioUpdateWithoutTagsDataInput {
   startAt: Int
   upvoteCount: Int
   downvoteCount: Int
+  isListed: Boolean
   vote: AudioVoteUpdateManyWithoutAudioInput
   author: UserUpdateOneWithoutAudioInput
   video: VideoUpdateOneWithoutAudioInput
@@ -845,6 +867,7 @@ input AudioUpdateWithoutVideoDataInput {
   startAt: Int
   upvoteCount: Int
   downvoteCount: Int
+  isListed: Boolean
   tags: TagUpdateManyWithoutAudioInput
   vote: AudioVoteUpdateManyWithoutAudioInput
   author: UserUpdateOneWithoutAudioInput
@@ -862,6 +885,7 @@ input AudioUpdateWithoutVoteDataInput {
   startAt: Int
   upvoteCount: Int
   downvoteCount: Int
+  isListed: Boolean
   tags: TagUpdateManyWithoutAudioInput
   author: UserUpdateOneWithoutAudioInput
   video: VideoUpdateOneWithoutAudioInput
@@ -1611,6 +1635,10 @@ input AudioWhereInput {
 
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
+  isListed: Boolean
+
+  """All values that are not equal to given value."""
+  isListed_not: Boolean
   tags_every: TagWhereInput
   tags_some: TagWhereInput
   tags_none: TagWhereInput
@@ -5795,6 +5823,7 @@ type Video implements Node {
   caption(where: CaptionWhereInput, orderBy: CaptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Caption!]
   createdAt: DateTime!
   updatedAt: DateTime!
+  isListed: Boolean
 }
 
 """A connection to a list of items."""
@@ -5824,6 +5853,7 @@ input VideoCreateInput {
   language: Language
   upvoteCount: Int
   downvoteCount: Int
+  isListed: Boolean
   originTags: TagCreateManyInput
   vote: VideoVoteCreateManyWithoutVideoInput
   addedBy: UserCreateOneWithoutVideoInput
@@ -5874,6 +5904,7 @@ input VideoCreateWithoutAddedByInput {
   language: Language
   upvoteCount: Int
   downvoteCount: Int
+  isListed: Boolean
   originTags: TagCreateManyInput
   vote: VideoVoteCreateManyWithoutVideoInput
   audio: AudioCreateManyWithoutVideoInput
@@ -5898,6 +5929,7 @@ input VideoCreateWithoutAudioInput {
   language: Language
   upvoteCount: Int
   downvoteCount: Int
+  isListed: Boolean
   originTags: TagCreateManyInput
   vote: VideoVoteCreateManyWithoutVideoInput
   addedBy: UserCreateOneWithoutVideoInput
@@ -5922,6 +5954,7 @@ input VideoCreateWithoutCaptionInput {
   language: Language
   upvoteCount: Int
   downvoteCount: Int
+  isListed: Boolean
   originTags: TagCreateManyInput
   vote: VideoVoteCreateManyWithoutVideoInput
   addedBy: UserCreateOneWithoutVideoInput
@@ -5946,6 +5979,7 @@ input VideoCreateWithoutCommentInput {
   language: Language
   upvoteCount: Int
   downvoteCount: Int
+  isListed: Boolean
   originTags: TagCreateManyInput
   vote: VideoVoteCreateManyWithoutVideoInput
   addedBy: UserCreateOneWithoutVideoInput
@@ -5970,6 +6004,7 @@ input VideoCreateWithoutVoteInput {
   language: Language
   upvoteCount: Int
   downvoteCount: Int
+  isListed: Boolean
   originTags: TagCreateManyInput
   addedBy: UserCreateOneWithoutVideoInput
   audio: AudioCreateManyWithoutVideoInput
@@ -6023,6 +6058,8 @@ enum VideoOrderByInput {
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
+  isListed_ASC
+  isListed_DESC
 }
 
 type VideoPreviousValues {
@@ -6044,6 +6081,7 @@ type VideoPreviousValues {
   downvoteCount: Int!
   createdAt: DateTime!
   updatedAt: DateTime!
+  isListed: Boolean
 }
 
 input VideoScalarWhereInput {
@@ -6601,6 +6639,10 @@ input VideoScalarWhereInput {
 
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
+  isListed: Boolean
+
+  """All values that are not equal to given value."""
+  isListed_not: Boolean
 }
 
 type VideoSubscriptionPayload {
@@ -6656,6 +6698,7 @@ input VideoUpdateInput {
   language: Language
   upvoteCount: Int
   downvoteCount: Int
+  isListed: Boolean
   originTags: TagUpdateManyInput
   vote: VideoVoteUpdateManyWithoutVideoInput
   addedBy: UserUpdateOneWithoutVideoInput
@@ -6680,6 +6723,7 @@ input VideoUpdateManyDataInput {
   language: Language
   upvoteCount: Int
   downvoteCount: Int
+  isListed: Boolean
 }
 
 input VideoUpdateManyMutationInput {
@@ -6698,6 +6742,7 @@ input VideoUpdateManyMutationInput {
   language: Language
   upvoteCount: Int
   downvoteCount: Int
+  isListed: Boolean
 }
 
 input VideoUpdateManyWithoutAddedByInput {
@@ -6765,6 +6810,7 @@ input VideoUpdateWithoutAddedByDataInput {
   language: Language
   upvoteCount: Int
   downvoteCount: Int
+  isListed: Boolean
   originTags: TagUpdateManyInput
   vote: VideoVoteUpdateManyWithoutVideoInput
   audio: AudioUpdateManyWithoutVideoInput
@@ -6788,6 +6834,7 @@ input VideoUpdateWithoutAudioDataInput {
   language: Language
   upvoteCount: Int
   downvoteCount: Int
+  isListed: Boolean
   originTags: TagUpdateManyInput
   vote: VideoVoteUpdateManyWithoutVideoInput
   addedBy: UserUpdateOneWithoutVideoInput
@@ -6811,6 +6858,7 @@ input VideoUpdateWithoutCaptionDataInput {
   language: Language
   upvoteCount: Int
   downvoteCount: Int
+  isListed: Boolean
   originTags: TagUpdateManyInput
   vote: VideoVoteUpdateManyWithoutVideoInput
   addedBy: UserUpdateOneWithoutVideoInput
@@ -6834,6 +6882,7 @@ input VideoUpdateWithoutCommentDataInput {
   language: Language
   upvoteCount: Int
   downvoteCount: Int
+  isListed: Boolean
   originTags: TagUpdateManyInput
   vote: VideoVoteUpdateManyWithoutVideoInput
   addedBy: UserUpdateOneWithoutVideoInput
@@ -6857,6 +6906,7 @@ input VideoUpdateWithoutVoteDataInput {
   language: Language
   upvoteCount: Int
   downvoteCount: Int
+  isListed: Boolean
   originTags: TagUpdateManyInput
   addedBy: UserUpdateOneWithoutVideoInput
   audio: AudioUpdateManyWithoutVideoInput
@@ -7805,6 +7855,10 @@ input VideoWhereInput {
 
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
+  isListed: Boolean
+
+  """All values that are not equal to given value."""
+  isListed_not: Boolean
   originTags_every: TagWhereInput
   originTags_some: TagWhereInput
   originTags_none: TagWhereInput
