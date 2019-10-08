@@ -606,7 +606,7 @@ const mutations = {
     info
   ) {
     // 1. Check if passwords match
-    if (password !== confirmPassword) throw new Error('Mật khẩu không chùng');
+    if (password !== confirmPassword) throw new Error('Mật khẩu không khớp');
 
     // 2. Check token and expiration
     const [user] = await ctx.db.query.users({
