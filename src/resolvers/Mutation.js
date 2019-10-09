@@ -49,14 +49,18 @@ const mutations = {
 
     return video;
   },
-  async updateVideo(parent, { id, password, data }, ctx, info) {
-    // Check if edit password matches
-    if (password !== 'dracarys') throw new Error('Invalid password');
-
+  async updateVideo(parent, { id, data }, ctx, info) {
+    if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
     // Get Video originId
-    let { originId } = await ctx.db.query.video({
-      where: { id },
-    });
+    let {originId, addedBy} = await ctx.db.query.video(
+      {
+        where: { id },
+      },
+      `{addedBy{id} originId}`
+    );
+    
+    if (addedBy.id !== ctx.request.userId)
+      throw new Error('Bạn không có quyền làm điều đó');
 
     // New source
     if (data.source) {
@@ -70,10 +74,9 @@ const mutations = {
       if (video && data.source !== originId) throw new Error('Video đã có');
       originId = data.source;
     }
-
     // Validate other input arguments
-    const videoUpdateInput = await validateVideoInput(originId, data, ctx, id);
-
+    const videoUpdateInput = await validateVideoInput(originId, ctx);
+console.log(videoUpdateInput)
     // Update video in db
     return ctx.db.mutation.updateVideo(
       {
