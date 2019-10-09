@@ -48,6 +48,7 @@ type Query {
   captionsConnection(where: CaptionWhereInput): CaptionConnection!
   currentUser: User
   cloudinaryAuth(source: String!, language: Language): CloudinarySignature
+  user(id: ID!): PublicProfile
 }
 
 type Mutation {
@@ -79,10 +80,19 @@ type Mutation {
   updateVideoStats: SuccessMessage
   updateAudioDuration(source: String!, duration: Int!): Audio!
   updateContentLanguage(contentLanguage: [Language]): User
-  facebookLogin(data: FacebookLoginInput): facebookLoginResult!
+  facebookLogin(data: FacebookLoginInput): FacebookLoginResult!
 }
 
-type facebookLoginResult {
+type PublicProfile {
+  id: ID!
+  displayName: String
+  contentLanguage: [Language]
+  avatar: String
+  video: [Video]
+  audio: [Audio]
+}
+
+type FacebookLoginResult {
   user: User!
   firstLogin: Boolean!
 }
@@ -148,7 +158,8 @@ type User {
   email: String
   permissions: [Permission!]!
   contentLanguage: [Language]
-  facebookPicture: String
   facebookName: String
   avatar: String
+  videos: [Video]
+  audios: [Audio]
 }

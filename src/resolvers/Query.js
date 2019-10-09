@@ -26,6 +26,16 @@ const Query = {
       info
     );
   },
+  async user(parent, { id }, ctx, info) {
+    return ctx.db.query.user(
+      {
+        where: {
+          id,
+        },
+      },
+      `{id displayName contentLanguage avatar video{id originTitle originAuthor originThumbnailUrl duration} audio{id title video{id originTitle originAuthor originThumbnailUrl duration}}`
+    );
+  },
   cloudinaryAuth(
     parent,
     { source, language },
