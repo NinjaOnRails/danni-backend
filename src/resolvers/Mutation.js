@@ -511,6 +511,9 @@ const mutations = {
     if (!data.email || !data.password)
       throw new Error('Chưa điền hết ô bắt buộc');
 
+    if (data.password.length < 6)
+      throw new Error('Mật khẩu phải chứa ít nhất 6 ký tự');
+
     // Lowercase email and trim arguments
     data.email = data.email.toLowerCase().trim();
     data.name = data.name ? data.name.trim() : '';
@@ -606,6 +609,8 @@ const mutations = {
     info
   ) {
     // 1. Check if passwords match
+    if (password.length < 6)
+      throw new Error('Mật khẩu phải chứa ít nhất 6 ký tự');
     if (password !== confirmPassword) throw new Error('Mật khẩu không khớp');
 
     // 2. Check token and expiration
