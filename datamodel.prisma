@@ -83,8 +83,10 @@ type Tag {
 type User {
   id: ID! @id
   email: String @unique
+  showEmail: Boolean @default(value: false)
   password: String
   name: String
+  showName: Boolean @default(value: false)
   displayName: String! @unique
   isNewsletterSubscribed: Boolean! @default(value: true)
   resetToken: String
@@ -108,6 +110,10 @@ type User {
   facebookName: String
   facebookPicture: String
   avatar: String
+  bio: String
+  showBio: Boolean @default(value: false)
+  location: String
+  showLocation: Boolean @default(value: false)
 }
 
 type Comment {

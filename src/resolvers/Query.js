@@ -27,14 +27,41 @@ const Query = {
     );
   },
   async user(parent, { id }, ctx, info) {
-    return ctx.db.query.user(
+    const {
+      createdAt,
+      displayName,
+      contentLanguage,
+      avatar,
+      video,
+      audio,
+      name,
+      showName,
+      email,
+      showEmail,
+      bio,
+      showBio,
+      location,
+      showLocation,
+    } = await ctx.db.query.user(
       {
         where: {
           id,
         },
       },
-      `{id displayName contentLanguage avatar video{id originTitle originAuthor originThumbnailUrl duration} audio{id title video{id originTitle originAuthor originThumbnailUrl duration}}`
+      `{id createdAt name showName email showEmail bio showBio location showLocation displayName contentLanguage avatar video{id originTitle originAuthor originThumbnailUrl duration addedBy{id} audio{id}} audio{id title video{id originTitle originAuthor originThumbnailUrl duration} author{id}}}`
     );
+    return {
+      createdAt,
+      displayName,
+      contentLanguage,
+      avatar,
+      video,
+      audio,
+      name: showName ? name : null,
+      email: showEmail ? email : null,
+      bio: showBio ? bio : null,
+      location: showLocation ? location : null,
+    };
   },
   cloudinaryAuth(
     parent,

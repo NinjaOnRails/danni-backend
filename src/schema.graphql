@@ -84,12 +84,16 @@ type Mutation {
 }
 
 type PublicProfile {
-  id: ID!
+  createdAt: DateTime
   displayName: String
   contentLanguage: [Language]
   avatar: String
   video: [Video]
   audio: [Audio]
+  name: String
+  email: String
+  bio: String
+  location: String
 }
 
 type FacebookLoginResult {
@@ -160,6 +164,12 @@ type User {
   contentLanguage: [Language]
   facebookName: String
   avatar: String
-  videos: [Video]
-  audios: [Audio]
+  video: [Video]
+  audio: [Audio]
+  bio: String
+  location: String
+  showName: Boolean
+  showEmail: Boolean
+  showBio: Boolean
+  showLocation: Boolean
 }
