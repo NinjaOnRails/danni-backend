@@ -61,17 +61,15 @@ const mutations = {
     if (addedBy.id !== ctx.request.userId)
       throw new Error('Bạn không có quyền làm điều đó');
 
-    // New source
+    // New sourcex§
     if (data.source) {
       // Check if source is YouTube and extract ID from it
       originId = extractYoutubeId(data.source);
-
       // Check if new video exists
       const video = await ctx.db.query.video({
         where: { originId },
       });
       if (video && data.source !== originId) throw new Error('Video đã có');
-      originId = data.source;
     }
     // Validate other input arguments
     const videoUpdateInput = await validateVideoInput(originId, ctx);
@@ -80,6 +78,7 @@ const mutations = {
       {
         data: {
           ...videoUpdateInput,
+          language: data.language,
         },
         where: {
           id,

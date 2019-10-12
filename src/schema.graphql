@@ -98,7 +98,7 @@ type CloudinarySignature {
 
 input UpdateAudioInput {
   source: String
-  language: Language
+  language: String
   title: String
   description: String
   tags: String
@@ -122,7 +122,7 @@ input SignupInput {
 
 input UpdateVideoInput {
   source: String
-  language: Language
+  language: String
 }
 
 input CreateAudioInput {
