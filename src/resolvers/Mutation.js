@@ -71,14 +71,13 @@ const mutations = {
       });
       if (video && data.source !== originId) throw new Error('Video đã có');
     }
-    // Validate other input arguments
-    const videoUpdateInput = await validateVideoInput(originId, ctx);
     // Update video in db
     const updatedVideo = await ctx.db.mutation.updateVideo(
       {
         data: {
-          ...videoUpdateInput,
+          // ...videoUpdateInput,
           language: data.language,
+          originId,
         },
         where: {
           id,
@@ -102,7 +101,6 @@ const mutations = {
   async createAudio(parent, { data }, ctx, info) {
     // Check if user is logged in
     if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
-
     // Check if user already added Audio to this Video in the same language
     const audios = await ctx.db.query.audios({
       where: {
@@ -120,7 +118,6 @@ const mutations = {
 
     // Validate other input argumentsma
     const audioCreateInput = await validateAudioInput(data, ctx);
-
     // Save audio to db
     return ctx.db.mutation.createAudio(
       {
