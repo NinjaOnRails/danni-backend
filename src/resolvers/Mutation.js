@@ -46,19 +46,18 @@ const mutations = {
       info
     );
     if (!video) throw new Error('Saving video to db failed');
-
     return video;
   },
   async updateVideo(parent, { id, data }, ctx, info) {
     if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
     // Get Video originId
-    let {originId, addedBy} = await ctx.db.query.video(
+    let { originId, addedBy } = await ctx.db.query.video(
       {
         where: { id },
       },
       `{addedBy{id} originId}`
     );
-    
+
     if (addedBy.id !== ctx.request.userId)
       throw new Error('Bạn không có quyền làm điều đó');
 
@@ -76,9 +75,8 @@ const mutations = {
     }
     // Validate other input arguments
     const videoUpdateInput = await validateVideoInput(originId, ctx);
-console.log(videoUpdateInput)
     // Update video in db
-    return ctx.db.mutation.updateVideo(
+    const updatedVideo = await ctx.db.mutation.updateVideo(
       {
         data: {
           ...videoUpdateInput,
@@ -89,6 +87,8 @@ console.log(videoUpdateInput)
       },
       info
     );
+    if (!updatedVideo) throw new Error('Saving video to db failed');
+    return updatedVideo;
   },
   async deleteVideo(parent, { id, password }, ctx, info) {
     if (!id || !(password === 'dracarys'))
@@ -143,21 +143,23 @@ console.log(videoUpdateInput)
       info
     );
   },
-  async updateAudio(
-    parent,
-    {
-      id,
-      data: { source, language, author },
-    },
-    ctx,
-    info
-  ) {
-    return ctx.db.mutation.updateAudio(
+  async updateAudio(parent, { id, data }, ctx, info) {
+    if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
+    // Get Video originId
+    const { author } = await ctx.db.query.audio(
+      {
+        where: { id },
+      },
+      `{author{id} }`
+    );
+
+    if (author.id !== ctx.request.userId)
+      throw new Error('Bạn không có quyền làm điều đó');
+
+    const audio = await ctx.db.mutation.updateAudio(
       {
         data: {
-          source,
-          language,
-          author,
+          ...data,
         },
         where: {
           id,
@@ -165,6 +167,8 @@ console.log(videoUpdateInput)
       },
       info
     );
+    if (!audio) throw new Error('Saving audio to db failed');
+    return audio;
   },
   async createCaption(
     parent,

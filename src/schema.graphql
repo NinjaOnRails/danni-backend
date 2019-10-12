@@ -98,8 +98,12 @@ type CloudinarySignature {
 
 input UpdateAudioInput {
   source: String
-  author: String
   language: Language
+  title: String
+  description: String
+  tags: String
+  duration: Int
+  defaultVolume: Int
 }
 
 input FacebookLoginInput {
