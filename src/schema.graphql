@@ -68,6 +68,7 @@ type Mutation {
     password: String!
     confirmPassword: String!
   ): User!
+  updateUser(data: UpadateUserInput): User
   createComment(video: ID, text: String!): Comment!
   updateComment(comment: ID, text: String): Comment!
   deleteComment(comment: ID): Comment!
@@ -153,6 +154,20 @@ input CreateCaptionInput {
   languageTag: String!
   xml: String
   video: ID!
+}
+
+input UpadateUserInput {
+  displayName: String
+  name: String
+  bio: String
+  location: String
+  email: String
+  password: String
+  confirmPassword: String
+  showName: Boolean
+  showEmail: Boolean
+  showBio: Boolean
+  showLocation: Boolean
 }
 
 type User {

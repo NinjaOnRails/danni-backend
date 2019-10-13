@@ -572,6 +572,49 @@ const mutations = {
     // Return the user
     return user;
   },
+  async updateUser(parent, { data }, ctx, info) {
+    const { password, confirmPassword } = data;
+    const { userId } = ctx.request;
+
+    // Take a copy of the updates
+    const updates = { ...data };
+
+    // Check signed in
+    if (!userId) throw new Error('Đăng nhập để tiếp tục');
+
+    // Validate password change
+    if (password || confirmPassword) {
+      if (!confirmPassword || !password) {
+        throw new Error('Phải điền cả hai ô mật khẩu nếu muốn đổi mật khẩu');
+      } else if (password !== confirmPassword) {
+        throw new Error('Mật khẩu không khớp');
+      } else if (password.length < 6) {
+        throw new Error('Mật khẩu phải chứa ít nhất 6 ký tự');
+      } else {
+        // Hash new password
+        updates.password = await bcrypt.hash(password, 10);
+        delete updates.confirmPassword;
+      }
+    } else {
+      // Remove passwords from the updates
+      delete updates.password;
+      delete updates.confirmPassword;
+    }
+
+    // Remove the ID from the updates
+    delete updates.id;
+
+    // Run the update method
+    return ctx.db.mutation.updateUser(
+      {
+        data: updates,
+        where: {
+          id: userId,
+        },
+      },
+      info
+    );
+  },
   signout(parent, args, ctx, info) {
     ctx.response.clearCookie('token');
     return { message: 'Đăng xuất thành công' };
