@@ -78,6 +78,8 @@ const mutations = {
           // ...videoUpdateInput,
           language: data.language,
           originId,
+          originThumbnailUrl: data.originThumbnailUrl,
+          originThumbnailUrlSd: data.originThumbnailUrlSd,
         },
         where: {
           id,
@@ -151,11 +153,13 @@ const mutations = {
 
     if (author.id !== ctx.request.userId)
       throw new Error('Bạn không có quyền làm điều đó');
+    const audioCreateInput = await validateAudioInput(data, ctx);
 
     const audio = await ctx.db.mutation.updateAudio(
       {
         data: {
-          ...data,
+          ...audioCreateInput,
+          language: data.language,
         },
         where: {
           id,
@@ -163,6 +167,7 @@ const mutations = {
       },
       info
     );
+
     if (!audio) throw new Error('Saving audio to db failed');
     return audio;
   },
