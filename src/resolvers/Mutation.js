@@ -7,6 +7,7 @@ const extractYoutubeId = require('../utils/extractYoutubeId');
 const validateVideoInput = require('../utils/validateVideoInput');
 const validateAudioInput = require('../utils/validateAudioInput');
 const captionDownload = require('../utils/captionsDownload');
+const randomAvatar = require('../utils/randomAvatar');
 const sendGridResetToken = require('../utils/sendGridResetToken');
 // const languageTags = require('../config/languageTags');
 const youtube = require('../utils/youtube');
@@ -542,6 +543,7 @@ const mutations = {
           password,
           contentLanguage: { set: data.contentLanguage },
           permissions: { set: ['USER'] },
+          avatar: randomAvatar(),
         },
       },
       info
@@ -608,6 +610,24 @@ const mutations = {
     return ctx.db.mutation.updateUser(
       {
         data: updates,
+        where: {
+          id: userId,
+        },
+      },
+      info
+    );
+  },
+  async updateAvatar(parent, { avatar }, ctx, info) {
+    // Check signed in
+    const { userId } = ctx.request;
+    if (!userId) throw new Error('Đăng nhập để tiếp tục');
+
+    // Run the update method
+    return ctx.db.mutation.updateUser(
+      {
+        data: {
+          avatar,
+        },
         where: {
           id: userId,
         },

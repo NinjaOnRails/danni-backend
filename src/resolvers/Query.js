@@ -63,7 +63,7 @@ const Query = {
       location: showLocation ? location : null,
     };
   },
-  cloudinaryAuth(
+  cloudinaryAuthAudio(
     parent,
     { source, language },
     {
@@ -74,7 +74,29 @@ const Query = {
     // Check if there is current user ID
     if (!userId) throw new Error('Bạn chưa đăng nhập');
 
-    const { signature, timestamp } = cloudinary(source, userId, language);
+    const { signature, timestamp } = cloudinary.audioSign(
+      source,
+      userId,
+      language
+    );
+
+    return {
+      signature,
+      timestamp,
+    };
+  },
+  cloudinaryAuthAvatar(
+    parent,
+    { source, language },
+    {
+      request: { userId },
+    },
+    info
+  ) {
+    // Check if there is current user ID
+    if (!userId) throw new Error('Bạn chưa đăng nhập');
+
+    const { signature, timestamp } = cloudinary.avatarSign(userId);
 
     return {
       signature,

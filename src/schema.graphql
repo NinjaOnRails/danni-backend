@@ -47,7 +47,8 @@ type Query {
   audiosConnection(where: AudioWhereInput): AudioConnection!
   captionsConnection(where: CaptionWhereInput): CaptionConnection!
   currentUser: User
-  cloudinaryAuth(source: String!, language: Language): CloudinarySignature
+  cloudinaryAuthAudio(source: String!, language: Language): CloudinarySignature
+  cloudinaryAuthAvatar: CloudinarySignature
   user(id: ID!): PublicProfile
 }
 
@@ -69,6 +70,7 @@ type Mutation {
     confirmPassword: String!
   ): User!
   updateUser(data: UpadateUserInput): User
+  updateAvatar(avatar: String!): User
   createComment(video: ID, text: String!): Comment!
   updateComment(comment: ID, text: String): Comment!
   deleteComment(comment: ID): Comment!
