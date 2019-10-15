@@ -54,7 +54,7 @@ type Query {
 
 type Mutation {
   createVideo(source: String!, language: String): Video!
-  updateVideo(id: ID!, password: String!, data: UpdateVideoInput): Video!
+  updateVideo(id: ID!, data: UpdateVideoInput): Video!
   deleteVideo(id: ID!, password: String!): Video
   createAudio(data: CreateAudioInput!): Audio!
   updateAudio(id: ID!, data: UpdateAudioInput): Audio!
@@ -115,8 +115,12 @@ type CloudinarySignature {
 
 input UpdateAudioInput {
   source: String
-  author: String
-  language: Language
+  language: String
+  title: String
+  description: String
+  tags: String
+  duration: Int
+  defaultVolume: Int
 }
 
 input FacebookLoginInput {
@@ -135,10 +139,7 @@ input SignupInput {
 
 input UpdateVideoInput {
   source: String
-  title: String
-  description: String
-  tags: String
-  defaultVolume: Int
+  language: String
 }
 
 input CreateAudioInput {

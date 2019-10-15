@@ -47,39 +47,39 @@ const mutations = {
       info
     );
     if (!video) throw new Error('Saving video to db failed');
-
     return video;
   },
-  async updateVideo(parent, { id, password, data }, ctx, info) {
-    // Check if edit password matches
-    if (password !== 'dracarys') throw new Error('Invalid password');
-
+  async updateVideo(parent, { id, data }, ctx, info) {
+    if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
     // Get Video originId
-    let { originId } = await ctx.db.query.video({
-      where: { id },
-    });
+    let { originId, addedBy } = await ctx.db.query.video(
+      {
+        where: { id },
+      },
+      `{addedBy{id} originId}`
+    );
 
-    // New source
+    if (addedBy.id !== ctx.request.userId)
+      throw new Error('Bạn không có quyền làm điều đó');
+
+    // New sourcex§
     if (data.source) {
       // Check if source is YouTube and extract ID from it
       originId = extractYoutubeId(data.source);
-
       // Check if new video exists
       const video = await ctx.db.query.video({
         where: { originId },
       });
       if (video && data.source !== originId) throw new Error('Video đã có');
-      originId = data.source;
     }
-
     // Validate other input arguments
-    const videoUpdateInput = await validateVideoInput(originId, data, ctx, id);
-
+    const videoUpdateInput = await validateVideoInput(originId, ctx);
     // Update video in db
-    return ctx.db.mutation.updateVideo(
+    const updatedVideo = await ctx.db.mutation.updateVideo(
       {
         data: {
           ...videoUpdateInput,
+          language: data.language,
         },
         where: {
           id,
@@ -87,6 +87,8 @@ const mutations = {
       },
       info
     );
+    if (!updatedVideo) throw new Error('Saving video to db failed');
+    return updatedVideo;
   },
   async deleteVideo(parent, { id, password }, ctx, info) {
     if (!id || !(password === 'dracarys'))
@@ -141,21 +143,23 @@ const mutations = {
       info
     );
   },
-  async updateAudio(
-    parent,
-    {
-      id,
-      data: { source, language, author },
-    },
-    ctx,
-    info
-  ) {
-    return ctx.db.mutation.updateAudio(
+  async updateAudio(parent, { id, data }, ctx, info) {
+    if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
+    // Get Video originId
+    const { author } = await ctx.db.query.audio(
+      {
+        where: { id },
+      },
+      `{author{id} }`
+    );
+
+    if (author.id !== ctx.request.userId)
+      throw new Error('Bạn không có quyền làm điều đó');
+
+    const audio = await ctx.db.mutation.updateAudio(
       {
         data: {
-          source,
-          language,
-          author,
+          ...data,
         },
         where: {
           id,
@@ -163,6 +167,8 @@ const mutations = {
       },
       info
     );
+    if (!audio) throw new Error('Saving audio to db failed');
+    return audio;
   },
   async createCaption(
     parent,
