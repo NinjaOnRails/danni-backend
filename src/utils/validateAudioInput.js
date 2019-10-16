@@ -31,7 +31,6 @@ module.exports = async (
   if (tags) {
     // Split string into array of unique items
     tags = [...new Set(tags.split(' '))];
-
     // Remove tags
     const tagsDisconnect = [];
     if (id) {
@@ -44,7 +43,6 @@ module.exports = async (
         tags = tags.filter(tag => tag !== connectedTags[key].text);
       }
     }
-
     // Divide tags into new and old (and to disconnect)
     const tagsConnect = [];
     const tagsCreate = [];

@@ -72,14 +72,15 @@ const mutations = {
       });
       if (video && data.source !== originId) throw new Error('Video đã có');
     }
-    // Validate other input arguments
-    const videoUpdateInput = await validateVideoInput(originId, ctx);
     // Update video in db
     const updatedVideo = await ctx.db.mutation.updateVideo(
       {
         data: {
-          ...videoUpdateInput,
+          // ...videoUpdateInput,
           language: data.language,
+          originId,
+          originThumbnailUrl: data.originThumbnailUrl,
+          originThumbnailUrlSd: data.originThumbnailUrlSd,
         },
         where: {
           id,
@@ -103,7 +104,6 @@ const mutations = {
   async createAudio(parent, { data }, ctx, info) {
     // Check if user is logged in
     if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
-
     // Check if user already added Audio to this Video in the same language
     const audios = await ctx.db.query.audios({
       where: {
@@ -121,7 +121,6 @@ const mutations = {
 
     // Validate other input argumentsma
     const audioCreateInput = await validateAudioInput(data, ctx);
-
     // Save audio to db
     return ctx.db.mutation.createAudio(
       {
@@ -155,11 +154,13 @@ const mutations = {
 
     if (author.id !== ctx.request.userId)
       throw new Error('Bạn không có quyền làm điều đó');
+    const audioCreateInput = await validateAudioInput(data, ctx);
 
     const audio = await ctx.db.mutation.updateAudio(
       {
         data: {
-          ...data,
+          ...audioCreateInput,
+          language: data.language,
         },
         where: {
           id,
@@ -167,6 +168,7 @@ const mutations = {
       },
       info
     );
+
     if (!audio) throw new Error('Saving audio to db failed');
     return audio;
   },

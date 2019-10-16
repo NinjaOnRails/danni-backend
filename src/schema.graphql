@@ -53,7 +53,7 @@ type Query {
 }
 
 type Mutation {
-  createVideo(source: String!, language: String): Video!
+  createVideo(source: String!, language: Language): Video!
   updateVideo(id: ID!, data: UpdateVideoInput): Video!
   deleteVideo(id: ID!, password: String!): Video
   createAudio(data: CreateAudioInput!): Audio!
@@ -115,7 +115,7 @@ type CloudinarySignature {
 
 input UpdateAudioInput {
   source: String
-  language: String
+  language: Language
   title: String
   description: String
   tags: String
@@ -139,7 +139,9 @@ input SignupInput {
 
 input UpdateVideoInput {
   source: String
-  language: String
+  language: Language
+  originThumbnailUrl: String
+  originThumbnailUrlSd: String
 }
 
 input CreateAudioInput {
