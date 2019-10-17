@@ -49,7 +49,7 @@ const mutations = {
     if (!video) throw new Error('Saving video to db failed');
     return video;
   },
-  async updateVideo(parent, { id, data }, ctx, info) {
+  async updateVideo(parent, { id, source, language }, ctx, info) {
     if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
     // Get Video originId
     let { originId, addedBy } = await ctx.db.query.video(
@@ -62,25 +62,25 @@ const mutations = {
     if (addedBy.id !== ctx.request.userId)
       throw new Error('Bạn không có quyền làm điều đó');
 
-    // New sourcex§
-    if (data.source) {
+    videoCreateInput = {};
+    // New source
+    if (source && source !== originId) {
       // Check if source is YouTube and extract ID from it
-      originId = extractYoutubeId(data.source);
+      originId = extractYoutubeId(source);
       // Check if new video exists
       const video = await ctx.db.query.video({
         where: { originId },
       });
-      if (video && data.source !== originId) throw new Error('Video đã có');
+      if (video) throw new Error('Video đã có');
+      // Validate other input arguments
+      videoCreateInput = await validateVideoInput(originId, ctx);
     }
     // Update video in db
     const updatedVideo = await ctx.db.mutation.updateVideo(
       {
         data: {
-          // ...videoUpdateInput,
-          language: data.language,
-          originId,
-          originThumbnailUrl: data.originThumbnailUrl,
-          originThumbnailUrlSd: data.originThumbnailUrlSd,
+          language,
+          ...videoCreateInput,
         },
         where: {
           id,
@@ -154,7 +154,7 @@ const mutations = {
 
     if (author.id !== ctx.request.userId)
       throw new Error('Bạn không có quyền làm điều đó');
-    const audioCreateInput = await validateAudioInput(data, ctx);
+    const audioCreateInput = await validateAudioInput(data, ctx, id);
 
     const audio = await ctx.db.mutation.updateAudio(
       {

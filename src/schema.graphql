@@ -54,7 +54,7 @@ type Query {
 
 type Mutation {
   createVideo(source: String!, language: Language): Video!
-  updateVideo(id: ID!, data: UpdateVideoInput): Video!
+  updateVideo(id: ID!, source: String, language: Language): Video!
   deleteVideo(id: ID!, password: String!): Video
   createAudio(data: CreateAudioInput!): Audio!
   updateAudio(id: ID!, data: UpdateAudioInput): Audio!
@@ -135,13 +135,6 @@ input SignupInput {
   contentLanguage: [Language]
   name: String
   displayName: String
-}
-
-input UpdateVideoInput {
-  source: String
-  language: Language
-  originThumbnailUrl: String
-  originThumbnailUrlSd: String
 }
 
 input CreateAudioInput {

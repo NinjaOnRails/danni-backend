@@ -44,21 +44,8 @@ module.exports = async (originId, ctx, id = undefined) => {
   };
 
   // tags validation
-  if (tags.length) {
-    // Remove tags
-    const tagsDisconnect = [];
-    if (id) {
-      const connectedTags = await ctx.db.query.tags({
-        where: { audio_some: { id } },
-      });
-      for (const key in connectedTags) {
-        if (!tags.includes(connectedTags[key].text))
-          tagsDisconnect.push({ text: connectedTags[key].text });
-        tags = tags.filter(tag => tag !== connectedTags[key].text);
-      }
-    }
-
-    // Divide tags into new and old (and to disconnect)
+  if (tags && tags.length) {
+    // Divide tags into new and old
     const tagsConnect = [];
     const tagsCreate = [];
     for (const tag of tags) {
@@ -67,6 +54,7 @@ module.exports = async (originId, ctx, id = undefined) => {
         throw new Error('Each tag must be under 63 characters long');
       // Query db for tag presence
       await ctx.db.query.tag({ where: { text: tag } }).then(res => {
+        console.log(res)
         res
           ? tagsConnect.push({ text: res.text })
           : tagsCreate.push({ text: tag });
@@ -78,8 +66,6 @@ module.exports = async (originId, ctx, id = undefined) => {
     if (tagsConnect.length)
       videoCreateInput.originTags.connect = [...tagsConnect];
     if (tagsCreate.length) videoCreateInput.originTags.create = [...tagsCreate];
-    if (tagsDisconnect.length)
-      videoCreateInput.tags.disconnect = [...tagsDisconnect];
   }
 
   return videoCreateInput;
