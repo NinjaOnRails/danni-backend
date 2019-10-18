@@ -161,6 +161,7 @@ input UpadateUserInput {
   location: String
   email: String
   password: String
+  newPassword: String
   confirmPassword: String
   showName: Boolean
   showEmail: Boolean

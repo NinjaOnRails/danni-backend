@@ -583,7 +583,7 @@ const mutations = {
     return user;
   },
   async updateUser(parent, { data }, ctx, info) {
-    const { password, confirmPassword } = data;
+    const { password, newPassword, confirmPassword } = data;
     const { userId } = ctx.request;
 
     // Take a copy of the updates
@@ -593,21 +593,29 @@ const mutations = {
     if (!userId) throw new Error('Đăng nhập để tiếp tục');
 
     // Validate password change
-    if (password || confirmPassword) {
-      if (!confirmPassword || !password) {
-        throw new Error('Phải điền cả hai ô mật khẩu nếu muốn đổi mật khẩu');
-      } else if (password !== confirmPassword) {
+    if (newPassword || confirmPassword) {
+      // Check if old password is correct
+      const user = await ctx.db.query.user({ where: { id: userId } });
+      const valid = await bcrypt.compare(password, user.password);
+
+      if (!confirmPassword || !newPassword || !password) {
+        throw new Error('Phải điền cả ba ô mật khẩu nếu muốn đổi mật khẩu');
+      } else if (!valid) {
+        throw new Error('Sai mật khẩu cũ');
+      } else if (newPassword !== confirmPassword) {
         throw new Error('Mật khẩu không khớp');
-      } else if (password.length < 6) {
+      } else if (newPassword.length < 6) {
         throw new Error('Mật khẩu phải chứa ít nhất 6 ký tự');
       } else {
         // Hash new password
-        updates.password = await bcrypt.hash(password, 10);
+        updates.password = await bcrypt.hash(newPassword, 10);
         delete updates.confirmPassword;
+        delete updates.newPassword;
       }
     } else {
       // Remove passwords from the updates
       delete updates.password;
+      delete updates.newPassword;
       delete updates.confirmPassword;
     }
 
