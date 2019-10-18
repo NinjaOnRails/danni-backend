@@ -10,6 +10,7 @@ module.exports = async (originId, ctx, id = undefined) => {
           snippet: {
             thumbnails,
             channelTitle,
+            channelId,
             localized: { title, description },
             defaultAudioLanguage,
             tags,
@@ -38,6 +39,7 @@ module.exports = async (originId, ctx, id = undefined) => {
     originTitle: title,
     originDescription: description,
     originAuthor: channelTitle,
+    originAuthorId: channelId,
     originLanguage: defaultAudioLanguage,
     originThumbnailUrl: thumbnails.medium ? thumbnails.medium.url : '',
     originThumbnailUrlSd: thumbnails.standard ? thumbnails.standard.url : '',
