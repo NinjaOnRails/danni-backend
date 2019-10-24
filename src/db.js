@@ -6,6 +6,7 @@ const db = new Prisma({
   // typeDefs: __dirname + "/schema_prep.graphql",
   // endpoint: process.env.PRISMA_ENDPOINT_PROD,
   endpoint: process.env.PRISMA_ENDPOINT,
+  // endpoint: process.env.PRISMA_ENDPOINT_LOCAL,
   // secret: process.env.PRISMA_SECRET_PROD,
   secret: process.env.PRISMA_SECRET,
   debug: false,

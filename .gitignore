@@ -5,3 +5,4 @@ node_modules/
 variables.env
 now.json
 .env
+docker-compose.yml
