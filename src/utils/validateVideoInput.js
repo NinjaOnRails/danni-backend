@@ -56,7 +56,6 @@ module.exports = async (originId, ctx, id = undefined) => {
         throw new Error('Each tag must be under 63 characters long');
       // Query db for tag presence
       await ctx.db.query.tag({ where: { text: tag } }).then(res => {
-        console.log(res)
         res
           ? tagsConnect.push({ text: res.text })
           : tagsCreate.push({ text: tag });
