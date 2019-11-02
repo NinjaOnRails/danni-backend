@@ -56,7 +56,10 @@ const mutations = {
       {
         where: { id },
       },
-      `{addedBy{id} originId}`
+      `{
+        addedBy { id }
+        originId
+      }`
     );
 
     if (addedBy.id !== ctx.request.userId)
@@ -91,16 +94,6 @@ const mutations = {
     if (!updatedVideo) throw new Error('Saving video to db failed');
     return updatedVideo;
   },
-  async deleteVideo(parent, { id, password }, ctx, info) {
-    if (!id || !(password === 'dracarys'))
-      throw new Error('Invalid delete password');
-    return ctx.db.mutation.deleteVideo({
-      where: {
-        id,
-      },
-    });
-  },
-
   async createAudio(parent, { data }, ctx, info) {
     // Check if user is logged in
     if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
@@ -149,7 +142,7 @@ const mutations = {
       {
         where: { id },
       },
-      `{author{id} }`
+      `{ author { id } }`
     );
 
     if (author.id !== ctx.request.userId)
@@ -171,6 +164,57 @@ const mutations = {
 
     if (!audio) throw new Error('Saving audio to db failed');
     return audio;
+  },
+  async deleteAudVid(parent, { id, audioId }, ctx, info) {
+    const {userId} = ctx.request
+    if (!userId) throw new Error('Đăng nhập để tiếp tục');
+
+    if (audioId) {
+      // Get Audio author
+      const { author } = await ctx.db.query.audio(
+        {
+          where: { id: audioId },
+        },
+        `{ author { id } }`
+      );
+
+      if (author.id !== userId)
+        throw new Error('Bạn không có quyền làm điều đó');
+
+      await ctx.db.mutation.deleteAudio(
+        {
+          where: {
+            id: audioId,
+          },
+        },
+        `{
+          video {
+            audio { id }
+          }
+        }`
+      );
+    }
+
+    // Get Video addedBy and audio list
+    const video = await ctx.db.query.video(
+      {
+        where: { id },
+      },
+      `{
+        addedBy { id }
+        audio { id }
+      }`
+    );
+
+    if (!video.audio.length && video.addedBy.id === userId) {
+      return ctx.db.mutation.deleteVideo({
+        where: {
+          id,
+        },
+      });
+    }
+
+    return video;
   },
   async createCaption(
     parent,
@@ -268,7 +312,11 @@ const mutations = {
           id: data.comment,
         },
       },
-      `{id text author{id} }`
+      `{
+        id
+        text
+        author { id }
+      }`
     );
     if (existingComment.author.id !== ctx.request.userId)
       throw new Error('Bạn không có quyền làm điều đó');
@@ -291,7 +339,7 @@ const mutations = {
           id: comment,
         },
       },
-      `{ author{id} }`
+      `{ author { id } }`
     );
     if (existingComment.author.id !== ctx.request.userId)
       throw new Error('Bạn không có quyền làm điều đó');
@@ -330,7 +378,11 @@ const mutations = {
           id: data.commentReply,
         },
       },
-      `{id text author{id} }`
+      `{
+        id
+        text
+        author { id }
+      }`
     );
     if (existingReply.author.id !== ctx.request.userId)
       throw new Error('Bạn không có quyền làm điều đó');
@@ -353,7 +405,7 @@ const mutations = {
           id: commentReply,
         },
       },
-      `{ author{id} }`
+      `{ author { id } }`
     );
     if (existing.author.id !== ctx.request.userId)
       throw new Error('Reply not found');
@@ -365,12 +417,22 @@ const mutations = {
   },
   async createCommentVote(parent, { comment, type }, ctx, info) {
     if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
-    const query = `{id type user{id}}`;
+    const query = `{
+      id
+      type
+      user { id }
+    }`;
     const votingComment = await ctx.db.query.comment(
       {
         where: { id: comment },
       },
-      `{vote{id type user{id}}}`
+      `{
+        vote {
+          id
+          type
+          user { id }
+        }
+      }`
     );
     const existingVote =
       votingComment.vote.length > 0
@@ -441,13 +503,23 @@ const mutations = {
   },
   async createCommentReplyVote(parent, { commentReply, type }, ctx, info) {
     if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
-    const query = `{id type user{id}}`;
+    const query = `{
+      id
+      type
+      user { id }
+    }`;
     let vote;
     const votingCommentReply = await ctx.db.query.commentReply(
       {
         where: { id: commentReply },
       },
-      `{vote{id type user{id}}}`
+      `{
+        vote {
+          id
+          type
+          user { id }
+        }
+      }`
     );
     const existingVote =
       votingCommentReply.vote.length > 0
@@ -737,7 +809,10 @@ const mutations = {
       {
         where: { facebookUserId: id },
       },
-      `{id displayName}`
+      `{
+        id
+        displayName
+      }`
     );
 
     firstLogin = Boolean(!user);
@@ -757,7 +832,10 @@ const mutations = {
             permissions: { set: ['USER'] },
           },
         },
-        `{id displayName}`
+        `{
+          id
+          displayName
+        }`
       );
     }
 

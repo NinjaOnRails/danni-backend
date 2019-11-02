@@ -55,7 +55,7 @@ type Query {
 type Mutation {
   createVideo(source: String!, language: Language): Video!
   updateVideo(id: ID!, source: String, language: Language): Video!
-  deleteVideo(id: ID!, password: String!): Video
+  deleteAudVid(id: ID!, audioId: ID): Video
   createAudio(data: CreateAudioInput!): Audio!
   updateAudio(id: ID!, data: UpdateAudioInput): Audio!
   createCaption(data: CreateCaptionInput!): Caption!
