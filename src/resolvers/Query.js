@@ -48,7 +48,42 @@ const Query = {
           id,
         },
       },
-      `{id createdAt name showName email showEmail bio showBio location showLocation displayName contentLanguage avatar video{id originTitle originAuthor originThumbnailUrl duration addedBy{id} audio{id}} audio{id title video{id originTitle originAuthor originThumbnailUrl duration} author{id}}}`
+      `{
+        createdAt
+        name
+        showName
+        email
+        showEmail
+        bio
+        showBio
+        location
+        showLocation
+        displayName
+        contentLanguage
+        avatar
+        video {
+          id
+          originTitle
+          originAuthor
+          originThumbnailUrl
+          duration
+          language
+          addedBy { id }
+          audio { id }
+        }
+        audio {
+          id
+          title
+          video {
+            id
+          originTitle
+          originAuthor
+          originThumbnailUrl
+          duration
+          }
+          author { id }
+        }
+      }`
     );
     return {
       createdAt,
