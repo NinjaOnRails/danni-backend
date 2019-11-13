@@ -4,7 +4,7 @@ const cloudinary = require('../utils/cloudinary');
 const Query = {
   videos: forwardTo('db'),
   video: forwardTo('db'),
-  audios: forwardTo('db'),
+  videosConnection: forwardTo('db'),
   captions: forwardTo('db'),
   caption: forwardTo('db'),
   tag: forwardTo('db'),

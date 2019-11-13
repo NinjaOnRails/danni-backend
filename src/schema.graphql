@@ -4,15 +4,9 @@ type Query {
   videos(
     where: VideoWhereInput
     orderBy: VideoOrderByInput
-    skip: Int
+    after: String
     first: Int
   ): [Video]!
-  audios(
-    where: AudioWhereInput
-    orderBy: AudioOrderByInput
-    skip: Int
-    first: Int
-  ): [Audio]!
   captions(
     where: CaptionWhereInput
     orderBy: CaptionOrderByInput
@@ -43,9 +37,12 @@ type Query {
   tag(where: TagWhereUniqueInput!): Tag
   comment(where: CommentWhereUniqueInput!): Comment
   commentReply(where: CommentReplyWhereUniqueInput!): CommentReply
-  videosConnection(where: VideoWhereInput): VideoConnection!
-  audiosConnection(where: AudioWhereInput): AudioConnection!
-  captionsConnection(where: CaptionWhereInput): CaptionConnection!
+  videosConnection(
+    where: VideoWhereInput
+    orderBy: VideoOrderByInput
+    after: String
+    first: Int
+  ): VideoConnection!
   currentUser: User
   cloudinaryAuthAudio(source: String!, language: Language): CloudinarySignature
   cloudinaryAuthAvatar: CloudinarySignature
