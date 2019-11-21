@@ -1,12 +1,6 @@
 # import * from './generated/prisma.graphql'
 
 type Query {
-  videos(
-    where: VideoWhereInput
-    orderBy: VideoOrderByInput
-    after: String
-    first: Int
-  ): [Video]!
   captions(
     where: CaptionWhereInput
     orderBy: CaptionOrderByInput

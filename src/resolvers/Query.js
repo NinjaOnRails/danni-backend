@@ -2,7 +2,6 @@ const { forwardTo } = require('prisma-binding');
 const cloudinary = require('../utils/cloudinary');
 
 const Query = {
-  videos: forwardTo('db'),
   video: forwardTo('db'),
   videosConnection: forwardTo('db'),
   captions: forwardTo('db'),
