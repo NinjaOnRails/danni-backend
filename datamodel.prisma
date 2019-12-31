@@ -5,7 +5,7 @@ type Video {
   originDescription: String
   originAuthor: String
   originAuthorId: String
-  originPlatform: String! @default(value: "YouTube")
+  originPlatform: VideoPlatform! @default(value: YOUTUBE)
   originLanguage: String
   originThumbnailUrl: String
   originThumbnailUrlSd: String
@@ -197,4 +197,9 @@ enum Permission {
   COMMENTCREATE
   COMMENTCREATE
   COMMENTUPDATE
+}
+
+enum VideoPlatform {
+  YOUTUBE
+  FACEBOOK
 }

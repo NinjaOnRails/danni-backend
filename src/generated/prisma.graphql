@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/danni/dev/dev
-# timestamp: Fri Oct 18 2019 11:16:02 GMT+0200 (Central European Summer Time)
+# timestamp: Thu Nov 21 2019 17:53:33 GMT+0100 (Central European Standard Time)
 
 type AggregateAudio {
   count: Int!
@@ -6033,7 +6033,7 @@ type Video implements Node {
   originDescription: String
   originAuthor: String
   originAuthorId: String
-  originPlatform: String!
+  originPlatform: VideoPlatform!
   originLanguage: String
   originThumbnailUrl: String
   originThumbnailUrlSd: String
@@ -6072,7 +6072,7 @@ input VideoCreateInput {
   originDescription: String
   originAuthor: String
   originAuthorId: String
-  originPlatform: String
+  originPlatform: VideoPlatform
   originLanguage: String
   originThumbnailUrl: String
   originThumbnailUrlSd: String
@@ -6124,7 +6124,7 @@ input VideoCreateWithoutAddedByInput {
   originDescription: String
   originAuthor: String
   originAuthorId: String
-  originPlatform: String
+  originPlatform: VideoPlatform
   originLanguage: String
   originThumbnailUrl: String
   originThumbnailUrlSd: String
@@ -6150,7 +6150,7 @@ input VideoCreateWithoutAudioInput {
   originDescription: String
   originAuthor: String
   originAuthorId: String
-  originPlatform: String
+  originPlatform: VideoPlatform
   originLanguage: String
   originThumbnailUrl: String
   originThumbnailUrlSd: String
@@ -6176,7 +6176,7 @@ input VideoCreateWithoutCaptionInput {
   originDescription: String
   originAuthor: String
   originAuthorId: String
-  originPlatform: String
+  originPlatform: VideoPlatform
   originLanguage: String
   originThumbnailUrl: String
   originThumbnailUrlSd: String
@@ -6202,7 +6202,7 @@ input VideoCreateWithoutCommentInput {
   originDescription: String
   originAuthor: String
   originAuthorId: String
-  originPlatform: String
+  originPlatform: VideoPlatform
   originLanguage: String
   originThumbnailUrl: String
   originThumbnailUrlSd: String
@@ -6228,7 +6228,7 @@ input VideoCreateWithoutVoteInput {
   originDescription: String
   originAuthor: String
   originAuthorId: String
-  originPlatform: String
+  originPlatform: VideoPlatform
   originLanguage: String
   originThumbnailUrl: String
   originThumbnailUrlSd: String
@@ -6299,6 +6299,11 @@ enum VideoOrderByInput {
   isListed_DESC
 }
 
+enum VideoPlatform {
+  YOUTUBE
+  FACEBOOK
+}
+
 type VideoPreviousValues {
   id: ID!
   originId: String!
@@ -6306,7 +6311,7 @@ type VideoPreviousValues {
   originDescription: String
   originAuthor: String
   originAuthorId: String
-  originPlatform: String!
+  originPlatform: VideoPlatform!
   originLanguage: String
   originThumbnailUrl: String
   originThumbnailUrlSd: String
@@ -6571,46 +6576,16 @@ input VideoScalarWhereInput {
 
   """All values not ending with the given string."""
   originAuthorId_not_ends_with: String
-  originPlatform: String
+  originPlatform: VideoPlatform
 
   """All values that are not equal to given value."""
-  originPlatform_not: String
+  originPlatform_not: VideoPlatform
 
   """All values that are contained in given list."""
-  originPlatform_in: [String!]
+  originPlatform_in: [VideoPlatform!]
 
   """All values that are not contained in given list."""
-  originPlatform_not_in: [String!]
-
-  """All values less than the given value."""
-  originPlatform_lt: String
-
-  """All values less than or equal the given value."""
-  originPlatform_lte: String
-
-  """All values greater than the given value."""
-  originPlatform_gt: String
-
-  """All values greater than or equal the given value."""
-  originPlatform_gte: String
-
-  """All values containing the given string."""
-  originPlatform_contains: String
-
-  """All values not containing the given string."""
-  originPlatform_not_contains: String
-
-  """All values starting with the given string."""
-  originPlatform_starts_with: String
-
-  """All values not starting with the given string."""
-  originPlatform_not_starts_with: String
-
-  """All values ending with the given string."""
-  originPlatform_ends_with: String
-
-  """All values not ending with the given string."""
-  originPlatform_not_ends_with: String
+  originPlatform_not_in: [VideoPlatform!]
   originLanguage: String
 
   """All values that are not equal to given value."""
@@ -6966,7 +6941,7 @@ input VideoUpdateInput {
   originDescription: String
   originAuthor: String
   originAuthorId: String
-  originPlatform: String
+  originPlatform: VideoPlatform
   originLanguage: String
   originThumbnailUrl: String
   originThumbnailUrlSd: String
@@ -6992,7 +6967,7 @@ input VideoUpdateManyDataInput {
   originDescription: String
   originAuthor: String
   originAuthorId: String
-  originPlatform: String
+  originPlatform: VideoPlatform
   originLanguage: String
   originThumbnailUrl: String
   originThumbnailUrlSd: String
@@ -7012,7 +6987,7 @@ input VideoUpdateManyMutationInput {
   originDescription: String
   originAuthor: String
   originAuthorId: String
-  originPlatform: String
+  originPlatform: VideoPlatform
   originLanguage: String
   originThumbnailUrl: String
   originThumbnailUrlSd: String
@@ -7081,7 +7056,7 @@ input VideoUpdateWithoutAddedByDataInput {
   originDescription: String
   originAuthor: String
   originAuthorId: String
-  originPlatform: String
+  originPlatform: VideoPlatform
   originLanguage: String
   originThumbnailUrl: String
   originThumbnailUrlSd: String
@@ -7106,7 +7081,7 @@ input VideoUpdateWithoutAudioDataInput {
   originDescription: String
   originAuthor: String
   originAuthorId: String
-  originPlatform: String
+  originPlatform: VideoPlatform
   originLanguage: String
   originThumbnailUrl: String
   originThumbnailUrlSd: String
@@ -7131,7 +7106,7 @@ input VideoUpdateWithoutCaptionDataInput {
   originDescription: String
   originAuthor: String
   originAuthorId: String
-  originPlatform: String
+  originPlatform: VideoPlatform
   originLanguage: String
   originThumbnailUrl: String
   originThumbnailUrlSd: String
@@ -7156,7 +7131,7 @@ input VideoUpdateWithoutCommentDataInput {
   originDescription: String
   originAuthor: String
   originAuthorId: String
-  originPlatform: String
+  originPlatform: VideoPlatform
   originLanguage: String
   originThumbnailUrl: String
   originThumbnailUrlSd: String
@@ -7181,7 +7156,7 @@ input VideoUpdateWithoutVoteDataInput {
   originDescription: String
   originAuthor: String
   originAuthorId: String
-  originPlatform: String
+  originPlatform: VideoPlatform
   originLanguage: String
   originThumbnailUrl: String
   originThumbnailUrlSd: String
@@ -7835,46 +7810,16 @@ input VideoWhereInput {
 
   """All values not ending with the given string."""
   originAuthorId_not_ends_with: String
-  originPlatform: String
+  originPlatform: VideoPlatform
 
   """All values that are not equal to given value."""
-  originPlatform_not: String
+  originPlatform_not: VideoPlatform
 
   """All values that are contained in given list."""
-  originPlatform_in: [String!]
+  originPlatform_in: [VideoPlatform!]
 
   """All values that are not contained in given list."""
-  originPlatform_not_in: [String!]
-
-  """All values less than the given value."""
-  originPlatform_lt: String
-
-  """All values less than or equal the given value."""
-  originPlatform_lte: String
-
-  """All values greater than the given value."""
-  originPlatform_gt: String
-
-  """All values greater than or equal the given value."""
-  originPlatform_gte: String
-
-  """All values containing the given string."""
-  originPlatform_contains: String
-
-  """All values not containing the given string."""
-  originPlatform_not_contains: String
-
-  """All values starting with the given string."""
-  originPlatform_starts_with: String
-
-  """All values not starting with the given string."""
-  originPlatform_not_starts_with: String
-
-  """All values ending with the given string."""
-  originPlatform_ends_with: String
-
-  """All values not ending with the given string."""
-  originPlatform_not_ends_with: String
+  originPlatform_not_in: [VideoPlatform!]
   originLanguage: String
 
   """All values that are not equal to given value."""

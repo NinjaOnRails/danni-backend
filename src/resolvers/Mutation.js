@@ -15,9 +15,11 @@ const getFacebookUser = require('../utils/getFacebookUser');
 const setCookie = require('../utils/cookie');
 
 const mutations = {
-  async createVideo(parent, { source, language }, ctx, info) {
+  async createVideo(parent, { source, language, VideoPlatform }, ctx, info) {
     // Check if user is logged in
     if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
+
+    let originId = '';
 
     // Check if source is YouTube and extract ID from it
     const originId = extractYoutubeId(source);
@@ -166,7 +168,7 @@ const mutations = {
     return audio;
   },
   async deleteAudVid(parent, { id, audioId }, ctx, info) {
-    const {userId} = ctx.request
+    const { userId } = ctx.request;
     if (!userId) throw new Error('Đăng nhập để tiếp tục');
 
     if (audioId) {
@@ -218,9 +220,7 @@ const mutations = {
   },
   async createCaption(
     parent,
-    {
-      data: { languageTag, xml, author, video },
-    },
+    { data: { languageTag, xml, author, video } },
     ctx,
     info
   ) {
@@ -793,9 +793,7 @@ const mutations = {
   },
   async facebookLogin(
     parent,
-    {
-      data: { accessToken, contentLanguage, facebookUserId },
-    },
+    { data: { accessToken, contentLanguage, facebookUserId } },
     ctx,
     info
   ) {
