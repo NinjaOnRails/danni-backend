@@ -55,6 +55,9 @@ const mutations = {
     const query = `{
       id
       type
+      user {
+        id
+      }
     }`;
     const votingVideo = await ctx.db.query.videoVote(
       {
@@ -289,6 +292,130 @@ const mutations = {
     }
 
     return video;
+  },
+
+  async createAudioVote(parent, { audio, type }, ctx, info) {
+    console.log(audio, type);
+    if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
+    const query = `{
+      id
+      type
+      user {
+        id
+      }
+    }`;
+    const votingAudio = await ctx.db.query.audio(
+      {
+        where: { id: audio },
+      },
+      `{
+        vote {
+          id
+          type
+          user { id }
+        }
+      }`
+    );
+    const existingVote =
+      votingAudio.vote.length > 0
+        ? votingAudio.vote.find(vote => vote.user.id === ctx.request.userId)
+        : null;
+    let vote;
+    if (!existingVote) {
+      vote = ctx.db.mutation.createAudioVote(
+        {
+          data: {
+            type,
+            audio: { connect: { id: audio } },
+            user: {
+              connect: {
+                id: ctx.request.userId,
+              },
+            },
+          },
+        },
+        query
+      );
+    } else if (existingVote.type !== type) {
+      ctx.db.mutation.deleteAudioVote(
+        {
+          where: {
+            id: existingVote.id,
+          },
+        },
+        query
+      );
+      vote = ctx.db.mutation.createAudioVote(
+        {
+          data: {
+            type,
+            audio: { connect: { id: audio } },
+            user: {
+              connect: {
+                id: ctx.request.userId,
+              },
+            },
+          },
+        },
+        query
+      );
+    } else if (existingVote.type === type) {
+      vote = ctx.db.mutation.deleteAudioVote(
+        {
+          where: {
+            id: existingVote.id,
+          },
+        },
+        query
+      );
+    }
+    return vote;
+  },
+
+  async updateVideo(parent, { id, source, language }, ctx, info) {
+    if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
+    // Get Video originId
+    let { originId, addedBy } = await ctx.db.query.video(
+      {
+        where: { id },
+      },
+      `{
+        addedBy { id }
+        originId
+      }`
+    );
+
+    if (addedBy.id !== ctx.request.userId)
+      throw new Error('Bạn không có quyền làm điều đó');
+
+    videoCreateInput = {};
+    // New source
+    if (source && source !== originId) {
+      // Check if source is YouTube and extract ID from it
+      originId = extractYoutubeId(source);
+      // Check if new video exists
+      const video = await ctx.db.query.video({
+        where: { originId },
+      });
+      if (video) throw new Error('Video đã có');
+      // Validate other input arguments
+      videoCreateInput = await validateVideoInput(originId, ctx);
+    }
+    // Update video in db
+    const updatedVideo = await ctx.db.mutation.updateVideo(
+      {
+        data: {
+          language,
+          ...videoCreateInput,
+        },
+        where: {
+          id,
+        },
+      },
+      info
+    );
+    if (!updatedVideo) throw new Error('Saving video to db failed');
+    return updatedVideo;
   },
   async createCaption(
     parent,

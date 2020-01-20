@@ -25,6 +25,8 @@ type Query {
     skip: Int
     first: Int
   ): [CommentReply]!
+  audioVotes(where: AudioVoteWhereInput): [AudioVote]!
+  videoVotes(where: VideoVoteWhereInput): [VideoVote]!
   video(where: VideoWhereUniqueInput!): Video
   audio(where: AudioWhereUniqueInput!): Audio
   caption(where: CaptionWhereUniqueInput!): Caption
