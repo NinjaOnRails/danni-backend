@@ -150,12 +150,11 @@ const mutations = {
     if (author.id !== ctx.request.userId)
       throw new Error('Bạn không có quyền làm điều đó');
     const audioCreateInput = await validateAudioInput(data, ctx, id);
-
+    if (data.language) audioCreateInput.language = data.language;
     const audio = await ctx.db.mutation.updateAudio(
       {
         data: {
           ...audioCreateInput,
-          language: data.language,
         },
         where: {
           id,
