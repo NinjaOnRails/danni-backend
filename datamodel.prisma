@@ -15,8 +15,6 @@ type Video {
   originDislikeCount: Int!
   duration: Int!
   language: Language
-  upvoteCount: Int! @default(value: 0)
-  downvoteCount: Int! @default(value: 0)
   vote: [VideoVote]! @relation(name: "VideoVoteToVideo", onDelete: CASCADE)
   addedBy: User @relation(name: "VideoToUser")
   audio: [Audio]! @relation(name: "AudioToVideo", onDelete: CASCADE)

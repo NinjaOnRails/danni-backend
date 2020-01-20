@@ -49,6 +49,81 @@ const mutations = {
     if (!video) throw new Error('Saving video to db failed');
     return video;
   },
+
+  async createVideoVote(parent, { video, type }, ctx, info) {
+    if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
+    const query = `{
+      id
+      type
+    }`;
+    const votingVideo = await ctx.db.query.videoVote(
+      {
+        where: { id: video },
+      },
+      `{
+        vote {
+          id
+          type
+          user { id }
+        }
+      }`
+    );
+    const existingVote =
+      votingVideo.vote.length > 0
+        ? votingVideo.vote.find(vote => vote.user.id === ctx.request.userId)
+        : null;
+    let vote;
+    if (!existingVote) {
+      vote = ctx.db.mutation.createVideoVote(
+        {
+          data: {
+            type,
+            video: { connect: { id: video } },
+            user: {
+              connect: {
+                id: ctx.request.userId,
+              },
+            },
+          },
+        },
+        query
+      );
+    } else if (existingVote.type !== type) {
+      ctx.db.mutation.deleteVideoVote(
+        {
+          where: {
+            id: existingVote.id,
+          },
+        },
+        query
+      );
+      vote = ctx.db.mutation.createVideoVote(
+        {
+          data: {
+            type,
+            video: { connect: { id: video } },
+            user: {
+              connect: {
+                id: ctx.request.userId,
+              },
+            },
+          },
+        },
+        query
+      );
+    } else if (existingVote.type === type) {
+      vote = ctx.db.mutation.deleteVideoVote(
+        {
+          where: {
+            id: existingVote.id,
+          },
+        },
+        query
+      );
+    }
+    return vote;
+  },
+
   async updateVideo(parent, { id, source, language }, ctx, info) {
     if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
     // Get Video originId
