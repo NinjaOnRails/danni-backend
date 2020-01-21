@@ -34,4 +34,19 @@ module.exports = {
       timestamp,
     };
   },
+  cusThumbnailSign: (userId, youtubeId) => {
+    const params_to_sign = {
+      public_id: `thumbnail-${userId}-${youtubeId}`,
+      tags: `${userId},${youtubeId},${timestamp},custom-thumbnail,custom,thumbnail,audio-thumbnail,picture,image`,
+      timestamp,
+      upload_preset: process.env.CLOUDINARY_UPLOAD_PRESET_CUSTOM_THUMBNAIL,
+    };
+    return {
+      signature: cloudinary.utils.api_sign_request(
+        params_to_sign,
+        process.env.CLOUDINARY_API_SECRET
+      ),
+      timestamp,
+    };
+  },
 };

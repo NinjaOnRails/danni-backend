@@ -121,7 +121,7 @@ const Query = {
   },
   cloudinaryAuthAvatar(
     parent,
-    { source, language },
+    args,
     {
       request: { userId },
     },
@@ -131,6 +131,24 @@ const Query = {
     if (!userId) throw new Error('Bạn chưa đăng nhập');
 
     const { signature, timestamp } = cloudinary.avatarSign(userId);
+
+    return {
+      signature,
+      timestamp,
+    };
+  },
+  cloudinaryAuthCusThumbnail(
+    parent,
+    { youtubeId },
+    {
+      request: { userId },
+    },
+    info
+  ) {
+    // Check if there is current user ID
+    if (!userId) throw new Error('Bạn chưa đăng nhập');
+
+    const { signature, timestamp } = cloudinary.cusThumbnailSign(userId, youtubeId);
 
     return {
       signature,

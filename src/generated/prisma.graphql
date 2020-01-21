@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/danni/dev/dev
-# timestamp: Thu Nov 21 2019 17:53:33 GMT+0100 (Central European Standard Time)
+# timestamp: Mon Jan 20 2020 19:05:20 GMT+0100 (Central European Standard Time)
 
 type AggregateAudio {
   count: Int!
@@ -49,6 +49,7 @@ type Audio implements Node {
   id: ID!
   source: String!
   language: Language
+  customThumbnail: String
   title: String!
   description: String
   duration: Int!
@@ -81,6 +82,7 @@ input AudioCreateInput {
   id: ID
   source: String!
   language: Language
+  customThumbnail: String
   title: String!
   description: String
   duration: Int!
@@ -131,6 +133,7 @@ input AudioCreateWithoutAuthorInput {
   id: ID
   source: String!
   language: Language
+  customThumbnail: String
   title: String!
   description: String
   duration: Int!
@@ -150,6 +153,7 @@ input AudioCreateWithoutCaptionInput {
   id: ID
   source: String!
   language: Language
+  customThumbnail: String
   title: String!
   description: String
   duration: Int!
@@ -169,6 +173,7 @@ input AudioCreateWithoutCommentInput {
   id: ID
   source: String!
   language: Language
+  customThumbnail: String
   title: String!
   description: String
   duration: Int!
@@ -188,6 +193,7 @@ input AudioCreateWithoutTagsInput {
   id: ID
   source: String!
   language: Language
+  customThumbnail: String
   title: String!
   description: String
   duration: Int!
@@ -207,6 +213,7 @@ input AudioCreateWithoutVideoInput {
   id: ID
   source: String!
   language: Language
+  customThumbnail: String
   title: String!
   description: String
   duration: Int!
@@ -226,6 +233,7 @@ input AudioCreateWithoutVoteInput {
   id: ID
   source: String!
   language: Language
+  customThumbnail: String
   title: String!
   description: String
   duration: Int!
@@ -257,6 +265,8 @@ enum AudioOrderByInput {
   source_DESC
   language_ASC
   language_DESC
+  customThumbnail_ASC
+  customThumbnail_DESC
   title_ASC
   title_DESC
   description_ASC
@@ -283,6 +293,7 @@ type AudioPreviousValues {
   id: ID!
   source: String!
   language: Language
+  customThumbnail: String
   title: String!
   description: String
   duration: Int!
@@ -394,6 +405,46 @@ input AudioScalarWhereInput {
 
   """All values that are not contained in given list."""
   language_not_in: [Language!]
+  customThumbnail: String
+
+  """All values that are not equal to given value."""
+  customThumbnail_not: String
+
+  """All values that are contained in given list."""
+  customThumbnail_in: [String!]
+
+  """All values that are not contained in given list."""
+  customThumbnail_not_in: [String!]
+
+  """All values less than the given value."""
+  customThumbnail_lt: String
+
+  """All values less than or equal the given value."""
+  customThumbnail_lte: String
+
+  """All values greater than the given value."""
+  customThumbnail_gt: String
+
+  """All values greater than or equal the given value."""
+  customThumbnail_gte: String
+
+  """All values containing the given string."""
+  customThumbnail_contains: String
+
+  """All values not containing the given string."""
+  customThumbnail_not_contains: String
+
+  """All values starting with the given string."""
+  customThumbnail_starts_with: String
+
+  """All values not starting with the given string."""
+  customThumbnail_not_starts_with: String
+
+  """All values ending with the given string."""
+  customThumbnail_ends_with: String
+
+  """All values not ending with the given string."""
+  customThumbnail_not_ends_with: String
   title: String
 
   """All values that are not equal to given value."""
@@ -674,6 +725,7 @@ input AudioSubscriptionWhereInput {
 input AudioUpdateInput {
   source: String
   language: Language
+  customThumbnail: String
   title: String
   description: String
   duration: Int
@@ -693,6 +745,7 @@ input AudioUpdateInput {
 input AudioUpdateManyDataInput {
   source: String
   language: Language
+  customThumbnail: String
   title: String
   description: String
   duration: Int
@@ -706,6 +759,7 @@ input AudioUpdateManyDataInput {
 input AudioUpdateManyMutationInput {
   source: String
   language: Language
+  customThumbnail: String
   title: String
   description: String
   duration: Int
@@ -788,6 +842,7 @@ input AudioUpdateOneWithoutCommentInput {
 input AudioUpdateWithoutAuthorDataInput {
   source: String
   language: Language
+  customThumbnail: String
   title: String
   description: String
   duration: Int
@@ -806,6 +861,7 @@ input AudioUpdateWithoutAuthorDataInput {
 input AudioUpdateWithoutCaptionDataInput {
   source: String
   language: Language
+  customThumbnail: String
   title: String
   description: String
   duration: Int
@@ -824,6 +880,7 @@ input AudioUpdateWithoutCaptionDataInput {
 input AudioUpdateWithoutCommentDataInput {
   source: String
   language: Language
+  customThumbnail: String
   title: String
   description: String
   duration: Int
@@ -842,6 +899,7 @@ input AudioUpdateWithoutCommentDataInput {
 input AudioUpdateWithoutTagsDataInput {
   source: String
   language: Language
+  customThumbnail: String
   title: String
   description: String
   duration: Int
@@ -860,6 +918,7 @@ input AudioUpdateWithoutTagsDataInput {
 input AudioUpdateWithoutVideoDataInput {
   source: String
   language: Language
+  customThumbnail: String
   title: String
   description: String
   duration: Int
@@ -878,6 +937,7 @@ input AudioUpdateWithoutVideoDataInput {
 input AudioUpdateWithoutVoteDataInput {
   source: String
   language: Language
+  customThumbnail: String
   title: String
   description: String
   duration: Int
@@ -1401,6 +1461,46 @@ input AudioWhereInput {
 
   """All values that are not contained in given list."""
   language_not_in: [Language!]
+  customThumbnail: String
+
+  """All values that are not equal to given value."""
+  customThumbnail_not: String
+
+  """All values that are contained in given list."""
+  customThumbnail_in: [String!]
+
+  """All values that are not contained in given list."""
+  customThumbnail_not_in: [String!]
+
+  """All values less than the given value."""
+  customThumbnail_lt: String
+
+  """All values less than or equal the given value."""
+  customThumbnail_lte: String
+
+  """All values greater than the given value."""
+  customThumbnail_gt: String
+
+  """All values greater than or equal the given value."""
+  customThumbnail_gte: String
+
+  """All values containing the given string."""
+  customThumbnail_contains: String
+
+  """All values not containing the given string."""
+  customThumbnail_not_contains: String
+
+  """All values starting with the given string."""
+  customThumbnail_starts_with: String
+
+  """All values not starting with the given string."""
+  customThumbnail_not_starts_with: String
+
+  """All values ending with the given string."""
+  customThumbnail_ends_with: String
+
+  """All values not ending with the given string."""
+  customThumbnail_not_ends_with: String
   title: String
 
   """All values that are not equal to given value."""

@@ -39,6 +39,7 @@ type Audio {
   id: ID! @id
   source: String! @unique
   language: Language
+  customThumbnail: String
   title: String!
   description: String
   duration: Int!

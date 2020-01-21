@@ -40,6 +40,7 @@ type Query {
   currentUser: User
   cloudinaryAuthAudio(source: String!, language: Language): CloudinarySignature
   cloudinaryAuthAvatar: CloudinarySignature
+  cloudinaryAuthCusThumbnail(youtubeId: String!): CloudinarySignature
   user(id: ID!): PublicProfile
 }
 
@@ -48,6 +49,7 @@ type Mutation {
     source: String!
     language: Language
     VideoPlatform: VideoPlatform
+    withAudio: Boolean
   ): Video!
   updateVideo(id: ID!, source: String, language: Language): Video!
   deleteAudVid(id: ID!, audioId: ID): Video
@@ -134,6 +136,7 @@ input SignupInput {
 
 input CreateAudioInput {
   source: String!
+  customThumbnail: String
   language: Language!
   title: String!
   description: String

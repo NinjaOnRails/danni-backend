@@ -19,8 +19,6 @@ const mutations = {
     // Check if user is logged in
     if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
 
-    let originId = '';
-
     // Check if source is YouTube and extract ID from it
     const originId = extractYoutubeId(source);
 
