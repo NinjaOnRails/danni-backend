@@ -118,6 +118,7 @@ input UpdateAudioInput {
   tags: String
   duration: Int
   defaultVolume: Int
+  customThumbnail: String
 }
 
 input FacebookLoginInput {

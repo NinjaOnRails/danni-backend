@@ -73,6 +73,7 @@ const Query = {
         audio {
           id
           title
+          customThumbnail
           video {
             id
           originTitle
@@ -100,9 +101,7 @@ const Query = {
   cloudinaryAuthAudio(
     parent,
     { source, language },
-    {
-      request: { userId },
-    },
+    { request: { userId } },
     info
   ) {
     // Check if there is current user ID
@@ -119,14 +118,7 @@ const Query = {
       timestamp,
     };
   },
-  cloudinaryAuthAvatar(
-    parent,
-    args,
-    {
-      request: { userId },
-    },
-    info
-  ) {
+  cloudinaryAuthAvatar(parent, args, { request: { userId } }, info) {
     // Check if there is current user ID
     if (!userId) throw new Error('Bạn chưa đăng nhập');
 
@@ -140,15 +132,16 @@ const Query = {
   cloudinaryAuthCusThumbnail(
     parent,
     { youtubeId },
-    {
-      request: { userId },
-    },
+    { request: { userId } },
     info
   ) {
     // Check if there is current user ID
     if (!userId) throw new Error('Bạn chưa đăng nhập');
 
-    const { signature, timestamp } = cloudinary.cusThumbnailSign(userId, youtubeId);
+    const { signature, timestamp } = cloudinary.cusThumbnailSign(
+      userId,
+      youtubeId
+    );
 
     return {
       signature,
