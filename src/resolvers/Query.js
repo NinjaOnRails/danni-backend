@@ -12,6 +12,8 @@ const Query = {
   comments: forwardTo('db'),
   commentReply: forwardTo('db'),
   commentReplies: forwardTo('db'),
+  videoVotes: forwardTo('db'),
+  audioVotes: forwardTo('db'),
   currentUser(parent, args, ctx, info) {
     // Check if there is current user ID
     if (!ctx.request.userId) return null;

@@ -25,6 +25,8 @@ type Query {
     skip: Int
     first: Int
   ): [CommentReply]!
+  audioVotes(where: AudioVoteWhereInput): [AudioVote]!
+  videoVotes(where: VideoVoteWhereInput): [VideoVote]!
   video(where: VideoWhereUniqueInput!): Video
   audio(where: AudioWhereUniqueInput!): Audio
   caption(where: CaptionWhereUniqueInput!): Caption
@@ -52,6 +54,8 @@ type Mutation {
     withAudio: Boolean
   ): Video!
   updateVideo(id: ID!, source: String, language: Language): Video!
+  createAudioVote(audio: ID!, type: VoteType!): AudioVote!
+  createVideoVote(video: ID!, type: VoteType!): VideoVote!
   deleteAudVid(id: ID!, audioId: ID): Video
   createAudio(data: CreateAudioInput!): Audio!
   updateAudio(id: ID!, data: UpdateAudioInput): Audio!
