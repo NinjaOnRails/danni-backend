@@ -295,7 +295,6 @@ const mutations = {
   },
 
   async createAudioVote(parent, { audio, type }, ctx, info) {
-    console.log(audio, type);
     if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
     const query = `{
       id
