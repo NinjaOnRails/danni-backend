@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/danni/dev/dev
-# timestamp: Mon Jan 20 2020 19:05:20 GMT+0100 (Central European Standard Time)
+# timestamp: Wed Jan 22 2020 19:00:03 GMT+0100 (Central European Standard Time)
 
 type AggregateAudio {
   count: Int!
@@ -6143,8 +6143,6 @@ type Video implements Node {
   originDislikeCount: Int!
   duration: Int!
   language: Language
-  upvoteCount: Int!
-  downvoteCount: Int!
   vote(where: VideoVoteWhereInput, orderBy: VideoVoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [VideoVote!]
   addedBy: User
   audio(where: AudioWhereInput, orderBy: AudioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Audio!]
@@ -6181,8 +6179,6 @@ input VideoCreateInput {
   originDislikeCount: Int!
   duration: Int!
   language: Language
-  upvoteCount: Int
-  downvoteCount: Int
   isListed: Boolean
   originTags: TagCreateManyInput
   vote: VideoVoteCreateManyWithoutVideoInput
@@ -6233,8 +6229,6 @@ input VideoCreateWithoutAddedByInput {
   originDislikeCount: Int!
   duration: Int!
   language: Language
-  upvoteCount: Int
-  downvoteCount: Int
   isListed: Boolean
   originTags: TagCreateManyInput
   vote: VideoVoteCreateManyWithoutVideoInput
@@ -6259,8 +6253,6 @@ input VideoCreateWithoutAudioInput {
   originDislikeCount: Int!
   duration: Int!
   language: Language
-  upvoteCount: Int
-  downvoteCount: Int
   isListed: Boolean
   originTags: TagCreateManyInput
   vote: VideoVoteCreateManyWithoutVideoInput
@@ -6285,8 +6277,6 @@ input VideoCreateWithoutCaptionInput {
   originDislikeCount: Int!
   duration: Int!
   language: Language
-  upvoteCount: Int
-  downvoteCount: Int
   isListed: Boolean
   originTags: TagCreateManyInput
   vote: VideoVoteCreateManyWithoutVideoInput
@@ -6311,8 +6301,6 @@ input VideoCreateWithoutCommentInput {
   originDislikeCount: Int!
   duration: Int!
   language: Language
-  upvoteCount: Int
-  downvoteCount: Int
   isListed: Boolean
   originTags: TagCreateManyInput
   vote: VideoVoteCreateManyWithoutVideoInput
@@ -6337,8 +6325,6 @@ input VideoCreateWithoutVoteInput {
   originDislikeCount: Int!
   duration: Int!
   language: Language
-  upvoteCount: Int
-  downvoteCount: Int
   isListed: Boolean
   originTags: TagCreateManyInput
   addedBy: UserCreateOneWithoutVideoInput
@@ -6387,10 +6373,6 @@ enum VideoOrderByInput {
   duration_DESC
   language_ASC
   language_DESC
-  upvoteCount_ASC
-  upvoteCount_DESC
-  downvoteCount_ASC
-  downvoteCount_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -6420,8 +6402,6 @@ type VideoPreviousValues {
   originDislikeCount: Int!
   duration: Int!
   language: Language
-  upvoteCount: Int!
-  downvoteCount: Int!
   createdAt: DateTime!
   updatedAt: DateTime!
   isListed: Boolean
@@ -6904,50 +6884,6 @@ input VideoScalarWhereInput {
 
   """All values that are not contained in given list."""
   language_not_in: [Language!]
-  upvoteCount: Int
-
-  """All values that are not equal to given value."""
-  upvoteCount_not: Int
-
-  """All values that are contained in given list."""
-  upvoteCount_in: [Int!]
-
-  """All values that are not contained in given list."""
-  upvoteCount_not_in: [Int!]
-
-  """All values less than the given value."""
-  upvoteCount_lt: Int
-
-  """All values less than or equal the given value."""
-  upvoteCount_lte: Int
-
-  """All values greater than the given value."""
-  upvoteCount_gt: Int
-
-  """All values greater than or equal the given value."""
-  upvoteCount_gte: Int
-  downvoteCount: Int
-
-  """All values that are not equal to given value."""
-  downvoteCount_not: Int
-
-  """All values that are contained in given list."""
-  downvoteCount_in: [Int!]
-
-  """All values that are not contained in given list."""
-  downvoteCount_not_in: [Int!]
-
-  """All values less than the given value."""
-  downvoteCount_lt: Int
-
-  """All values less than or equal the given value."""
-  downvoteCount_lte: Int
-
-  """All values greater than the given value."""
-  downvoteCount_gt: Int
-
-  """All values greater than or equal the given value."""
-  downvoteCount_gte: Int
   createdAt: DateTime
 
   """All values that are not equal to given value."""
@@ -7050,8 +6986,6 @@ input VideoUpdateInput {
   originDislikeCount: Int
   duration: Int
   language: Language
-  upvoteCount: Int
-  downvoteCount: Int
   isListed: Boolean
   originTags: TagUpdateManyInput
   vote: VideoVoteUpdateManyWithoutVideoInput
@@ -7076,8 +7010,6 @@ input VideoUpdateManyDataInput {
   originDislikeCount: Int
   duration: Int
   language: Language
-  upvoteCount: Int
-  downvoteCount: Int
   isListed: Boolean
 }
 
@@ -7096,8 +7028,6 @@ input VideoUpdateManyMutationInput {
   originDislikeCount: Int
   duration: Int
   language: Language
-  upvoteCount: Int
-  downvoteCount: Int
   isListed: Boolean
 }
 
@@ -7165,8 +7095,6 @@ input VideoUpdateWithoutAddedByDataInput {
   originDislikeCount: Int
   duration: Int
   language: Language
-  upvoteCount: Int
-  downvoteCount: Int
   isListed: Boolean
   originTags: TagUpdateManyInput
   vote: VideoVoteUpdateManyWithoutVideoInput
@@ -7190,8 +7118,6 @@ input VideoUpdateWithoutAudioDataInput {
   originDislikeCount: Int
   duration: Int
   language: Language
-  upvoteCount: Int
-  downvoteCount: Int
   isListed: Boolean
   originTags: TagUpdateManyInput
   vote: VideoVoteUpdateManyWithoutVideoInput
@@ -7215,8 +7141,6 @@ input VideoUpdateWithoutCaptionDataInput {
   originDislikeCount: Int
   duration: Int
   language: Language
-  upvoteCount: Int
-  downvoteCount: Int
   isListed: Boolean
   originTags: TagUpdateManyInput
   vote: VideoVoteUpdateManyWithoutVideoInput
@@ -7240,8 +7164,6 @@ input VideoUpdateWithoutCommentDataInput {
   originDislikeCount: Int
   duration: Int
   language: Language
-  upvoteCount: Int
-  downvoteCount: Int
   isListed: Boolean
   originTags: TagUpdateManyInput
   vote: VideoVoteUpdateManyWithoutVideoInput
@@ -7265,8 +7187,6 @@ input VideoUpdateWithoutVoteDataInput {
   originDislikeCount: Int
   duration: Int
   language: Language
-  upvoteCount: Int
-  downvoteCount: Int
   isListed: Boolean
   originTags: TagUpdateManyInput
   addedBy: UserUpdateOneWithoutVideoInput
@@ -8138,50 +8058,6 @@ input VideoWhereInput {
 
   """All values that are not contained in given list."""
   language_not_in: [Language!]
-  upvoteCount: Int
-
-  """All values that are not equal to given value."""
-  upvoteCount_not: Int
-
-  """All values that are contained in given list."""
-  upvoteCount_in: [Int!]
-
-  """All values that are not contained in given list."""
-  upvoteCount_not_in: [Int!]
-
-  """All values less than the given value."""
-  upvoteCount_lt: Int
-
-  """All values less than or equal the given value."""
-  upvoteCount_lte: Int
-
-  """All values greater than the given value."""
-  upvoteCount_gt: Int
-
-  """All values greater than or equal the given value."""
-  upvoteCount_gte: Int
-  downvoteCount: Int
-
-  """All values that are not equal to given value."""
-  downvoteCount_not: Int
-
-  """All values that are contained in given list."""
-  downvoteCount_in: [Int!]
-
-  """All values that are not contained in given list."""
-  downvoteCount_not_in: [Int!]
-
-  """All values less than the given value."""
-  downvoteCount_lt: Int
-
-  """All values less than or equal the given value."""
-  downvoteCount_lte: Int
-
-  """All values greater than the given value."""
-  downvoteCount_gt: Int
-
-  """All values greater than or equal the given value."""
-  downvoteCount_gte: Int
   createdAt: DateTime
 
   """All values that are not equal to given value."""
