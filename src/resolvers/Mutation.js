@@ -59,23 +59,25 @@ const mutations = {
         id
       }
     }`;
-    const votingVideo = await ctx.db.query.videoVote(
+
+    const votingVideo = await ctx.db.query.videoVotes(
       {
         where: { id: video },
       },
       `{
-        vote {
-          id
-          type
-          user { id }
-        }
+        id
+        type
+        user { id }
       }`
     );
+
     const existingVote =
-      votingVideo.vote.length > 0
-        ? votingVideo.vote.find(vote => vote.user.id === ctx.request.userId)
+      votingVideo.length > 0
+        ? votingVideo.find(vote => vote.user.id === ctx.request.userId)
         : null;
+
     let vote;
+
     if (!existingVote) {
       vote = ctx.db.mutation.createVideoVote(
         {
@@ -124,6 +126,7 @@ const mutations = {
         query
       );
     }
+
     return vote;
   },
 
