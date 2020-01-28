@@ -133,7 +133,7 @@ const Query = {
   },
   cloudinaryAuthCusThumbnail(
     parent,
-    { youtubeId },
+    { youtubeId, language },
     { request: { userId } },
     info
   ) {
@@ -142,7 +142,8 @@ const Query = {
 
     const { signature, timestamp } = cloudinary.cusThumbnailSign(
       userId,
-      youtubeId
+      youtubeId,
+      language
     );
 
     return {
