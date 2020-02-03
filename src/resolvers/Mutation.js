@@ -72,12 +72,11 @@ const mutations = {
     );
 
     const existingVote =
-      votingVideo.length > 0
+      votingVideo.vote.length > 0
         ? votingVideo.find(vote => vote.user.id === ctx.request.userId)
         : null;
 
     let vote;
-
     if (!existingVote) {
       vote = ctx.db.mutation.createVideoVote(
         {
@@ -421,7 +420,9 @@ const mutations = {
   },
   async createCaption(
     parent,
-    { data: { languageTag, xml, author, video } },
+    {
+      data: { languageTag, xml, author, video },
+    },
     ctx,
     info
   ) {
@@ -994,7 +995,9 @@ const mutations = {
   },
   async facebookLogin(
     parent,
-    { data: { accessToken, contentLanguage, facebookUserId } },
+    {
+      data: { accessToken, contentLanguage, facebookUserId },
+    },
     ctx,
     info
   ) {
