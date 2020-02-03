@@ -60,24 +60,24 @@ const mutations = {
       }
     }`;
 
-    const votingVideo = await ctx.db.query.videoVotes(
+    const votingVideo = await ctx.db.query.video(
       {
         where: { id: video },
       },
       `{
-        id
-        type
-        user { id }
+        vote{
+          id
+          type
+          user { id }
+        }
+      
       }`
     );
-
     const existingVote =
-      votingVideo.length > 0
-        ? votingVideo.find(vote => vote.user.id === ctx.request.userId)
+      votingVideo.vote.length > 0
+        ? votingVideo.vote.find(vote => vote.user.id === ctx.request.userId)
         : null;
-
     let vote;
-
     if (!existingVote) {
       vote = ctx.db.mutation.createVideoVote(
         {
@@ -421,7 +421,9 @@ const mutations = {
   },
   async createCaption(
     parent,
-    { data: { languageTag, xml, author, video } },
+    {
+      data: { languageTag, xml, author, video },
+    },
     ctx,
     info
   ) {
@@ -994,7 +996,9 @@ const mutations = {
   },
   async facebookLogin(
     parent,
-    { data: { accessToken, contentLanguage, facebookUserId } },
+    {
+      data: { accessToken, contentLanguage, facebookUserId },
+    },
     ctx,
     info
   ) {
