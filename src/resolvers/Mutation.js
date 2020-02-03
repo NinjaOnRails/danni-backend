@@ -1051,6 +1051,7 @@ const mutations = {
             facebookPicture: picture ? picture.data.url : null,
             avatar,
           },
+          where: { facebookUserId: id },
         },
         `{
         id
