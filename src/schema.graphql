@@ -42,7 +42,10 @@ type Query {
   currentUser: User
   cloudinaryAuthAudio(source: String!, language: Language): CloudinarySignature
   cloudinaryAuthAvatar: CloudinarySignature
-  cloudinaryAuthCusThumbnail(youtubeId: String!): CloudinarySignature
+  cloudinaryAuthCusThumbnail(
+    youtubeId: String!
+    language: Language!
+  ): CloudinarySignature
   user(id: ID!): PublicProfile
 }
 

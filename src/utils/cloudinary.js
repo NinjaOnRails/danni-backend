@@ -34,10 +34,10 @@ module.exports = {
       timestamp,
     };
   },
-  cusThumbnailSign: (userId, youtubeId) => {
+  cusThumbnailSign: (userId, youtubeId, language) => {
     const params_to_sign = {
-      public_id: `thumbnail-${userId}-${youtubeId}`,
-      tags: `${userId},${youtubeId},${timestamp},custom-thumbnail,custom,thumbnail,audio-thumbnail,picture,image`,
+      public_id: `thumbnail-${userId}-${youtubeId}-${language}`,
+      tags: `${userId},${youtubeId},${language},${timestamp},custom-thumbnail,custom,thumbnail,audio-thumbnail,picture,image`,
       timestamp,
       upload_preset: process.env.CLOUDINARY_UPLOAD_PRESET_CUSTOM_THUMBNAIL,
     };
