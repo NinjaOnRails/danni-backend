@@ -421,9 +421,7 @@ const mutations = {
   },
   async createCaption(
     parent,
-    {
-      data: { languageTag, xml, author, video },
-    },
+    { data: { languageTag, xml, author, video } },
     ctx,
     info
   ) {
@@ -996,9 +994,7 @@ const mutations = {
   },
   async facebookLogin(
     parent,
-    {
-      data: { accessToken, contentLanguage, facebookUserId },
-    },
+    { data: { accessToken, contentLanguage, facebookUserId } },
     ctx,
     info
   ) {
@@ -1015,6 +1011,7 @@ const mutations = {
       `{
         id
         displayName
+        avatar
       }`
     );
 
@@ -1038,7 +1035,29 @@ const mutations = {
         `{
           id
           displayName
+          avatar
         }`
+      );
+    } else {
+      const avatar =
+        user.avatar.startsWith(
+          'https://platform-lookaside.fbsbx.com/platform/profilepic/?asid='
+        ) && picture
+          ? picture.data.url
+          : user.avatar;
+      user = await ctx.db.mutation.updateUser(
+        {
+          data: {
+            facebookPicture: picture ? picture.data.url : null,
+            avatar,
+          },
+          where: { facebookUserId: id },
+        },
+        `{
+        id
+        displayName
+        avatar
+      }`
       );
     }
 
