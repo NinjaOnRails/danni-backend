@@ -45,6 +45,8 @@ module.exports = async (originId, ctx, id = undefined) => {
     originThumbnailUrlSd: thumbnails.standard ? thumbnails.standard.url : '',
   };
 
+  return videoCreateInput;
+
   // tags validation
   if (tags && tags.length) {
     // Divide tags into new and old
@@ -68,6 +70,4 @@ module.exports = async (originId, ctx, id = undefined) => {
       videoCreateInput.originTags.connect = [...tagsConnect];
     if (tagsCreate.length) videoCreateInput.originTags.create = [...tagsCreate];
   }
-
-  return videoCreateInput;
 };
