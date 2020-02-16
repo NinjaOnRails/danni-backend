@@ -131,9 +131,6 @@ const mutations = {
   },
 
   async updateVideo(parent, { id, source, language }, ctx, info) {
-    console.log('adsaddsds');
-    console.log(id, source, language);
-
     if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
     // Get Video originId
     let { originId, addedBy } = await ctx.db.query.video(
@@ -177,9 +174,6 @@ const mutations = {
       info
     );
     if (!updatedVideo) throw new Error('Saving video to db failed');
-    console.log(videoCreateInput);
-    console.log(id, source, language);
-
     return updatedVideo;
   },
   async createAudio(parent, { data }, ctx, info) {
