@@ -1,5 +1,14 @@
 module.exports = async (
-  { source, customThumbnail, title, description, startAt, tags, defaultVolume, duration },
+  {
+    source,
+    customThumbnail,
+    title,
+    description,
+    startAt,
+    tags,
+    defaultVolume,
+    duration,
+  },
   ctx,
   id = undefined
 ) => {

@@ -157,6 +157,7 @@ const mutations = {
       });
       if (video) throw new Error('Video đã có');
       // Validate other input arguments
+
       videoCreateInput = await validateVideoInput(originId, ctx);
     }
     // Update video in db
@@ -293,7 +294,6 @@ const mutations = {
         },
       });
     }
-
     return video;
   },
 
@@ -389,8 +389,7 @@ const mutations = {
 
     if (addedBy.id !== ctx.request.userId)
       throw new Error('Bạn không có quyền làm điều đó');
-
-    videoCreateInput = {};
+    let videoCreateInput = {};
     // New source
     if (source && source !== originId) {
       // Check if source is YouTube and extract ID from it
@@ -404,10 +403,10 @@ const mutations = {
       videoCreateInput = await validateVideoInput(originId, ctx);
     }
     // Update video in db
+    if (language) videoCreateInput.language = language;
     const updatedVideo = await ctx.db.mutation.updateVideo(
       {
         data: {
-          language,
           ...videoCreateInput,
         },
         where: {
@@ -421,7 +420,9 @@ const mutations = {
   },
   async createCaption(
     parent,
-    { data: { languageTag, xml, author, video } },
+    {
+      data: { languageTag, xml, author, video },
+    },
     ctx,
     info
   ) {
@@ -994,7 +995,9 @@ const mutations = {
   },
   async facebookLogin(
     parent,
-    { data: { accessToken, contentLanguage, facebookUserId } },
+    {
+      data: { accessToken, contentLanguage, facebookUserId },
+    },
     ctx,
     info
   ) {
