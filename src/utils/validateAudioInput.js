@@ -1,11 +1,20 @@
 module.exports = async (
-  { source, customThumbnail, title, description, startAt, tags, defaultVolume, duration },
+  {
+    source,
+    customThumbnail,
+    title,
+    description,
+    startAt,
+    tags,
+    defaultVolume,
+    duration,
+  },
   ctx,
   id = undefined
 ) => {
   // Prepare mutation input arguments
   const audioCreateInput = {
-    source: source ? source.trim() : undefined,
+    source,
     customThumbnail,
     title: title ? title.trim().substring(0, 99) : undefined,
     description: description
