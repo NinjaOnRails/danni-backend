@@ -107,7 +107,7 @@ const Query = {
     info
   ) {
     // Check if there is current user ID
-    if (!userId) throw new Error('Bạn chưa đăng nhập');
+    if (!userId) throw new Error('Please log in to continue');
 
     const { signature, timestamp } = cloudinary.audioSign(
       source,
@@ -122,7 +122,7 @@ const Query = {
   },
   cloudinaryAuthAvatar(parent, args, { request: { userId } }, info) {
     // Check if there is current user ID
-    if (!userId) throw new Error('Bạn chưa đăng nhập');
+    if (!userId) throw new Error('Please log in to continue');
 
     const { signature, timestamp } = cloudinary.avatarSign(userId);
 
@@ -138,7 +138,7 @@ const Query = {
     info
   ) {
     // Check if there is current user ID
-    if (!userId) throw new Error('Bạn chưa đăng nhập');
+    if (!userId) throw new Error('Please log in to continue');
 
     const { signature, timestamp } = cloudinary.cusThumbnailSign(
       userId,

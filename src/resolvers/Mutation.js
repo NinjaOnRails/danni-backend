@@ -17,7 +17,7 @@ const setCookie = require('../utils/cookie');
 const mutations = {
   async createVideo(parent, { source, language, VideoPlatform }, ctx, info) {
     // Check if user is logged in
-    if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
+    if (!ctx.request.userId) throw new Error('Please log in to continue');
 
     // Check if source is YouTube and extract ID from it
     const originId = extractYoutubeId(source);
@@ -51,7 +51,7 @@ const mutations = {
   },
 
   async createVideoVote(parent, { video, type }, ctx, info) {
-    if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
+    if (!ctx.request.userId) throw new Error('Please log in to continue');
     const query = `{
       id
       type
@@ -131,7 +131,7 @@ const mutations = {
   },
 
   async updateVideo(parent, { id, source, language }, ctx, info) {
-    if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
+    if (!ctx.request.userId) throw new Error('Please log in to continue');
     // Get Video originId
     let { originId, addedBy } = await ctx.db.query.video(
       {
@@ -144,7 +144,7 @@ const mutations = {
     );
 
     if (addedBy.id !== ctx.request.userId)
-      throw new Error('Bạn không có quyền làm điều đó');
+      throw new Error('You do not have permission to do that');
 
     videoCreateInput = {};
     // New source
@@ -155,7 +155,7 @@ const mutations = {
       const video = await ctx.db.query.video({
         where: { originId },
       });
-      if (video) throw new Error('Video đã có');
+      if (video) throw new Error('This video has already been added');
       // Validate other input arguments
 
       videoCreateInput = await validateVideoInput(originId, ctx);
@@ -178,7 +178,7 @@ const mutations = {
   },
   async createAudio(parent, { data }, ctx, info) {
     // Check if user is logged in
-    if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
+    if (!ctx.request.userId) throw new Error('Please log in to continue');
     // Check if user already added Audio to this Video in the same language
     const audios = await ctx.db.query.audios({
       where: {
@@ -191,7 +191,7 @@ const mutations = {
     });
     if (audios.length)
       throw new Error(
-        'Mỗi người được đăng 1 audio cho mỗi video trong mỗi ngôn ngữ'
+        'You can only add one audio per video per language'
       );
 
     // Validate other input argumentsma
@@ -218,7 +218,7 @@ const mutations = {
     );
   },
   async updateAudio(parent, { id, data }, ctx, info) {
-    if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
+    if (!ctx.request.userId) throw new Error('Please log in to continue');
     // Get Video originId
     const { author } = await ctx.db.query.audio(
       {
@@ -228,7 +228,7 @@ const mutations = {
     );
 
     if (author.id !== ctx.request.userId)
-      throw new Error('Bạn không có quyền làm điều đó');
+      throw new Error('You do not have permission to do that');
     const audioCreateInput = await validateAudioInput(data, ctx, id);
     if (data.language) audioCreateInput.language = data.language;
     const audio = await ctx.db.mutation.updateAudio(
@@ -248,7 +248,7 @@ const mutations = {
   },
   async deleteAudVid(parent, { id, audioId }, ctx, info) {
     const { userId } = ctx.request;
-    if (!userId) throw new Error('Đăng nhập để tiếp tục');
+    if (!userId) throw new Error('Please log in to continue');
 
     if (audioId) {
       // Get Audio author
@@ -260,7 +260,7 @@ const mutations = {
       );
 
       if (author.id !== userId)
-        throw new Error('Bạn không có quyền làm điều đó');
+        throw new Error('You do not have permission to do that');
 
       await ctx.db.mutation.deleteAudio(
         {
@@ -298,7 +298,7 @@ const mutations = {
   },
 
   async createAudioVote(parent, { audio, type }, ctx, info) {
-    if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
+    if (!ctx.request.userId) throw new Error('Please log in to continue');
     const query = `{
       id
       type
@@ -375,7 +375,7 @@ const mutations = {
   },
 
   async updateVideo(parent, { id, source, language }, ctx, info) {
-    if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
+    if (!ctx.request.userId) throw new Error('Please log in to continue');
     // Get Video originId
     let { originId, addedBy } = await ctx.db.query.video(
       {
@@ -388,7 +388,7 @@ const mutations = {
     );
 
     if (addedBy.id !== ctx.request.userId)
-      throw new Error('Bạn không có quyền làm điều đó');
+      throw new Error('You do not have permission to do that');
     let videoCreateInput = {};
     // New source
     if (source && source !== originId) {
@@ -398,7 +398,7 @@ const mutations = {
       const video = await ctx.db.query.video({
         where: { originId },
       });
-      if (video) throw new Error('Video đã có');
+      if (video) throw new Error('This video has already been added');
       // Validate other input arguments
       videoCreateInput = await validateVideoInput(originId, ctx);
     }
@@ -428,7 +428,7 @@ const mutations = {
   ) {
     // Check if video exists
     const videoExists = await ctx.db.query.video({ where: { id: video } });
-    if (!videoExists) throw new Error('Video không có');
+    if (!videoExists) throw new Error('Video does not exist');
 
     // Save given XML captions to db
     if (xml) {
@@ -487,7 +487,7 @@ const mutations = {
     return tag;
   },
   async createComment(parent, { video, text }, ctx, info) {
-    if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
+    if (!ctx.request.userId) throw new Error('Please log in to continue');
     const comment = await ctx.db.mutation.createComment({
       data: {
         author: {
@@ -507,7 +507,7 @@ const mutations = {
     return comment;
   },
   async updateComment(parent, data, ctx, info) {
-    if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
+    if (!ctx.request.userId) throw new Error('Please log in to continue');
     const existingComment = await ctx.db.query.comment(
       {
         where: {
@@ -521,7 +521,7 @@ const mutations = {
       }`
     );
     if (existingComment.author.id !== ctx.request.userId)
-      throw new Error('Bạn không có quyền làm điều đó');
+      throw new Error('You do not have permission to do that');
     const { comment, text } = data;
     if (!text) return existingComment;
     return ctx.db.mutation.updateComment({
@@ -534,7 +534,7 @@ const mutations = {
     });
   },
   async deleteComment(parent, { comment }, ctx, info) {
-    if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
+    if (!ctx.request.userId) throw new Error('Please log in to continue');
     const existingComment = await ctx.db.query.comment(
       {
         where: {
@@ -544,7 +544,7 @@ const mutations = {
       `{ author { id } }`
     );
     if (existingComment.author.id !== ctx.request.userId)
-      throw new Error('Bạn không có quyền làm điều đó');
+      throw new Error('You do not have permission to do that');
     return ctx.db.mutation.deleteComment({
       where: {
         id: comment,
@@ -553,7 +553,7 @@ const mutations = {
   },
 
   async createCommentReply(parent, { comment, text }, ctx, info) {
-    if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
+    if (!ctx.request.userId) throw new Error('Please log in to continue');
     const commentReply = await ctx.db.mutation.createCommentReply({
       data: {
         author: {
@@ -573,7 +573,7 @@ const mutations = {
     return commentReply;
   },
   async updateCommentReply(parent, data, ctx, info) {
-    if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
+    if (!ctx.request.userId) throw new Error('Please log in to continue');
     const existingReply = await ctx.db.query.commentReply(
       {
         where: {
@@ -587,7 +587,7 @@ const mutations = {
       }`
     );
     if (existingReply.author.id !== ctx.request.userId)
-      throw new Error('Bạn không có quyền làm điều đó');
+      throw new Error('You do not have permission to do that');
     if (!data.text) return existingReply;
     const { commentReply, text } = data;
     return ctx.db.mutation.updateCommentReply({
@@ -600,7 +600,7 @@ const mutations = {
     });
   },
   async deleteCommentReply(parent, { commentReply }, ctx, info) {
-    if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
+    if (!ctx.request.userId) throw new Error('Please log in to continue');
     const existing = await ctx.db.query.commentReply(
       {
         where: {
@@ -618,7 +618,7 @@ const mutations = {
     });
   },
   async createCommentVote(parent, { comment, type }, ctx, info) {
-    if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
+    if (!ctx.request.userId) throw new Error('Please log in to continue');
     const query = `{
       id
       type
@@ -704,7 +704,7 @@ const mutations = {
     return vote;
   },
   async createCommentReplyVote(parent, { commentReply, type }, ctx, info) {
-    if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
+    if (!ctx.request.userId) throw new Error('Please log in to continue');
     const query = `{
       id
       type
@@ -792,10 +792,10 @@ const mutations = {
   },
   async signup(parent, { data }, ctx, info) {
     if (!data.email || !data.password)
-      throw new Error('Chưa điền hết ô bắt buộc');
+      throw new Error('Required fields must not be empty');
 
     if (data.password.length < 6)
-      throw new Error('Mật khẩu phải chứa ít nhất 6 ký tự');
+      throw new Error('Password must be at least 6 characters long');
 
     // Lowercase email and trim arguments
     data.email = data.email.toLowerCase().trim();
@@ -803,7 +803,7 @@ const mutations = {
 
     // Check if Email taken
     const emailTaken = await ctx.db.exists.User({ email: data.email });
-    if (emailTaken) throw new Error('Email đã có người dùng');
+    if (emailTaken) throw new Error('Email already in use');
 
     if (!data.displayName) data.displayName = faker.name.findName();
     data.displayName = data.displayName.trim();
@@ -812,7 +812,7 @@ const mutations = {
     const displayNameTaken = await ctx.db.exists.User({
       displayName: data.displayName,
     });
-    if (displayNameTaken) throw new Error('Tên hiển thị đã có người dùng');
+    if (displayNameTaken) throw new Error('Display name already in use');
 
     // Hash password
     const password = await bcrypt.hash(data.password, 10);
@@ -842,13 +842,13 @@ const mutations = {
     // Check if there is user with that email
     const user = await ctx.db.query.user({ where: { email } });
     if (!user) {
-      throw new Error('Sai email hoặc mật khẩu');
+      throw new Error('Wrong email or password');
     }
 
     // Check if password is correct
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) {
-      throw new Error('Sai email hoặc mật khẩu');
+      throw new Error('Wrong email or password');
     }
 
     setCookie({ userId: user.id, ctx });
@@ -864,7 +864,7 @@ const mutations = {
     const updates = { ...data };
 
     // Check signed in
-    if (!userId) throw new Error('Đăng nhập để tiếp tục');
+    if (!userId) throw new Error('Please log in to continue');
 
     // Validate password change
     if (newPassword || confirmPassword) {
@@ -873,13 +873,13 @@ const mutations = {
       const valid = await bcrypt.compare(password, user.password);
 
       if (!confirmPassword || !newPassword || !password) {
-        throw new Error('Phải điền cả ba ô mật khẩu nếu muốn đổi mật khẩu');
+        throw new Error('You must fill in all fields');
       } else if (!valid) {
-        throw new Error('Sai mật khẩu cũ');
+        throw new Error('Old password wrong');
       } else if (newPassword !== confirmPassword) {
-        throw new Error('Mật khẩu không khớp');
+        throw new Error('Passwords do not match');
       } else if (newPassword.length < 6) {
-        throw new Error('Mật khẩu phải chứa ít nhất 6 ký tự');
+        throw new Error('Password must be at least 6 characters long');
       } else {
         // Hash new password
         updates.password = await bcrypt.hash(newPassword, 10);
@@ -910,7 +910,7 @@ const mutations = {
   async updateAvatar(parent, { avatar }, ctx, info) {
     // Check signed in
     const { userId } = ctx.request;
-    if (!userId) throw new Error('Đăng nhập để tiếp tục');
+    if (!userId) throw new Error('Please log in to continue');
 
     // Run the update method
     return ctx.db.mutation.updateUser(
@@ -933,7 +933,7 @@ const mutations = {
     // 1. Check if real user
     const user = await ctx.db.query.user({ where: { email } });
     if (!user) {
-      return { message: 'Kiểm tra email của bạn để tiếp tục' };
+      return { message: 'Please check your email to continue' };
     }
 
     // 2. Set reset token and expiry
@@ -953,7 +953,7 @@ const mutations = {
     }
 
     // 4. Return message
-    return { message: 'Kiểm tra email của bạn để tiếp tục' };
+    return { message: 'Please check your email to continue' };
   },
   async resetPassword(
     parent,
@@ -963,8 +963,8 @@ const mutations = {
   ) {
     // 1. Check if passwords match
     if (password.length < 6)
-      throw new Error('Mật khẩu phải chứa ít nhất 6 ký tự');
-    if (password !== confirmPassword) throw new Error('Mật khẩu không khớp');
+      throw new Error('Password must be at least 6 characters long');
+    if (password !== confirmPassword) throw new Error('Passwords do not match');
 
     // 2. Check token and expiration
     const [user] = await ctx.db.query.users({
@@ -1132,7 +1132,7 @@ const mutations = {
     );
   },
   async updateContentLanguage(parent, { contentLanguage }, ctx, info) {
-    if (!ctx.request.userId) throw new Error('Đăng nhập để tiếp tục');
+    if (!ctx.request.userId) throw new Error('Please log in to continue');
 
     // Update content language
     return ctx.db.mutation.updateUser(
