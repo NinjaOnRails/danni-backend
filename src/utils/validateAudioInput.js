@@ -18,7 +18,7 @@ module.exports = async (
     customThumbnail,
     title: title ? title.trim().substring(0, 99) : undefined,
     description: description
-      ? description.trim().substring(0, 4999)
+      ? description.substring(0, 4999)
       : undefined,
     duration,
   };
