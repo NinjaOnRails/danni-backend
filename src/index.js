@@ -45,8 +45,3 @@ server.start(
     console.log(`Server is now running on port http://localhost:${deets.port}`);
   }
 );
-
-// Ping itself every 15min to stay awake on Heroku
-setInterval(() => {
-  fetch('https://dannitv.herokuapp.com');
-}, 900000);
